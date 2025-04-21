@@ -39,15 +39,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/users/email/:email", async (req, res) => {
     try {
+      // 尝试获取用户信息
       const user = await storage.getUserByEmail(req.params.email);
       
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
       
+      // 获取用户关联的服务提供商
       const providers = await storage.getProvidersByUserId(user.id);
       return res.json({ ...user, providers });
     } catch (err) {
+      // 检查是否是数据库连接错误
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      if (errorMessage.includes('ENOTFOUND') || 
+          errorMessage.includes('ECONNREFUSED') || 
+          errorMessage.includes('connection')) {
+        console.error('Database connection error in /api/users/email/:email:', errorMessage);
+        return res.status(500).json({ 
+          error: errorMessage,
+          message: 'Database connection error',
+          type: 'CONNECTION_ERROR'
+        });
+      }
+      
       handleError(err, res);
     }
   });

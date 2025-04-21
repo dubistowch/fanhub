@@ -1,89 +1,79 @@
-import { Pool } from 'pg';
-import { drizzle } from 'drizzle-orm/node-postgres';
-import * as schema from '@shared/schema';
+/**
+ * 检查Supabase连接状态的工具
+ * 用于验证Supabase URL和数据库连接是否正常
+ */
 
-if (!process.env.SUPABASE_DB_URL) {
-  throw new Error('SUPABASE_DB_URL must be set. Please provide a valid Supabase database URL');
+// 导入必要的模块
+import { supabase } from "./supabase-connection";
+import { checkConnection } from "./supabase-connection";
+
+async function main() {
+  console.log("检查Supabase环境变量...");
+  
+  // 检查环境变量
+  const supabaseUrl = process.env.VITE_SUPABASE_URL;
+  const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY; 
+  const supabaseDbUrl = process.env.SUPABASE_DB_URL;
+  
+  console.log("Supabase URL:", supabaseUrl ? "已设置" : "未设置");
+  console.log("Supabase Anon Key:", supabaseAnonKey ? "已设置" : "未设置");
+  console.log("Supabase DB URL:", supabaseDbUrl ? "已设置" : "未设置");
+  
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.error("错误: Supabase URL或Anon Key未设置，无法进行Supabase Auth验证");
+    process.exit(1);
+  }
+  
+  if (!supabaseDbUrl) {
+    console.error("错误: SUPABASE_DB_URL未设置，无法连接Supabase数据库");
+    process.exit(1);
+  }
+  
+  // 测试Supabase Auth连接
+  try {
+    console.log("测试Supabase Auth连接...");
+    const { data, error } = await supabase.auth.getSession();
+    
+    if (error) {
+      console.error("Supabase Auth连接错误:", error.message);
+    } else {
+      console.log("Supabase Auth连接成功!");
+    }
+  } catch (error) {
+    console.error("尝试连接Supabase Auth时发生异常:", error);
+  }
+  
+  // 测试Supabase数据库连接
+  try {
+    console.log("测试Supabase数据库连接...");
+    const isConnected = await checkConnection();
+    
+    if (isConnected) {
+      console.log("Supabase数据库连接成功!");
+    } else {
+      console.error("Supabase数据库连接失败!");
+      
+      // 解析连接URL以便调试
+      try {
+        const url = new URL(supabaseDbUrl);
+        console.log("数据库连接信息:");
+        console.log("- 协议:", url.protocol);
+        console.log("- 主机:", url.hostname);
+        console.log("- 端口:", url.port);
+        console.log("- 路径:", url.pathname);
+        console.log("- 用户名:", url.username ? "已设置" : "未设置");
+        console.log("- 密码:", url.password ? "已设置" : "未设置");
+      } catch (parseError) {
+        console.error("无法解析数据库URL:", parseError);
+      }
+    }
+  } catch (error) {
+    console.error("尝试连接Supabase数据库时发生异常:", error);
+  }
 }
 
-console.log("Checking Supabase connection...");
-
-// Create PostgreSQL connection pool to Supabase
-const pool = new Pool({
-  connectionString: process.env.SUPABASE_DB_URL,
-  ssl: { rejectUnauthorized: false },
-  max: 5, // Connection pool max connections
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 5000,
+// 执行主函数
+main().catch(error => {
+  console.error("程序执行失败:", error);
+  process.exit(1);
 });
-
-// Log when connection is created
-pool.on('connect', () => {
-  console.log('PostgreSQL connection created');
-});
-
-// Log errors on idle clients
-pool.on('error', (err) => {
-  console.error('Unexpected error on idle PostgreSQL client', err);
-});
-
-const checkConnection = async () => {
-  try {
-    // Test basic connection
-    const timeResult = await pool.query('SELECT NOW() as now');
-    console.log('Successfully connected to Supabase PostgreSQL');
-    console.log('Current server time:', timeResult.rows[0].now);
-    
-    // Create drizzle instance
-    const db = drizzle(pool, { schema });
-    
-    // Check if tables exist
-    const tableNames = ['users', 'providers', 'creators', 'follows', 'checkins', 'checkin_stats'];
-    
-    console.log('\nChecking tables:');
-    for (const table of tableNames) {
-      try {
-        const result = await pool.query(`
-          SELECT EXISTS (
-            SELECT FROM information_schema.tables 
-            WHERE table_schema = 'public' 
-            AND table_name = $1
-          )`, [table]);
-        
-        const exists = result.rows[0].exists;
-        console.log(`- ${table}: ${exists ? 'EXISTS' : 'NOT FOUND'}`);
-        
-        if (exists) {
-          const countResult = await pool.query(`SELECT COUNT(*) FROM ${table}`);
-          console.log(`  Records: ${countResult.rows[0].count}`);
-        }
-      } catch (error) {
-        console.error(`Error checking table ${table}:`, error);
-      }
-    }
-    
-    // Check users if they exist
-    try {
-      const usersResult = await pool.query('SELECT COUNT(*) FROM users');
-      const userCount = usersResult.rows[0].count;
-      
-      if (parseInt(userCount) > 0) {
-        const sampleUsers = await pool.query('SELECT id, username, email FROM users LIMIT 3');
-        console.log('\nSample users:');
-        sampleUsers.rows.forEach(user => {
-          console.log(`- User ID: ${user.id}, Username: ${user.username}, Email: ${user.email}`);
-        });
-      }
-    } catch (error) {
-      console.error('Error checking users:', error);
-    }
-    
-    console.log('\nConnection test completed successfully');
-  } catch (error) {
-    console.error('Failed to connect to Supabase PostgreSQL:', error);
-  } finally {
-    await pool.end();
-  }
-};
-
-checkConnection();

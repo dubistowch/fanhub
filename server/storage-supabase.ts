@@ -1,6 +1,7 @@
 import { users, providers, creators, follows, checkins, checkinStats, type CheckinDateStats, type CheckinStat, type CheckinWithUser, type Checkin, type Creator, type CreatorWithDetails, type Follow, type InsertCheckin, type InsertCheckinStat, type InsertCreator, type InsertFollow, type InsertProvider, type InsertUser, type Provider, type User, type UserCreatorStreak, type UserWithProviders } from "@shared/schema";
-import { db } from "./db-supabase";
+import { getDb } from "./db-supabase";
 import { eq, and, sql, desc, asc, lt, gte, count } from "drizzle-orm";
+import { executeWithRetry } from "./supabase-connection";
 
 export interface IStorage {
   // User methods
@@ -46,8 +47,14 @@ export class SupabaseStorage implements IStorage {
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.email, email));
-    return user;
+    try {
+      const db = await getDb();
+      const [user] = await db.select().from(users).where(eq(users.email, email));
+      return user;
+    } catch (error) {
+      console.error('Error in getUserByEmail:', error);
+      throw error;
+    }
   }
 
   async createUser(user: InsertUser): Promise<User> {
