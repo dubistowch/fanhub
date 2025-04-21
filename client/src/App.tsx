@@ -14,17 +14,16 @@ import Dashboard from "@/pages/dashboard";
 import Discover from "@/pages/discover";
 import Following from "@/pages/following";
 import AuthCallback from "@/pages/auth/callback";
-import { useAuth } from "./context/AuthContext";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 import { useEffect } from "react";
 
-function Router() {
+function ProtectedRoutes() {
   const { user, isLoading } = useAuth();
   const [location, setLocation] = useLocation();
   
   // Redirect to login if not authenticated
   useEffect(() => {
-    console.log("App router:", { user, isLoading, location });
+    console.log("ProtectedRoutes:", { user, isLoading, location });
     
     // 排除不需要认证的路由
     const publicRoutes = ["/login", "/auth/callback"];
@@ -53,14 +52,16 @@ function Router() {
 
 function AppContent() {
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
-      <main className="flex-grow bg-gray-50">
-        <Router />
-      </main>
-      <Footer />
-      <Toaster />
-    </div>
+    <AuthProvider>
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-grow bg-gray-50">
+          <ProtectedRoutes />
+        </main>
+        <Footer />
+        <Toaster />
+      </div>
+    </AuthProvider>
   );
 }
 
@@ -68,9 +69,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <AuthProvider>
-          <AppContent />
-        </AuthProvider>
+        <AppContent />
       </TooltipProvider>
     </QueryClientProvider>
   );

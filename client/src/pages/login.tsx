@@ -20,10 +20,13 @@ const Login = () => {
   }, [user, isLoading, setLocation]);
 
   const handleSignIn = async (provider: OAuthProvider) => {
+    console.log(`Login: Starting sign in with ${provider}`);
     try {
-      await signInWithOAuth(provider);
+      console.log("Login: Calling signInWithOAuth");
+      const result = await signInWithOAuth(provider);
+      console.log("Login: OAuth sign in result:", result);
     } catch (error) {
-      console.error("Sign in error:", error);
+      console.error("Login: Sign in error:", error);
       toast({
         title: "登入失敗",
         description: "無法登入，請稍後再試",
