@@ -3,7 +3,9 @@
  * 提供与Supabase数据库和Auth连接的健壮方案
  */
 
-import { Pool, PoolClient } from 'pg';
+import pg from 'pg';
+const { Pool } = pg;
+type PoolClient = pg.PoolClient;
 import { drizzle } from 'drizzle-orm/node-postgres';
 import * as schema from '@shared/schema';
 import { createClient } from '@supabase/supabase-js';
