@@ -2,81 +2,86 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getQueryFn } from "@/lib/queryClient";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { TrendingUp, Award, ChevronRight } from "lucide-react";
-import { Link } from "wouter";
-import type { UserCreatorStreak } from "@shared/schema";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Flame } from "lucide-react";
+import { UserCreatorStreak } from "@shared/schema";
 
 interface UserStreaksProps {
   userId: number;
 }
 
 export function UserStreaks({ userId }: UserStreaksProps) {
-  // 获取用户的所有创作者连续签到记录
-  const { data: streaks, isLoading } = useQuery({
+  // 获取用户的所有签到连续记录
+  const { data: userStreaks, isLoading: loadingStreaks } = useQuery({
     queryKey: ["/api/users", userId, "streaks"],
     queryFn: getQueryFn({ on401: "returnNull" }),
     enabled: !!userId
   });
-
-  if (isLoading) {
+  
+  // 按连续签到天数排序，从高到低
+  const sortedStreaks = React.useMemo(() => {
+    if (!userStreaks) return [];
+    return [...userStreaks].sort((a: UserCreatorStreak, b: UserCreatorStreak) => b.streak - a.streak);
+  }, [userStreaks]);
+  
+  // 显示连续签到记录为空的情况
+  if (loadingStreaks) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>连续签到</CardTitle>
-          <CardDescription>你正在保持的连续签到</CardDescription>
+          <CardTitle>签到连续记录</CardTitle>
+          <CardDescription>您的签到连续记录</CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="text-center py-4">加载中...</div>
+        <CardContent className="h-[200px] flex items-center justify-center">
+          <p className="text-muted-foreground">加载中...</p>
         </CardContent>
       </Card>
     );
   }
-
-  if (!streaks || streaks.length === 0) {
+  
+  if (!userStreaks || userStreaks.length === 0) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>连续签到</CardTitle>
-          <CardDescription>你的连续签到记录</CardDescription>
+          <CardTitle>签到连续记录</CardTitle>
+          <CardDescription>您的签到连续记录</CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="text-center py-6 text-muted-foreground">
-            你还没有连续签到记录。每天签到可以累积连续天数！
-          </div>
+        <CardContent className="h-[200px] flex items-center justify-center">
+          <p className="text-muted-foreground">暂无签到记录，开始签到获取连续记录吧！</p>
         </CardContent>
       </Card>
     );
   }
-
-  // 对签到记录进行排序，连续天数最多的排在前面
-  const sortedStreaks = [...streaks].sort((a, b) => b.streak - a.streak);
-
+  
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center">
-          <TrendingUp className="mr-2 h-5 w-5 text-primary" />
-          连续签到
-        </CardTitle>
-        <CardDescription>你正在保持的连续签到记录</CardDescription>
+        <CardTitle>签到连续记录</CardTitle>
+        <CardDescription>您在各个创作者的签到连续记录</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-2">
+        <div className="space-y-4">
           {sortedStreaks.map((streak: UserCreatorStreak) => (
-            <Link key={streak.creatorId} href={`/creators/${streak.creatorId}`}>
-              <a className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg hover:bg-secondary transition-colors">
-                <div className="flex items-center">
-                  <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center mr-3">
-                    <Award className="h-4 w-4 text-primary" />
-                  </div>
-                  <div>
-                    <div className="font-medium">{streak.creatorName}</div>
-                    <div className="text-sm text-muted-foreground">连续签到 <span className="font-semibold text-primary">{streak.streak}天</span></div>
-                  </div>
+            <div 
+              key={streak.creatorId} 
+              className="flex items-center justify-between py-2 px-3 bg-secondary/30 rounded-lg"
+            >
+              <div className="flex items-center space-x-3">
+                <Avatar className="h-10 w-10">
+                  <AvatarImage src={`https://avatar.vercel.sh/${streak.creatorName}`} alt={streak.creatorName} />
+                  <AvatarFallback>{streak.creatorName.slice(0, 2).toUpperCase()}</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="font-medium">{streak.creatorName}</p>
+                  <p className="text-xs text-muted-foreground">创作者</p>
                 </div>
-                <ChevronRight className="h-4 w-4 text-muted-foreground" />
-              </a>
-            </Link>
+              </div>
+              
+              <div className="flex items-center space-x-2 text-amber-500">
+                <Flame className="h-4 w-4" />
+                <span className="font-bold">{streak.streak} 天</span>
+              </div>
+            </div>
           ))}
         </div>
       </CardContent>

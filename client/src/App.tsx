@@ -13,6 +13,7 @@ import Profile from "@/pages/profile";
 import Dashboard from "@/pages/dashboard";
 import Discover from "@/pages/discover";
 import Following from "@/pages/following";
+import AuthCallback from "@/pages/auth/callback";
 import { useAuth } from "./context/AuthContext";
 import { AuthProvider } from "./context/AuthContext";
 import { useEffect } from "react";
@@ -37,6 +38,7 @@ function Router() {
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/discover" component={Discover} />
       <Route path="/following" component={Following} />
+      <Route path="/auth/callback" component={AuthCallback} />
       <Route component={NotFound} />
     </Switch>
   );
