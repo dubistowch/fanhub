@@ -6,6 +6,7 @@
 import pg from 'pg';
 const { Pool } = pg;
 type PoolClient = pg.PoolClient;
+type PgPool = pg.Pool;
 import { drizzle } from 'drizzle-orm/node-postgres';
 import * as schema from '@shared/schema';
 import { createClient } from '@supabase/supabase-js';
@@ -49,7 +50,7 @@ const createPool = () => {
 };
 
 // 连接池实例
-let pool: Pool | null = null;
+let pool: PgPool | null = null;
 let db: ReturnType<typeof drizzle> | null = null;
 
 // 获取数据库连接
