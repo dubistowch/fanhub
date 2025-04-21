@@ -1,144 +1,173 @@
-import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
-import { queryClient } from "@/lib/queryClient";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import React, { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { useToast } from "@/hooks/use-toast";
+import { format, subDays, isSameDay, differenceInDays } from "date-fns";
+import { CheckCircle, Calendar as CalendarIcon } from "lucide-react";
+import { DayContent } from "react-day-picker";
 
-interface CheckInCalendarProps {
+interface CheckinCalendarProps {
   creatorId: number;
   hasCheckedInToday: boolean;
   checkinStreak: number;
   onCheckInSuccess?: (newStreak: number) => void;
 }
 
-const CheckInCalendar = ({
+export const CheckinCalendar: React.FC<CheckinCalendarProps> = ({
   creatorId,
   hasCheckedInToday,
   checkinStreak,
   onCheckInSuccess
-}: CheckInCalendarProps) => {
+}) => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  const [loadingRecentDates, setLoadingRecentDates] = useState<boolean>(false);
+  const [recentCheckins, setRecentCheckins] = useState<Date[]>([]);
   
-  // Generate array of last 7 days
-  const last7Days = [];
-  const today = new Date();
-  
-  for (let i = 6; i >= 0; i--) {
-    const date = new Date(today);
-    date.setDate(today.getDate() - i);
+  // 获取用户最近的签到日期
+  React.useEffect(() => {
+    if (!user?.id || !creatorId) return;
     
-    const dayNames = ["日", "一", "二", "三", "四", "五", "六"];
+    const fetchRecentCheckins = async () => {
+      setLoadingRecentDates(true);
+      try {
+        // 获取最近30天的签到记录
+        const response = await fetch(`/api/users/${user.id}/creators/${creatorId}/recent-checkins`);
+        if (response.ok) {
+          const data = await response.json();
+          // 转换日期字符串为Date对象
+          const dates = data.map((d: string) => new Date(d));
+          setRecentCheckins(dates);
+        }
+      } catch (error) {
+        console.error("Failed to fetch recent check-ins:", error);
+      } finally {
+        setLoadingRecentDates(false);
+      }
+    };
     
-    last7Days.push({
-      date,
-      dayName: dayNames[date.getDay()],
-      isToday: i === 0,
-      // We'll assume days in streak are checked
-      isCheckedIn: hasCheckedInToday ? i === 0 : i > 0 && i <= checkinStreak
-    });
-  }
-  
-  // Handle check-in
+    fetchRecentCheckins();
+  }, [user?.id, creatorId]);
+
+  // 签到操作
   const checkInMutation = useMutation({
     mutationFn: async () => {
       if (!user) throw new Error("User not authenticated");
       
-      const response = await apiRequest("POST", "/api/checkins", {
+      const checkInData = {
         userId: user.id,
         creatorId
-      });
+      };
       
-      const data = await response.json();
-      return data.streak;
+      const response = await apiRequest("POST", "/api/checkins", checkInData);
+      return response;
     },
-    onSuccess: (newStreak) => {
+    onSuccess: (data) => {
+      // 更新查询缓存
       queryClient.invalidateQueries({ queryKey: ["/api/creators", creatorId] });
-      
-      toast({
-        title: "簽到成功",
-        description: "您已完成今日簽到！",
-        variant: "default"
+      queryClient.invalidateQueries({ 
+        queryKey: ["/api/users", user?.id, "creators", creatorId, "checkin-status"] 
       });
       
-      onCheckInSuccess?.(newStreak);
+      // 显示成功消息
+      toast({
+        title: "签到成功！",
+        description: `连续签到 ${data.streak} 天`,
+        duration: 3000,
+      });
+      
+      // 回调通知父组件
+      if (onCheckInSuccess) {
+        onCheckInSuccess(data.streak);
+      }
+      
+      // 添加当天到最近签到记录
+      const today = new Date();
+      setRecentCheckins(prev => [...prev, today]);
     },
     onError: (error) => {
       toast({
-        title: "簽到失敗",
+        title: "签到失败",
         description: (error as Error).message,
-        variant: "destructive"
+        variant: "destructive",
+        duration: 3000,
       });
     }
   });
 
   const handleCheckIn = () => {
     if (checkInMutation.isPending) return;
+    if (hasCheckedInToday) {
+      toast({
+        title: "今日已签到",
+        description: "明天再来吧！",
+        duration: 3000,
+      });
+      return;
+    }
     checkInMutation.mutate();
   };
 
+  // 自定义修饰器，用于显示签到状态
+  const modifiers = {
+    checkedIn: recentCheckins,
+    today: new Date(),
+  };
+
+  // 自定义修饰器样式
+  const modifiersStyles = {
+    checkedIn: {
+      backgroundColor: 'hsl(var(--primary))',
+      color: 'hsl(var(--primary-foreground))',
+      borderRadius: '100%',
+    },
+    today: {
+      border: '2px dashed hsl(var(--primary))',
+      borderRadius: '100%',
+    },
+  };
+
   return (
-    <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="font-semibold text-lg">每日簽到</h3>
-        <span className="text-sm text-gray-500">
-          累積簽到：
-          <span className="font-medium text-primary">{checkinStreak}</span> 天
-        </span>
-      </div>
+    <div className="space-y-4">
+      <Calendar
+        mode="single"
+        selected={selectedDate}
+        onSelect={setSelectedDate}
+        disabled={{ after: new Date() }}
+        className="border rounded-md p-3"
+        modifiers={modifiers}
+        modifiersStyles={modifiersStyles}
+      />
       
-      {/* Check-in Button */}
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-gray-700 mb-1">
-            {hasCheckedInToday 
-              ? "您已完成今日簽到！" 
-              : "今天還沒簽到，點擊簽到支持創作者！"}
-          </p>
-          <p className="text-sm text-gray-500">每日 00:00 重置簽到資格</p>
-        </div>
-        <Button
-          className={`checkin-button flex items-center ${
-            hasCheckedInToday 
-              ? "bg-green-600 hover:bg-green-600 cursor-default" 
-              : "bg-primary hover:bg-primary-light"
-          }`}
-          onClick={handleCheckIn}
-          disabled={hasCheckedInToday || checkInMutation.isPending}
-        >
-          <i className={`fas fa-${hasCheckedInToday ? "check" : "calendar-check"} mr-2`}></i>
-          {hasCheckedInToday ? "今日已簽到" : "立即簽到"}
-        </Button>
-      </div>
+      <Button
+        className="w-full"
+        onClick={handleCheckIn}
+        disabled={checkInMutation.isPending || hasCheckedInToday}
+      >
+        {checkInMutation.isPending ? (
+          "签到中..."
+        ) : hasCheckedInToday ? (
+          "已签到"
+        ) : (
+          <>
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            今日签到
+          </>
+        )}
+      </Button>
       
-      {/* Calendar View */}
-      <div className="mt-6">
-        <div className="grid grid-cols-7 gap-2 text-center">
-          {last7Days.map((day, index) => (
-            <div key={index} className="flex flex-col items-center">
-              <span className="text-xs text-gray-500">{day.dayName}</span>
-              {day.isToday && !hasCheckedInToday ? (
-                <div className="w-8 h-8 rounded-full flex items-center justify-center mt-1 border-2 border-dashed border-accent text-accent">
-                  <i className="fas fa-plus"></i>
-                </div>
-              ) : (
-                <div 
-                  className={`w-8 h-8 rounded-full flex items-center justify-center mt-1 ${
-                    day.isCheckedIn 
-                      ? "bg-accent text-white" 
-                      : "bg-gray-200 text-gray-400"
-                  }`}
-                >
-                  <i className="fas fa-check"></i>
-                </div>
-              )}
-            </div>
-          ))}
+      {checkinStreak > 0 && (
+        <div className="text-center text-sm">
+          <span className="text-muted-foreground">连续签到</span>{" "}
+          <span className="font-semibold text-primary">{checkinStreak}</span>{" "}
+          <span className="text-muted-foreground">天</span>
         </div>
-      </div>
+      )}
     </div>
   );
 };
-
-export default CheckInCalendar;

@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getQueryFn } from "@/lib/queryClient";
 import { UserAvatar } from "@/components/ui/avatar";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CheckinCalendar } from "@/components/ui/check-in-calendar";
-import { CheckCircle, UserCheck, Calendar, TrendingUp, Users } from "lucide-react";
-import { format, subDays } from "date-fns";
-import type { CheckinDateStats, CheckinWithUser } from "@shared/schema";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { format, parseISO, differenceInDays } from "date-fns";
+import { Calendar, Users, BarChart3 } from "lucide-react";
+import type { CheckinWithUser, CheckinDateStats } from "@shared/schema";
 
 interface CheckinStatsProps {
   creatorId: number;
@@ -24,176 +25,190 @@ export function CheckinStats({
   checkinStreak = 0,
   onCheckInSuccess
 }: CheckinStatsProps) {
-  const [activeTab, setActiveTab] = useState<string>("recent");
-
-  // 获取近期签到用户数据
-  const { data: recentCheckins, isLoading: recentLoading } = useQuery({
-    queryKey: ["/api/creators", creatorId, "checkins", "recent"],
+  const [activeTab, setActiveTab] = useState("calendar");
+  
+  // 获取最近签到记录
+  const { data: recentCheckins, isLoading: loadingRecentCheckins } = useQuery({
+    queryKey: ["/api/creators", creatorId, "recent-checkins"],
     queryFn: getQueryFn({ on401: "returnNull" }),
     enabled: !!creatorId
   });
-
-  // 获取30天内的详细签到数据
-  const { data: detailedCheckins, isLoading: detailedLoading } = useQuery({
-    queryKey: ["/api/creators", creatorId, "checkins", "detailed"],
+  
+  // 获取历史签到统计
+  const { data: checkinStats, isLoading: loadingCheckinStats } = useQuery({
+    queryKey: ["/api/creators", creatorId, "checkin-stats"],
     queryFn: getQueryFn({ on401: "returnNull" }),
-    enabled: !!creatorId && activeTab === "detailed"
+    enabled: !!creatorId
   });
-
-  // 获取历史签到统计数据
-  const { data: checkinStats, isLoading: statsLoading } = useQuery({
-    queryKey: ["/api/creators", creatorId, "checkins", "stats"],
-    queryFn: getQueryFn({ on401: "returnNull" }),
-    enabled: !!creatorId && activeTab === "historical"
-  });
-
-  // 处理日期格式化
+  
+  // 格式化日期显示
   const formatDate = (date: Date) => {
-    return format(new Date(date), "yyyy-MM-dd HH:mm");
+    const today = new Date();
+    const diffDays = differenceInDays(today, date);
+    
+    if (diffDays === 0) return "今天";
+    if (diffDays === 1) return "昨天";
+    if (diffDays === 2) return "前天";
+    if (diffDays < 7) return `${diffDays}天前`;
+    
+    return format(date, "MM月dd日");
   };
 
-  return (
-    <div className="space-y-6">
-      {userId && (
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle>你的签到</CardTitle>
-            <CardDescription>每天签到保持连续</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <CheckCircle className={hasCheckedInToday ? "text-green-500" : "text-gray-300"} size={20} />
-                <span>{hasCheckedInToday ? "今日已签到" : "今日未签到"}</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <TrendingUp size={20} className="text-primary" />
-                <span>连续签到: <strong>{checkinStreak}天</strong></span>
-              </div>
-            </div>
-            <div className="mt-4">
-              <CheckinCalendar 
-                creatorId={creatorId}
-                hasCheckedInToday={hasCheckedInToday}
-                checkinStreak={checkinStreak}
-                onCheckInSuccess={onCheckInSuccess}
-              />
-            </div>
-          </CardContent>
-        </Card>
-      )}
+  // 对历史统计数据进行处理以便于图表显示
+  const chartData = React.useMemo(() => {
+    if (!checkinStats) return [];
+    
+    // 返回最近30天的数据用于图表
+    return checkinStats.map((stat: CheckinDateStats) => ({
+      date: format(new Date(stat.date), "MM/dd"),
+      count: stat.count
+    }));
+  }, [checkinStats]);
 
+  // 对签到详情记录进行排序，最新的排在前面
+  const detailedCheckins = React.useMemo(() => {
+    if (!recentCheckins) return [];
+    return [...recentCheckins].sort((a: CheckinWithUser, b: CheckinWithUser) => 
+      new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+  }, [recentCheckins]);
+
+  return (
+    <div className="space-y-8">
       <Card>
         <CardHeader>
-          <CardTitle>粉丝签到统计</CardTitle>
-          <CardDescription>查看签到数据和趋势</CardDescription>
+          <CardTitle>签到统计</CardTitle>
+          <CardDescription>查看粉丝签到数据和历史记录</CardDescription>
         </CardHeader>
+        
         <CardContent>
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="mb-4">
-              <TabsTrigger value="recent">
-                <Users className="mr-2 h-4 w-4" />
-                最近签到
-              </TabsTrigger>
-              <TabsTrigger value="detailed">
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="mb-6">
+              <TabsTrigger value="calendar">
                 <Calendar className="mr-2 h-4 w-4" />
-                近30天详情
+                签到日历
               </TabsTrigger>
-              <TabsTrigger value="historical">
-                <TrendingUp className="mr-2 h-4 w-4" />
-                历史统计
+              <TabsTrigger value="stats">
+                <BarChart3 className="mr-2 h-4 w-4" />
+                签到趋势
+              </TabsTrigger>
+              <TabsTrigger value="details">
+                <Users className="mr-2 h-4 w-4" />
+                详细记录
               </TabsTrigger>
             </TabsList>
-
-            <TabsContent value="recent" className="space-y-4">
-              {recentLoading ? (
-                <div className="text-center py-6">加载中...</div>
-              ) : recentCheckins?.length ? (
-                <div className="space-y-2">
-                  {recentCheckins.map((checkin: any, index: number) => (
-                    <div key={index} className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg">
-                      <div className="flex items-center space-x-3">
-                        <UserAvatar user={checkin.user} />
-                        <div>
-                          <div className="font-medium">{checkin.user.username}</div>
-                          <div className="text-sm text-muted-foreground">{formatDate(checkin.date)}</div>
-                        </div>
-                      </div>
-                      <UserCheck className="h-5 w-5 text-green-500" />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-10 text-muted-foreground">
-                  还没有签到记录
+            
+            <TabsContent value="calendar" className="space-y-4">
+              {userId && (
+                <CheckinCalendar
+                  creatorId={creatorId}
+                  hasCheckedInToday={hasCheckedInToday}
+                  checkinStreak={checkinStreak}
+                  onCheckInSuccess={onCheckInSuccess}
+                />
+              )}
+              
+              {!userId && (
+                <div className="text-center py-8 text-muted-foreground">
+                  请登录后进行签到
                 </div>
               )}
             </TabsContent>
-
-            <TabsContent value="detailed" className="space-y-4">
-              {detailedLoading ? (
-                <div className="text-center py-6">加载中...</div>
-              ) : detailedCheckins?.length ? (
-                <div>
-                  <div className="text-sm text-muted-foreground mb-4">
-                    过去30天内的签到详情
-                  </div>
-                  <div className="space-y-2 max-h-[400px] overflow-y-auto pr-2">
+            
+            <TabsContent value="stats">
+              {loadingCheckinStats ? (
+                <div className="text-center py-8">加载中...</div>
+              ) : checkinStats && checkinStats.length > 0 ? (
+                <div className="h-80">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      data={chartData}
+                      margin={{ top: 20, right: 30, left: 0, bottom: 20 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="date" />
+                      <YAxis />
+                      <Tooltip />
+                      <Bar dataKey="count" fill="hsl(var(--primary))" name="签到人数" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              ) : (
+                <div className="text-center py-8 text-muted-foreground">
+                  暂无签到统计数据
+                </div>
+              )}
+            </TabsContent>
+            
+            <TabsContent value="details">
+              {loadingRecentCheckins ? (
+                <div className="text-center py-8">加载中...</div>
+              ) : recentCheckins && recentCheckins.length > 0 ? (
+                <div className="space-y-4">
+                  <h3 className="font-medium">最近签到用户</h3>
+                  <div className="space-y-3">
                     {detailedCheckins.map((checkin: CheckinWithUser) => (
-                      <div key={checkin.id} className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg">
+                      <div key={`${checkin.userId}-${checkin.date}`} className="flex items-center justify-between py-2 px-3 bg-secondary/30 rounded-lg">
                         <div className="flex items-center space-x-3">
-                          <UserAvatar user={checkin.user} />
+                          <UserAvatar user={checkin.user} className="h-8 w-8" />
                           <div>
-                            <div className="font-medium">{checkin.user.username}</div>
-                            <div className="text-sm text-muted-foreground">{formatDate(checkin.date)}</div>
+                            <p className="font-medium">{checkin.user.username}</p>
                           </div>
                         </div>
-                        <span className="text-xs bg-primary/10 text-primary py-1 px-2 rounded-full">
-                          {format(new Date(checkin.date), "MM-dd")}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <div className="text-center py-10 text-muted-foreground">
-                  过去30天没有签到记录
-                </div>
-              )}
-            </TabsContent>
-
-            <TabsContent value="historical" className="space-y-4">
-              {statsLoading ? (
-                <div className="text-center py-6">加载中...</div>
-              ) : checkinStats?.length ? (
-                <div>
-                  <div className="text-sm text-muted-foreground mb-4">
-                    30天以前的历史签到统计（每日总数）
-                  </div>
-                  <div className="space-y-2 max-h-[400px] overflow-y-auto pr-2">
-                    {checkinStats.map((stat: CheckinDateStats, index: number) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg">
-                        <div className="font-medium">
-                          {format(new Date(stat.date), "yyyy-MM-dd")}
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <UserCheck className="h-4 w-4 text-primary" />
-                          <span className="font-semibold">{stat.count}</span>
-                          <span className="text-sm text-muted-foreground">人签到</span>
+                        <div className="text-sm text-muted-foreground">
+                          {formatDate(new Date(checkin.date))}
                         </div>
                       </div>
                     ))}
                   </div>
                 </div>
               ) : (
-                <div className="text-center py-10 text-muted-foreground">
-                  没有可用的历史签到数据
+                <div className="text-center py-8 text-muted-foreground">
+                  暂无签到记录
                 </div>
               )}
             </TabsContent>
           </Tabs>
         </CardContent>
       </Card>
+      
+      {/* 统计卡片 */}
+      {!loadingCheckinStats && checkinStats && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* 今日签到数 */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardDescription>今日签到</CardDescription>
+              <CardTitle className="text-2xl">
+                {checkinStats.length > 0 ? checkinStats[0].count : 0}
+              </CardTitle>
+            </CardHeader>
+          </Card>
+          
+          {/* 昨日签到数 */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardDescription>昨日签到</CardDescription>
+              <CardTitle className="text-2xl">
+                {checkinStats.length > 1 ? checkinStats[1].count : 0}
+              </CardTitle>
+            </CardHeader>
+          </Card>
+          
+          {/* 最高签到记录 */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardDescription>历史最高</CardDescription>
+              <CardTitle className="text-2xl">
+                {checkinStats.length > 0 
+                  ? Math.max(...checkinStats.map((stat: CheckinDateStats) => stat.count))
+                  : 0
+                }
+              </CardTitle>
+            </CardHeader>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }
