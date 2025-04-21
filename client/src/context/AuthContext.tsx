@@ -36,16 +36,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     async function loadUser() {
       try {
         setIsLoading(true);
+        console.log("AuthContext: Loading user...");
         
         // Get session and user from Supabase
         const session = await getCurrentSession();
+        console.log("AuthContext: Session:", session);
         if (!session) {
+          console.log("AuthContext: No session found");
           setIsLoading(false);
           return;
         }
         
         const supabaseUserData = await getCurrentUser();
+        console.log("AuthContext: Supabase user data:", supabaseUserData);
         if (!supabaseUserData) {
+          console.log("AuthContext: No Supabase user found");
           setIsLoading(false);
           return;
         }
@@ -53,7 +58,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setSupabaseUser(supabaseUserData);
         
         // Sync with our database
+        console.log("AuthContext: Syncing with our database...");
         const userData = await syncUserAfterOAuth(supabaseUserData);
+        console.log("AuthContext: Synced user data:", userData);
         setUser(userData);
       } catch (err: any) {
         setError(err);

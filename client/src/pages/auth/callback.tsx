@@ -14,11 +14,14 @@ export default function AuthCallback() {
   
   useEffect(() => {
     async function processOAuthRedirect() {
+      console.log("Auth callback: Processing OAuth redirect...");
       try {
         // 获取当前的Supabase用户
         const supabaseUser = await getCurrentUser();
+        console.log("Auth callback: Supabase user:", supabaseUser);
         
         if (!supabaseUser) {
+          console.log("Auth callback: No Supabase user found");
           setError("Authentication failed. Please try again.");
           setProcessing(false);
           return;

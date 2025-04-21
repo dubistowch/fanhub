@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import {
   DropdownMenu,
@@ -13,12 +13,38 @@ import { ChevronDown, Menu } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
 const Header = () => {
-  const { user, signOut } = useAuth();
+  const { user, signOut, isLoading } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [location] = useLocation();
-
-  // Only show the header if user is logged in
-  if (!user) return null;
+  const [userState, setUserState] = useState<any>(null);
+  
+  useEffect(() => {
+    console.log("Header component:", { user, isLoading });
+    setUserState(user);
+  }, [user, isLoading]);
+  
+  // 显示加载状态
+  if (isLoading) {
+    return (
+      <header className="bg-white shadow-sm">
+        <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+          <span className="text-primary font-bold text-2xl">FanHub</span>
+          <span>加载中...</span>
+        </div>
+      </header>
+    );
+  }
+  
+  // Only show the full header if user is logged in
+  if (!user) {
+    return (
+      <header className="bg-white shadow-sm">
+        <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+          <span className="text-primary font-bold text-2xl">FanHub</span>
+        </div>
+      </header>
+    );
+  }
 
   const navItems = [
     { name: "發現創作者", path: "/discover" },

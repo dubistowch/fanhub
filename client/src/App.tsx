@@ -24,7 +24,14 @@ function Router() {
   
   // Redirect to login if not authenticated
   useEffect(() => {
-    if (!isLoading && !user && location !== "/login") {
+    console.log("App router:", { user, isLoading, location });
+    
+    // 排除不需要认证的路由
+    const publicRoutes = ["/login", "/auth/callback"];
+    const isPublicRoute = publicRoutes.some(route => location.startsWith(route));
+    
+    if (!isLoading && !user && !isPublicRoute) {
+      console.log("Redirecting to login page");
       setLocation("/login");
     }
   }, [user, isLoading, location, setLocation]);

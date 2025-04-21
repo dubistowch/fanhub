@@ -34,11 +34,18 @@ export async function signOut() {
 // Get current session
 export async function getCurrentSession() {
   try {
+    console.log("Auth: Getting current session...");
     const { data, error } = await supabase.auth.getSession();
-    if (error) throw error;
+    
+    if (error) {
+      console.error('Auth: Session error:', error);
+      throw error;
+    }
+    
+    console.log("Auth: Current session:", data.session);
     return data.session;
   } catch (error) {
-    console.error('Get session error:', error);
+    console.error('Auth: Get session error:', error);
     return null;
   }
 }
@@ -46,11 +53,18 @@ export async function getCurrentSession() {
 // Get current user
 export async function getCurrentUser() {
   try {
+    console.log("Auth: Getting current user...");
     const { data, error } = await supabase.auth.getUser();
-    if (error) throw error;
+    
+    if (error) {
+      console.error('Auth: User error:', error);
+      throw error;
+    }
+    
+    console.log("Auth: Current user:", data.user);
     return data.user;
   } catch (error) {
-    console.error('Get user error:', error);
+    console.error('Auth: Get user error:', error);
     return null;
   }
 }
