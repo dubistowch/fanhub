@@ -14,6 +14,7 @@ import Dashboard from "@/pages/dashboard";
 import Discover from "@/pages/discover";
 import Following from "@/pages/following";
 import AuthCallback from "@/pages/auth/callback";
+import TestAuth from "@/pages/test-auth";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { useEffect } from "react";
 
@@ -26,7 +27,7 @@ function ProtectedRoutes() {
     console.log("ProtectedRoutes:", { user, isLoading, location });
     
     // 排除不需要认证的路由
-    const publicRoutes = ["/login", "/auth/callback"];
+    const publicRoutes = ["/login", "/auth/callback", "/test-auth"];
     const isPublicRoute = publicRoutes.some(route => location.startsWith(route));
     
     if (!isLoading && !user && !isPublicRoute) {
@@ -45,6 +46,7 @@ function ProtectedRoutes() {
       <Route path="/discover" component={Discover} />
       <Route path="/following" component={Following} />
       <Route path="/auth/callback" component={AuthCallback} />
+      <Route path="/test-auth" component={TestAuth} />
       <Route component={NotFound} />
     </Switch>
   );
