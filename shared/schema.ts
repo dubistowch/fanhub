@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, timestamp, primaryKey } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, primaryKey, date } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -53,10 +53,14 @@ export const checkins = pgTable("checkins", {
   userId: integer("user_id").notNull().references(() => users.id),
   creatorId: integer("creator_id").notNull().references(() => creators.id),
   date: timestamp("date").defaultNow(),
-}, (table) => {
-  return {
-    userCreatorDateUnique: primaryKey({ columns: [table.userId, table.creatorId, table.date] }),
-  }
+});
+
+// Daily check-in statistics for creators (aggregated data for dates > 30 days)
+export const checkinStats = pgTable("checkin_stats", {
+  id: serial("id").primaryKey(),
+  creatorId: integer("creator_id").notNull().references(() => creators.id),
+  date: date("date").notNull(),
+  count: integer("count").notNull().default(0),
 });
 
 // Insert schemas
@@ -65,6 +69,7 @@ export const insertProviderSchema = createInsertSchema(providers).omit({ id: tru
 export const insertCreatorSchema = createInsertSchema(creators).omit({ id: true, createdAt: true });
 export const insertFollowSchema = createInsertSchema(follows).omit({ id: true, createdAt: true });
 export const insertCheckinSchema = createInsertSchema(checkins).omit({ id: true, date: true });
+export const insertCheckinStatsSchema = createInsertSchema(checkinStats).omit({ id: true });
 
 // Types
 export type User = typeof users.$inferSelect;
@@ -82,6 +87,9 @@ export type InsertFollow = z.infer<typeof insertFollowSchema>;
 export type Checkin = typeof checkins.$inferSelect;
 export type InsertCheckin = z.infer<typeof insertCheckinSchema>;
 
+export type CheckinStat = typeof checkinStats.$inferSelect;
+export type InsertCheckinStat = z.infer<typeof insertCheckinStatsSchema>;
+
 // Extended types for frontend use
 export type UserWithProviders = User & {
   providers?: Provider[];
@@ -93,4 +101,22 @@ export type CreatorWithDetails = Creator & {
   isFollowedByUser?: boolean;
   hasCheckedInToday?: boolean;
   checkinStreak?: number;
+};
+
+// For creator dashboard - Recent check-ins (within 30 days)
+export type CheckinWithUser = Checkin & {
+  user: User;
+};
+
+// For creator dashboard - Historical check-in stats (older than 30 days)
+export type CheckinDateStats = {
+  date: Date;
+  count: number;
+};
+
+// For user profile - Streak information
+export type UserCreatorStreak = {
+  creatorId: number;
+  creatorName: string;
+  streak: number;
 };
