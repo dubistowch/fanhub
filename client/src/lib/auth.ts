@@ -110,6 +110,34 @@ export async function syncUserAfterOAuth(supabaseUser: any) {
       const userData = await createdUser.json();
       console.log("Auth: User created successfully:", userData);
       return userData;
+    } else if (response.status === 500) {
+      // Database connection error or other server error
+      try {
+        const errorData = await response.json();
+        console.error("Auth: Server error while fetching user:", errorData);
+        
+        // 检查是否是数据库连接错误
+        if (errorData.error && errorData.error.includes("ENOTFOUND")) {
+          console.warn("Auth: Database connection error - Supabase might be unavailable");
+          // 返回部分用户信息，但标记为需要同步
+          return {
+            id: -1, // 临时ID
+            email: supabaseUser.email,
+            username: supabaseUser.user_metadata?.full_name || supabaseUser.email.split('@')[0],
+            avatarUrl: supabaseUser.user_metadata?.avatar_url || null,
+            bio: '',
+            needsSync: true, // 标记此用户需要在数据库连接恢复后同步
+            _supabaseMetadata: supabaseUser // 保存原始Supabase数据以便后续同步
+          };
+        }
+        
+        throw new Error(`Server error: ${errorData.error || 'Unknown error'}`);
+      } catch (jsonError) {
+        // 如果响应不是JSON格式
+        const errorText = await response.text().catch(() => 'Unknown error');
+        console.error("Auth: Failed to fetch user:", { status: response.status, error: errorText });
+        throw new Error(`Failed to fetch user: ${errorText}`);
+      }
     } else {
       const errorText = await response.text();
       console.error("Auth: Failed to fetch user:", { status: response.status, error: errorText });
