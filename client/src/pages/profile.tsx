@@ -31,11 +31,21 @@ const Profile = () => {
 
   // Fetch creator profile if exists
   const { data: creator } = useQuery({
-    queryKey: ["/api/creators/by-user", user?.id],
+    queryKey: ["/api/creators", user?.id],
     queryFn: async () => {
+      if (!user?.id) return null;
       try {
-        const creators = await fetch(`/api/creators?userId=${user?.id}`).then((res) => res.json());
-        return creators.find((c: any) => c.userId === user?.id);
+        console.log("Fetching creator profile for user ID:", user.id);
+        const creators = await fetch(`/api/creators?userId=${user.id}`).then((res) => {
+          if (!res.ok) {
+            throw new Error(`API error: ${res.status}`);
+          }
+          return res.json();
+        });
+        console.log("Creators response:", creators);
+        const userCreator = creators.find((c: any) => c.userId === user.id);
+        console.log("Found creator:", userCreator);
+        return userCreator || null;
       } catch (error) {
         console.error("Error fetching creator profile:", error);
         return null;
@@ -88,7 +98,7 @@ const Profile = () => {
       await apiRequest("POST", "/api/creators", newCreator);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/creators/by-user", user?.id] });
+      queryClient.invalidateQueries({ queryKey: ["/api/creators", user?.id] });
       
       toast({
         title: "創作者帳號已建立",
