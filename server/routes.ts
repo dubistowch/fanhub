@@ -364,5 +364,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // 新增路由：获取30天内的详细签到数据
+  app.get("/api/creators/:creatorId/checkins/detailed", async (req, res) => {
+    try {
+      const creatorId = parseInt(req.params.creatorId);
+      const detailedCheckins = await storage.getDetailedRecentCheckins(creatorId);
+      return res.json(detailedCheckins);
+    } catch (err) {
+      handleError(err, res);
+    }
+  });
+
+  // 新增路由：获取历史签到统计数据（30天以外）
+  app.get("/api/creators/:creatorId/checkins/stats", async (req, res) => {
+    try {
+      const creatorId = parseInt(req.params.creatorId);
+      const checkinStats = await storage.getHistoricalCheckinStats(creatorId);
+      return res.json(checkinStats);
+    } catch (err) {
+      handleError(err, res);
+    }
+  });
+
+  // 新增路由：获取用户的所有创作者连续签到情况
+  app.get("/api/users/:userId/streaks", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const streaks = await storage.getUserCreatorStreaks(userId);
+      return res.json(streaks);
+    } catch (err) {
+      handleError(err, res);
+    }
+  });
+
   return httpServer;
 }

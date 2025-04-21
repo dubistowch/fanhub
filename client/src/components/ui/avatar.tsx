@@ -1,5 +1,3 @@
-"use client"
-
 import * as React from "react"
 import * as AvatarPrimitive from "@radix-ui/react-avatar"
 
@@ -46,5 +44,24 @@ const AvatarFallback = React.forwardRef<
   />
 ))
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName
+
+// 用户头像组件 - 添加对User类型的支持
+export interface UserAvatarProps extends React.ComponentPropsWithoutRef<typeof Avatar> {
+  user: {
+    username: string;
+    avatarUrl: string | null;
+  };
+}
+
+export const UserAvatar: React.FC<UserAvatarProps> = ({ user, ...props }) => {
+  return (
+    <Avatar {...props}>
+      <AvatarImage src={user.avatarUrl || undefined} alt={user.username} />
+      <AvatarFallback>
+        {user.username.charAt(0).toUpperCase()}
+      </AvatarFallback>
+    </Avatar>
+  );
+};
 
 export { Avatar, AvatarImage, AvatarFallback }

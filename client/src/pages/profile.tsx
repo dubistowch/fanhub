@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import ConnectedPlatforms from "@/components/profile/ConnectedPlatforms";
+import { UserStreaks } from "@/components/profile/UserStreaks";
 import { useAuth } from "@/context/AuthContext";
 import { apiRequest } from "@/lib/queryClient";
 import { queryClient } from "@/lib/queryClient";
@@ -250,6 +251,9 @@ const Profile = () => {
               </CardContent>
             </Card>
           )}
+          
+          {/* User's Check-in Streaks */}
+          <UserStreaks userId={user.id} />
         </div>
       </div>
     </div>
