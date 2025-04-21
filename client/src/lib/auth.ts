@@ -72,14 +72,25 @@ export async function getCurrentUser() {
 // Create or update user in our database after OAuth login
 export async function syncUserAfterOAuth(supabaseUser: any) {
   try {
+    console.log("Auth: Syncing user after OAuth:", { 
+      email: supabaseUser.email,
+      id: supabaseUser.id,
+      has_metadata: !!supabaseUser.user_metadata
+    });
+    
     // First check if user exists
+    console.log(`Auth: Checking if user exists: /api/users/email/${supabaseUser.email}`);
     const response = await fetch(`/api/users/email/${supabaseUser.email}`);
+    console.log("Auth: User check response:", { status: response.status, ok: response.ok });
     
     if (response.ok) {
       // User exists, return the user
-      return await response.json();
+      const userData = await response.json();
+      console.log("Auth: Existing user found:", userData);
+      return userData;
     } else if (response.status === 404) {
       // User doesn't exist, create new user
+      console.log("Auth: User not found, creating new user");
       const newUser: InsertUser = {
         email: supabaseUser.email,
         username: supabaseUser.user_metadata?.full_name || supabaseUser.email.split('@')[0],
@@ -87,10 +98,22 @@ export async function syncUserAfterOAuth(supabaseUser: any) {
         bio: '',
       };
       
+      console.log("Auth: Creating new user with data:", newUser);
       const createdUser = await apiRequest('POST', '/api/users', newUser);
-      return await createdUser.json();
+      
+      if (!createdUser.ok) {
+        const errorText = await createdUser.text();
+        console.error("Auth: Failed to create user:", { status: createdUser.status, error: errorText });
+        throw new Error(`Failed to create user: ${errorText}`);
+      }
+      
+      const userData = await createdUser.json();
+      console.log("Auth: User created successfully:", userData);
+      return userData;
     } else {
-      throw new Error('Failed to fetch user');
+      const errorText = await response.text();
+      console.error("Auth: Failed to fetch user:", { status: response.status, error: errorText });
+      throw new Error(`Failed to fetch user: ${errorText}`);
     }
   } catch (error) {
     console.error('Error syncing user after OAuth:', error);

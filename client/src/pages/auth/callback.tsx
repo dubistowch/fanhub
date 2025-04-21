@@ -17,6 +17,7 @@ export default function AuthCallback() {
       console.log("Auth callback: Processing OAuth redirect...");
       try {
         // 获取当前的Supabase用户
+        console.log("Auth callback: Getting current Supabase user");
         const supabaseUser = await getCurrentUser();
         console.log("Auth callback: Supabase user:", supabaseUser);
         
@@ -28,44 +29,60 @@ export default function AuthCallback() {
         }
         
         // 获取提供商信息
+        console.log("Auth callback: Getting provider info from user metadata:", supabaseUser.app_metadata);
         const provider = supabaseUser.app_metadata?.provider;
         if (!provider) {
+          console.error("Auth callback: Failed to get provider information. Metadata:", supabaseUser.app_metadata);
           setError("Failed to get provider information");
           setProcessing(false);
           return;
         }
         
         // 将Supabase用户同步到我们的数据库
-        const dbUser = await syncUserAfterOAuth(supabaseUser);
-        
-        // 链接提供商账号
-        const providerData = {
-          provider,
-          id: supabaseUser.id,
-          username: supabaseUser.user_metadata?.name || supabaseUser.user_metadata?.preferred_username,
-          avatar: supabaseUser.user_metadata?.avatar_url,
-          access_token: supabaseUser.user_metadata?.access_token || "",
-          refresh_token: supabaseUser.user_metadata?.refresh_token || "",
-        };
-        
+        console.log("Auth callback: Syncing user with database");
         try {
-          await linkProvider(dbUser.id, providerData);
-        } catch (error) {
-          console.warn("Provider may already be linked:", error);
-          // 已链接的提供商不影响登录流程
+          const dbUser = await syncUserAfterOAuth(supabaseUser);
+          console.log("Auth callback: DB user after sync:", dbUser);
+          
+          // 链接提供商账号
+          console.log("Auth callback: Linking provider account");
+          const providerData = {
+            provider,
+            id: supabaseUser.id,
+            username: supabaseUser.user_metadata?.name || supabaseUser.user_metadata?.preferred_username,
+            avatar: supabaseUser.user_metadata?.avatar_url,
+            access_token: supabaseUser.user_metadata?.access_token || "",
+            refresh_token: supabaseUser.user_metadata?.refresh_token || "",
+          };
+          console.log("Auth callback: Provider data:", providerData);
+          
+          try {
+            const linkedProvider = await linkProvider(dbUser.id, providerData);
+            console.log("Auth callback: Provider linked:", linkedProvider);
+          } catch (linkError) {
+            console.warn("Auth callback: Provider may already be linked:", linkError);
+            // 已链接的提供商不影响登录流程
+          }
+          
+          // 刷新用户信息
+          console.log("Auth callback: Refreshing user info");
+          await refreshUser();
+          
+          // 显示成功消息
+          toast({
+            title: "登录成功",
+            description: `欢迎回来，${dbUser.username}！`,
+          });
+          
+          // 重定向到主页
+          console.log("Auth callback: Redirecting to home page");
+          setLocation("/");
+        } catch (syncError) {
+          console.error("Auth callback: Error syncing user:", syncError);
+          setError("Failed to sync user data: " + (syncError as Error).message);
+          setProcessing(false);
+          return;
         }
-        
-        // 刷新用户信息
-        await refreshUser();
-        
-        // 显示成功消息
-        toast({
-          title: "登录成功",
-          description: `欢迎回来，${dbUser.username}！`,
-        });
-        
-        // 重定向到主页
-        setLocation("/");
       } catch (err) {
         console.error("Error in OAuth callback:", err);
         setError((err as Error).message || "An unknown error occurred");

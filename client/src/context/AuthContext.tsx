@@ -12,9 +12,26 @@ interface AuthContextType {
   refreshUser: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+// Create a context with a default value that matches the shape
+const AuthContext = createContext<AuthContextType>({
+  supabaseUser: null,
+  user: null,
+  isLoading: true,
+  error: null,
+  signOut: async () => {},
+  refreshUser: async () => {}
+});
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+// Use hook must be defined before the provider for Fast Refresh to work correctly
+function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+}
+
+function AuthProvider({ children }: { children: React.ReactNode }) {
   const [supabaseUser, setSupabaseUser] = useState<any>(null);
   const [user, setUser] = useState<UserWithProviders | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -113,12 +130,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
+}
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
+// Export everything together to maintain consistent exports
+export { AuthProvider, useAuth };
