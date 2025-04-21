@@ -1,4 +1,6 @@
-import { users, type User, type InsertUser, providers, type Provider, type InsertProvider, creators, type Creator, type InsertCreator, follows, type Follow, type InsertFollow, checkins, type Checkin, type InsertCheckin, type UserWithProviders, type CreatorWithDetails } from "@shared/schema";
+import { users, providers, creators, follows, checkins, checkinStats, type CheckinDateStats, type CheckinStat, type CheckinWithUser, type Checkin, type Creator, type CreatorWithDetails, type Follow, type InsertCheckin, type InsertCheckinStat, type InsertCreator, type InsertFollow, type InsertProvider, type InsertUser, type Provider, type User, type UserCreatorStreak, type UserWithProviders } from "@shared/schema";
+import { db } from "./db";
+import { eq, and, sql, desc, asc, lt, gte, count } from "drizzle-orm";
 
 export interface IStorage {
   // User methods
@@ -285,4 +287,422 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export class DatabaseStorage implements IStorage {
+  // User methods
+  async getUser(id: number): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user;
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.email, email));
+    return user;
+  }
+
+  async createUser(user: InsertUser): Promise<User> {
+    const [newUser] = await db.insert(users).values(user).returning();
+    return newUser;
+  }
+
+  async updateUser(id: number, data: Partial<InsertUser>): Promise<User | undefined> {
+    const [updatedUser] = await db
+      .update(users)
+      .set(data)
+      .where(eq(users.id, id))
+      .returning();
+    return updatedUser;
+  }
+
+  // Provider methods
+  async getProvidersByUserId(userId: number): Promise<Provider[]> {
+    return db.select().from(providers).where(eq(providers.userId, userId));
+  }
+
+  async getProviderByUserIdAndType(userId: number, provider: string): Promise<Provider | undefined> {
+    const [result] = await db
+      .select()
+      .from(providers)
+      .where(and(eq(providers.userId, userId), eq(providers.provider, provider)));
+    return result;
+  }
+
+  async createProvider(provider: InsertProvider): Promise<Provider> {
+    const [newProvider] = await db.insert(providers).values(provider).returning();
+    return newProvider;
+  }
+
+  async updateProvider(id: number, data: Partial<InsertProvider>): Promise<Provider | undefined> {
+    const [updatedProvider] = await db
+      .update(providers)
+      .set(data)
+      .where(eq(providers.id, id))
+      .returning();
+    return updatedProvider;
+  }
+
+  async deleteProvider(id: number): Promise<boolean> {
+    const result = await db.delete(providers).where(eq(providers.id, id));
+    return !!result;
+  }
+
+  // Creator methods
+  async getCreator(id: number): Promise<Creator | undefined> {
+    const [creator] = await db.select().from(creators).where(eq(creators.id, id));
+    return creator;
+  }
+
+  async getCreatorByUserId(userId: number): Promise<Creator | undefined> {
+    const [creator] = await db.select().from(creators).where(eq(creators.userId, userId));
+    return creator;
+  }
+
+  async getCreators(limit?: number): Promise<Creator[]> {
+    const query = db.select().from(creators);
+    if (limit) {
+      query.limit(limit);
+    }
+    return query;
+  }
+
+  async createCreator(creator: InsertCreator): Promise<Creator> {
+    const [newCreator] = await db.insert(creators).values(creator).returning();
+    return newCreator;
+  }
+
+  async updateCreator(id: number, data: Partial<InsertCreator>): Promise<Creator | undefined> {
+    const [updatedCreator] = await db
+      .update(creators)
+      .set(data)
+      .where(eq(creators.id, id))
+      .returning();
+    return updatedCreator;
+  }
+
+  // Follow methods
+  async getFollowersForCreator(creatorId: number): Promise<User[]> {
+    const followedUsers = await db
+      .select({
+        user: users
+      })
+      .from(follows)
+      .where(eq(follows.creatorId, creatorId))
+      .innerJoin(users, eq(follows.userId, users.id));
+    
+    return followedUsers.map(item => item.user);
+  }
+
+  async getFollowedCreatorsForUser(userId: number): Promise<Creator[]> {
+    const followedCreators = await db
+      .select({
+        creator: creators
+      })
+      .from(follows)
+      .where(eq(follows.userId, userId))
+      .innerJoin(creators, eq(follows.creatorId, creators.id));
+    
+    return followedCreators.map(item => item.creator);
+  }
+
+  async getFollowStatus(userId: number, creatorId: number): Promise<boolean> {
+    const [follow] = await db
+      .select()
+      .from(follows)
+      .where(and(eq(follows.userId, userId), eq(follows.creatorId, creatorId)));
+    return !!follow;
+  }
+
+  async createFollow(follow: InsertFollow): Promise<Follow> {
+    const [existingFollow] = await db
+      .select()
+      .from(follows)
+      .where(
+        and(
+          eq(follows.userId, follow.userId),
+          eq(follows.creatorId, follow.creatorId)
+        )
+      );
+    
+    if (existingFollow) {
+      return existingFollow;
+    }
+    
+    const [newFollow] = await db.insert(follows).values(follow).returning();
+    return newFollow;
+  }
+
+  async deleteFollow(userId: number, creatorId: number): Promise<boolean> {
+    const result = await db
+      .delete(follows)
+      .where(
+        and(
+          eq(follows.userId, userId),
+          eq(follows.creatorId, creatorId)
+        )
+      );
+    return !!result;
+  }
+
+  // Checkin methods
+  async getCheckinStatus(userId: number, creatorId: number, date: Date): Promise<boolean> {
+    const startDate = new Date(date);
+    startDate.setHours(0, 0, 0, 0);
+    
+    const endDate = new Date(date);
+    endDate.setHours(23, 59, 59, 999);
+    
+    const [checkin] = await db
+      .select()
+      .from(checkins)
+      .where(
+        and(
+          eq(checkins.userId, userId),
+          eq(checkins.creatorId, creatorId),
+          gte(checkins.date, startDate),
+          lt(checkins.date, endDate)
+        )
+      );
+    
+    return !!checkin;
+  }
+
+  async getTodayCheckinStatus(userId: number, creatorId: number): Promise<boolean> {
+    return this.getCheckinStatus(userId, creatorId, new Date());
+  }
+
+  async getCheckinStreak(userId: number, creatorId: number): Promise<number> {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    
+    // Get all check-ins for this user and creator ordered by date descending
+    const userCheckins = await db
+      .select()
+      .from(checkins)
+      .where(
+        and(
+          eq(checkins.userId, userId),
+          eq(checkins.creatorId, creatorId)
+        )
+      )
+      .orderBy(desc(checkins.date));
+    
+    if (userCheckins.length === 0) return 0;
+    
+    // Check if latest check-in is today or yesterday
+    const latestDate = new Date(userCheckins[0].date);
+    latestDate.setHours(0, 0, 0, 0);
+    
+    if (
+      latestDate.getTime() !== today.getTime() &&
+      latestDate.getTime() !== yesterday.getTime()
+    ) {
+      return 0;
+    }
+    
+    // Count consecutive days
+    let streak = 1;
+    let currentDate = latestDate;
+    
+    for (let i = 1; i < userCheckins.length; i++) {
+      const prevCheckInDate = new Date(userCheckins[i].date);
+      prevCheckInDate.setHours(0, 0, 0, 0);
+      
+      const expectedPrevDate = new Date(currentDate);
+      expectedPrevDate.setDate(expectedPrevDate.getDate() - 1);
+      
+      if (prevCheckInDate.getTime() === expectedPrevDate.getTime()) {
+        streak++;
+        currentDate = prevCheckInDate;
+      } else {
+        break;
+      }
+    }
+    
+    return streak;
+  }
+
+  async createCheckin(checkin: InsertCheckin): Promise<Checkin> {
+    // Check if user already checked in today
+    const hasCheckedIn = await this.getTodayCheckinStatus(
+      checkin.userId,
+      checkin.creatorId
+    );
+    
+    if (hasCheckedIn) {
+      throw new Error("User has already checked in today");
+    }
+    
+    // Create new check-in
+    const [newCheckin] = await db
+      .insert(checkins)
+      .values({
+        ...checkin,
+        date: new Date()
+      })
+      .returning();
+    
+    // Update daily stats for older dates
+    await this.updateCheckinStats(checkin.creatorId);
+    
+    return newCheckin;
+  }
+
+  async getRecentCheckins(creatorId: number, limit = 10): Promise<{user: User, date: Date}[]> {
+    // Get recent check-ins with user data
+    const recentCheckins = await db
+      .select({
+        user: users,
+        date: checkins.date
+      })
+      .from(checkins)
+      .where(eq(checkins.creatorId, creatorId))
+      .innerJoin(users, eq(checkins.userId, users.id))
+      .orderBy(desc(checkins.date))
+      .limit(limit);
+    
+    return recentCheckins.map(checkin => ({
+      user: checkin.user,
+      date: checkin.date!
+    }));
+  }
+
+  // Added methods for new requirements
+  
+  /**
+   * Get detailed check-ins for the past 30 days
+   */
+  async getDetailedRecentCheckins(creatorId: number): Promise<CheckinWithUser[]> {
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    
+    const recentCheckins = await db
+      .select({
+        id: checkins.id,
+        userId: checkins.userId,
+        creatorId: checkins.creatorId,
+        date: checkins.date,
+        user: users
+      })
+      .from(checkins)
+      .where(
+        and(
+          eq(checkins.creatorId, creatorId),
+          gte(checkins.date, thirtyDaysAgo)
+        )
+      )
+      .innerJoin(users, eq(checkins.userId, users.id))
+      .orderBy(desc(checkins.date));
+    
+    return recentCheckins.map(checkin => ({
+      id: checkin.id,
+      userId: checkin.userId,
+      creatorId: checkin.creatorId,
+      date: checkin.date!,
+      user: checkin.user
+    }));
+  }
+  
+  /**
+   * Get historical check-in stats (daily counts for dates older than 30 days)
+   */
+  async getHistoricalCheckinStats(creatorId: number): Promise<CheckinDateStats[]> {
+    // Get aggregated stats from checkin_stats table
+    const stats = await db
+      .select({
+        date: checkinStats.date,
+        count: checkinStats.count
+      })
+      .from(checkinStats)
+      .where(eq(checkinStats.creatorId, creatorId))
+      .orderBy(desc(checkinStats.date));
+    
+    return stats.map(stat => ({
+      date: stat.date,
+      count: stat.count
+    }));
+  }
+  
+  /**
+   * Get all streaks for a user
+   */
+  async getUserCreatorStreaks(userId: number): Promise<UserCreatorStreak[]> {
+    // Get all creators the user follows
+    const followedCreators = await this.getFollowedCreatorsForUser(userId);
+    
+    // Get streaks for each creator
+    const streaks = await Promise.all(
+      followedCreators.map(async creator => {
+        const streak = await this.getCheckinStreak(userId, creator.id);
+        return {
+          creatorId: creator.id,
+          creatorName: creator.name,
+          streak
+        };
+      })
+    );
+    
+    // Return only creators with active streaks
+    return streaks.filter(streak => streak.streak > 0);
+  }
+  
+  /**
+   * Helper method to update check-in stats for older data
+   */
+  private async updateCheckinStats(creatorId: number): Promise<void> {
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    
+    // Get all dates older than 30 days that don't have stats yet
+    const oldDates = await db
+      .select({
+        date: sql`DATE(${checkins.date})`,
+        count: count()
+      })
+      .from(checkins)
+      .where(
+        and(
+          eq(checkins.creatorId, creatorId),
+          lt(checkins.date, thirtyDaysAgo)
+        )
+      )
+      .groupBy(sql`DATE(${checkins.date})`);
+    
+    // Insert or update stats for each date
+    for (const dateStats of oldDates) {
+      const dateObj = new Date(dateStats.date);
+      
+      // Check if stats already exist for this date
+      const [existingStat] = await db
+        .select()
+        .from(checkinStats)
+        .where(
+          and(
+            eq(checkinStats.creatorId, creatorId),
+            eq(checkinStats.date, dateObj)
+          )
+        );
+      
+      if (existingStat) {
+        // Update existing stat
+        await db
+          .update(checkinStats)
+          .set({ count: dateStats.count })
+          .where(eq(checkinStats.id, existingStat.id));
+      } else {
+        // Create new stat
+        await db
+          .insert(checkinStats)
+          .values({
+            creatorId,
+            date: dateObj,
+            count: dateStats.count
+          });
+      }
+    }
+  }
+}
+
+// Use DatabaseStorage instead of MemStorage
+export const storage = new DatabaseStorage();

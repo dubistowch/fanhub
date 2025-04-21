@@ -41,10 +41,6 @@ export const follows = pgTable("follows", {
   userId: integer("user_id").notNull().references(() => users.id),
   creatorId: integer("creator_id").notNull().references(() => creators.id),
   createdAt: timestamp("created_at").defaultNow(),
-}, (table) => {
-  return {
-    userCreatorUnique: primaryKey({ columns: [table.userId, table.creatorId] }),
-  }
 });
 
 // Daily check-ins
