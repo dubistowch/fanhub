@@ -2,7 +2,6 @@ import { Pool } from '@neondatabase/serverless';
 import * as schema from "@shared/schema";
 import pg from 'pg';
 import { drizzle } from 'drizzle-orm/neon-serverless';
-import { drizzle as drizzlePg } from 'drizzle-orm/pg-server';
 
 console.log("開始遷移數據到Supabase...");
 
@@ -28,7 +27,7 @@ console.log("正在連接到Supabase數據庫...");
 const migrate = async () => {
   try {
     await targetClient.connect();
-    const targetDb = drizzlePg({ client: targetClient, schema });
+    // const targetDb = drizzle({ client: targetClient, schema }); // 不使用Drizzle ORM操作目標數據庫
     
     console.log("已連接到Supabase數據庫。");
     console.log("創建數據庫表...");
