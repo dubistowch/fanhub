@@ -13,6 +13,7 @@ import Profile from "@/pages/profile";
 import Dashboard from "@/pages/dashboard";
 import Discover from "@/pages/discover";
 import Following from "@/pages/following";
+import Settings from "@/pages/settings";
 import AuthCallback from "@/pages/auth/callback";
 import TestAuth from "@/pages/test-auth";
 import { AuthProvider, useAuth } from "./context/AuthContext";
@@ -54,6 +55,7 @@ function ProtectedRoutes() {
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/discover" component={Discover} />
       <Route path="/following" component={Following} />
+      <Route path="/settings" component={Settings} />
       <Route path="/auth/callback" component={AuthCallback} />
       <Route path="/test-auth" component={TestAuth} />
       <Route component={NotFound} />

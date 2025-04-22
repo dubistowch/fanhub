@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, Menu } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useTranslation } from "react-i18next";
-import { LanguageSwitcher } from "@/components/ui/language-switcher";
 
 const Header = () => {
   const { user, signOut, isLoading } = useAuth();
@@ -114,12 +113,10 @@ const Header = () => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="/profile" className="cursor-pointer w-full">
+                <Link href="/settings" className="cursor-pointer w-full">
                   {t('settings.title')}
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <LanguageSwitcher />
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className="text-red-600 cursor-pointer"
