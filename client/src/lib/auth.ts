@@ -23,10 +23,24 @@ export async function signInWithOAuth(provider: OAuthProvider) {
 // Sign out
 export async function signOut() {
   try {
+    console.log('Auth: Signing out user...');
+    // 1. 清除本地缓存
+    Object.keys(userCache).forEach(key => delete userCache[key]);
+    
+    // 2. 调用Supabase登出
     const { error } = await supabase.auth.signOut();
-    if (error) throw error;
+    if (error) {
+      console.error('Auth: Supabase sign out error:', error);
+      throw error;
+    }
+    
+    // 3. 刷新页面以确保所有状态被清除
+    console.log('Auth: Sign out successful, refreshing page...');
+    setTimeout(() => {
+      window.location.href = '/login';
+    }, 500);
   } catch (error) {
-    console.error('Sign out error:', error);
+    console.error('Auth: Sign out error:', error);
     throw error;
   }
 }

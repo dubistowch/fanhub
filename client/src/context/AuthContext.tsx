@@ -112,11 +112,19 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const handleSignOut = async () => {
     try {
+      // signOut函數現在會處理所有清理工作，包括重定向
       await signOut();
+      // 以下代碼在重定向前可能執行，將狀態清空
       setSupabaseUser(null);
       setUser(null);
     } catch (err: any) {
+      console.error('Error during sign out:', err);
       setError(err);
+      
+      // 即使出錯，也嘗試強制重定向到登錄頁面
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 1000);
     }
   };
 
@@ -132,5 +140,6 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-// Export everything together to maintain consistent exports
-export { AuthProvider, useAuth };
+// 分开导出，解决热更新问题
+export { AuthProvider };
+export { useAuth };

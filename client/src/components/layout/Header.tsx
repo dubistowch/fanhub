@@ -123,7 +123,11 @@ const Header = () => {
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className="text-red-600 cursor-pointer"
-                onClick={() => signOut()}
+                onClick={() => {
+                  console.log("Header: User clicked logout button");
+                  // 使用AuthContext中的signOut方法，而不是直接调用auth.ts中的函数
+                  user && signOut();
+                }}
               >
                 登出
               </DropdownMenuItem>
