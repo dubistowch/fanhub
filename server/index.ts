@@ -2,6 +2,33 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
+// 确保Supabase数据库URL格式正确 - 修复可能的双@问题
+if (process.env.SUPABASE_DB_URL && process.env.SUPABASE_DB_URL.includes('@@')) {
+  // 从URL中提取组件并重建URL
+  try {
+    const connectionUrl = process.env.SUPABASE_DB_URL;
+    const match = connectionUrl.match(/postgresql:\/\/([^:]+):([^@]+)@?@([^:]+):(\d+)\/(.+)/);
+    if (match) {
+      const [_, username, password, host, port, database] = match;
+      // 移除密码中可能存在的@符号或编码它
+      const cleanPassword = password.replace(/@/g, '%40');
+      
+      const fixedUrl = `postgresql://${username}:${cleanPassword}@${host}:${port}/${database}`;
+      console.log("已修复SUPABASE_DB_URL中的双@符号问题");
+      
+      // 更新环境变量
+      process.env.SUPABASE_DB_URL = fixedUrl;
+    }
+  } catch (err) {
+    console.error("尝试修复SUPABASE_DB_URL失败:", err);
+  }
+}
+
+// 将修复后的URL同步到DATABASE_URL环境变量
+if (process.env.SUPABASE_DB_URL) {
+  process.env.DATABASE_URL = process.env.SUPABASE_DB_URL;
+}
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

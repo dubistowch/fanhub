@@ -11,8 +11,27 @@ if (!process.env.SUPABASE_DB_URL && !process.env.DATABASE_URL) {
   );
 }
 
-// 优先使用SUPABASE_DB_URL，回退到DATABASE_URL
-const connectionString = process.env.SUPABASE_DB_URL || process.env.DATABASE_URL;
+// 获取原始URL
+let connectionString = process.env.SUPABASE_DB_URL || process.env.DATABASE_URL;
+
+// 检查并修复URL格式 - 处理密码中可能存在的@符号
+if (connectionString.includes('@@')) {
+  try {
+    const match = connectionString.match(/postgresql:\/\/([^:]+):([^@]+)@?@([^:]+):(\d+)\/(.+)/);
+    if (match) {
+      const [_, username, password, host, port, database] = match;
+      // 移除密码中可能存在的@符号或编码它
+      const cleanPassword = password.replace(/@/g, '%40');
+      
+      connectionString = `postgresql://${username}:${cleanPassword}@${host}:${port}/${database}`;
+      console.log("数据库连接: 已修复URL中的双@符号问题");
+    }
+  } catch (err) {
+    console.error("尝试修复URL格式失败:", err);
+  }
+}
+
+console.log("数据库连接: 使用URL", connectionString.replace(/(postgresql:\/\/[^:]+:)([^@]+)(@.+)/, '$1*****$3'));
 
 // 创建连接池
 export const pool = new Pool({ 
