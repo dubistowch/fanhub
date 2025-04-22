@@ -62,6 +62,15 @@ i18n
             "zh-TW": "Traditional Chinese",
             "zh-CN": "Simplified Chinese",
             ja: "Japanese"
+          },
+          login: {
+            welcome: "Welcome to FanHub",
+            description: "Connect with your favorite creators across platforms",
+            googleLogin: "Sign in with Google",
+            twitchLogin: "Sign in with Twitch",
+            termsAgreement: "By signing in, you agree to our Terms of Service and Privacy Policy",
+            or: "or",
+            intro: "FanHub is a dedicated space for cross-platform interaction between creators and fans. Start exploring by signing in with Google!"
           }
         }
       },
@@ -119,6 +128,15 @@ i18n
             "zh-TW": "繁體中文",
             "zh-CN": "簡體中文",
             ja: "日文"
+          },
+          login: {
+            welcome: "歡迎來到 FanHub",
+            description: "通過您喜愛的平台帳號登入，連接您的創作者與粉絲身份",
+            googleLogin: "使用 Google 帳號登入",
+            twitchLogin: "使用 Twitch 帳號登入",
+            termsAgreement: "登入即表示您同意我們的服務條款和隱私政策",
+            or: "或者",
+            intro: "FanHub 是一個創作者與粉絲跨平台互動的專屬空間，使用 Google 登入開始探索吧！"
           }
         }
       },
@@ -176,6 +194,15 @@ i18n
             "zh-TW": "繁体中文",
             "zh-CN": "简体中文",
             ja: "日文"
+          },
+          login: {
+            welcome: "欢迎来到 FanHub",
+            description: "通过您喜爱的平台账号登录，连接您的创作者与粉丝身份",
+            googleLogin: "使用 Google 账号登录",
+            twitchLogin: "使用 Twitch 账号登录",
+            termsAgreement: "登录即表示您同意我们的服务条款和隐私政策",
+            or: "或者",
+            intro: "FanHub 是一个创作者与粉丝跨平台互动的专属空间，使用 Google 登录开始探索吧！"
           }
         }
       },
@@ -233,6 +260,15 @@ i18n
             "zh-TW": "繁体中国語",
             "zh-CN": "簡体中国語",
             ja: "日本語"
+          },
+          login: {
+            welcome: "FanHub へようこそ",
+            description: "お気に入りのプラットフォームアカウントでログインし、クリエイターとファンのアイデンティティをつなげましょう",
+            googleLogin: "Google アカウントでログイン",
+            twitchLogin: "Twitch アカウントでログイン",
+            termsAgreement: "ログインすることで、利用規約とプライバシーポリシーに同意したことになります",
+            or: "または",
+            intro: "FanHub はクリエイターとファンがプラットフォームを越えて交流するための専用スペースです。Google でログインして探索を始めましょう！"
           }
         }
       }

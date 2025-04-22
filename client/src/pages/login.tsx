@@ -42,6 +42,7 @@ const Login = () => {
       <div className="flex justify-center items-center min-h-[calc(100vh-200px)]">
         <div className="animate-pulse text-primary">
           <i className="fas fa-circle-notch fa-spin text-4xl"></i>
+          <p className="mt-2">{t("auth.loading")}</p>
         </div>
       </div>
     );
@@ -51,9 +52,9 @@ const Login = () => {
     <div className="flex justify-center items-center min-h-[calc(100vh-200px)] bg-gray-50">
       <Card className="w-full max-w-md mx-4">
         <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-3xl font-bold">歡迎來到 FanHub</CardTitle>
+          <CardTitle className="text-3xl font-bold">{t("login.welcome")}</CardTitle>
           <CardDescription>
-            通過您喜愛的平台帳號登入，連接您的創作者與粉絲身份
+            {t("login.description")}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -63,7 +64,7 @@ const Login = () => {
               onClick={() => handleSignIn("google")}
             >
               <i className="fab fa-google"></i>
-              使用 Google 帳號登入
+              {t("login.googleLogin")}
             </Button>
             
             <Button
@@ -71,14 +72,11 @@ const Login = () => {
               onClick={() => handleSignIn("twitch")}
             >
               <i className="fab fa-twitch"></i>
-              使用 Twitch 帳號登入
+              {t("login.twitchLogin")}
             </Button>
 
             <p className="text-center text-sm text-gray-500 mt-4">
-              登入即表示您同意我們的
-              <a href="#" className="text-primary hover:underline">服務條款</a>
-              和
-              <a href="#" className="text-primary hover:underline">隱私政策</a>
+              {t("login.termsAgreement")}
             </p>
           </div>
           
@@ -87,12 +85,12 @@ const Login = () => {
               <div className="w-full border-t border-gray-200"></div>
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white px-2 text-gray-500">or</span>
+              <span className="bg-white px-2 text-gray-500">{t("login.or")}</span>
             </div>
           </div>
           
           <p className="text-center text-sm text-gray-500">
-            FanHub 是一個創作者與粉絲跨平台互動的專屬空間，使用 Google 登入開始探索吧！
+            {t("login.intro")}
           </p>
         </CardContent>
       </Card>
