@@ -19,6 +19,7 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [location] = useLocation();
   const [userState, setUserState] = useState<any>(null);
+  const { t } = useTranslation();
   
   useEffect(() => {
     console.log("Header component:", { user, isLoading });
@@ -49,9 +50,9 @@ const Header = () => {
   }
 
   const navItems = [
-    { name: "發現創作者", path: "/discover" },
-    { name: "我的追蹤", path: "/following" },
-    { name: "創作者中心", path: "/dashboard" },
+    { name: t('common.discover'), path: "/discover" },
+    { name: t('common.following'), path: "/following" },
+    { name: t('common.dashboard'), path: "/dashboard" },
   ];
 
   const getInitials = (name: string) => {
@@ -109,19 +110,16 @@ const Header = () => {
             <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuItem asChild>
                 <Link href="/profile" className="cursor-pointer w-full">
-                  我的個人資料
+                  {t('common.profile')}
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/profile" className="cursor-pointer w-full">
-                  帳號設定
+                  {t('settings.title')}
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/profile" className="cursor-pointer w-full">
-                  平台連結
-                </Link>
-              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <LanguageSwitcher />
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className="text-red-600 cursor-pointer"
@@ -131,7 +129,7 @@ const Header = () => {
                   user && signOut();
                 }}
               >
-                登出
+                {t('common.logout')}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

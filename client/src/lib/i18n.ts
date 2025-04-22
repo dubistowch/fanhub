@@ -22,7 +22,8 @@ i18n
             search: "Search"
           },
           settings: {
-            language: "Language"
+            language: "Language",
+            title: "Settings"
           },
           languages: {
             en: "English",
@@ -46,7 +47,8 @@ i18n
             search: "搜尋"
           },
           settings: {
-            language: "語言"
+            language: "語言",
+            title: "設定"
           },
           languages: {
             en: "英文",
@@ -70,7 +72,8 @@ i18n
             search: "搜索"
           },
           settings: {
-            language: "语言"
+            language: "语言",
+            title: "设置"
           },
           languages: {
             en: "英文",
@@ -94,7 +97,8 @@ i18n
             search: "検索"
           },
           settings: {
-            language: "言語"
+            language: "言語",
+            title: "設定"
           },
           languages: {
             en: "英語",
