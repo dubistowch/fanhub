@@ -36,7 +36,8 @@ i18n
               loading: "Loading...",
               noData: "No check-in data available",
               recentUsers: "Recent Check-in Users",
-              noRecords: "No check-in records"
+              noRecords: "No check-in records",
+              checkins: "Check-ins"
             },
             stats: {
               today: "Today's Check-ins",
@@ -80,7 +81,8 @@ i18n
               loading: "載入中...",
               noData: "暫無簽到統計數據",
               recentUsers: "最近簽到用戶",
-              noRecords: "暫無簽到記錄"
+              noRecords: "暫無簽到記錄",
+              checkins: "簽到次數"
             },
             stats: {
               today: "今日簽到",
@@ -124,7 +126,8 @@ i18n
               loading: "加载中...",
               noData: "暂无签到统计数据",
               recentUsers: "最近签到用户",
-              noRecords: "暂无签到记录"
+              noRecords: "暂无签到记录",
+              checkins: "签到次数"
             },
             stats: {
               today: "今日签到",
@@ -168,7 +171,8 @@ i18n
               loading: "読み込み中...",
               noData: "チェックインデータがありません",
               recentUsers: "最近のチェックインユーザー",
-              noRecords: "チェックイン記録がありません"
+              noRecords: "チェックイン記録がありません",
+              checkins: "チェックイン数"
             },
             stats: {
               today: "今日のチェックイン",

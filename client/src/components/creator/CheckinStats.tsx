@@ -177,7 +177,7 @@ export function CheckinStats({
             
             <TabsContent value="stats">
               {loadingCheckinStats ? (
-                <div className="text-center py-8">加载中...</div>
+                <div className="text-center py-8">{t('dashboard.checkinStats.loading')}</div>
               ) : checkinStats && checkinStats.length > 0 ? (
                 <div className="h-80">
                   <ResponsiveContainer width="100%" height="100%">
@@ -189,23 +189,23 @@ export function CheckinStats({
                       <XAxis dataKey="date" />
                       <YAxis />
                       <Tooltip />
-                      <Bar dataKey="count" fill="hsl(var(--primary))" name="签到人数" />
+                      <Bar dataKey="count" fill="hsl(var(--primary))" name={t('dashboard.checkinStats.checkins')} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
               ) : (
                 <div className="text-center py-8 text-muted-foreground">
-                  暂无签到统计数据
+                  {t('dashboard.checkinStats.noData')}
                 </div>
               )}
             </TabsContent>
             
             <TabsContent value="details">
               {loadingRecentCheckins ? (
-                <div className="text-center py-8">加载中...</div>
+                <div className="text-center py-8">{t('dashboard.checkinStats.loading')}</div>
               ) : recentCheckins && recentCheckins.length > 0 ? (
                 <div className="space-y-4">
-                  <h3 className="font-medium">最近签到用户</h3>
+                  <h3 className="font-medium">{t('dashboard.checkinStats.recentUsers')}</h3>
                   <div className="space-y-3">
                     {detailedCheckins.map((checkin: CheckinWithUser) => (
                       <div key={`${checkin.userId}-${checkin.date}`} className="flex items-center justify-between py-2 px-3 bg-secondary/30 rounded-lg">
@@ -224,7 +224,7 @@ export function CheckinStats({
                 </div>
               ) : (
                 <div className="text-center py-8 text-muted-foreground">
-                  暂无签到记录
+                  {t('dashboard.checkinStats.noRecords')}
                 </div>
               )}
             </TabsContent>
