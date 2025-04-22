@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/context/AuthContext";
 import { formatDistanceToNow } from "date-fns";
 import { zhTW } from "date-fns/locale";
+import { Link } from "wouter";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 const Dashboard = () => {
@@ -22,22 +23,40 @@ const Dashboard = () => {
       if (!user?.id) return null;
       try {
         console.log("Dashboard: Fetching creator profile for user ID:", user.id);
-        const creators = await fetch(`/api/creators?userId=${user.id}`).then((res) => {
+        // 使用錯誤處理包裝器確保請求異常不會導致整個應用崩潰
+        try {
+          const res = await fetch(`/api/creators?userId=${user.id}`);
+          
           if (!res.ok) {
-            throw new Error(`API error: ${res.status}`);
+            console.warn(`API error: ${res.status}`);
+            return null;
           }
-          return res.json();
-        });
-        console.log("Dashboard: Creators response:", creators);
-        const userCreator = creators.find((c: any) => c.userId === user.id);
-        console.log("Dashboard: Found creator:", userCreator);
-        return userCreator || null;
+          
+          const creators = await res.json();
+          console.log("Dashboard: Creators response:", creators);
+          
+          if (!Array.isArray(creators)) {
+            console.warn("API returned non-array response:", creators);
+            return null;
+          }
+          
+          const userCreator = creators.find((c: any) => c.userId === user.id);
+          console.log("Dashboard: Found creator:", userCreator);
+          return userCreator || null;
+        } catch (fetchError) {
+          console.error("Fetch error:", fetchError);
+          return null;
+        }
       } catch (error) {
         console.error("Error fetching creator profile:", error);
         return null;
       }
     },
     enabled: !!user?.id,
+    // 添加重試策略和錯誤處理
+    retry: 0,
+    retryOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
   // Fetch followers
@@ -86,11 +105,11 @@ const Dashboard = () => {
               <p className="text-gray-500">
                 建立您的創作者帳號，開始連接您的粉絲社群。
               </p>
-              <a href="/profile" className="inline-block mt-4">
+              <Link href="/profile" className="inline-block mt-4">
                 <button className="bg-primary text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition">
                   前往設定
                 </button>
-              </a>
+              </Link>
             </div>
           </CardContent>
         </Card>

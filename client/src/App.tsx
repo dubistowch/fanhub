@@ -28,6 +28,12 @@ function ProtectedRoutes() {
     
     // 排除不需要认证的路由
     const publicRoutes = ["/login", "/auth/callback", "/test-auth"];
+    
+    // 如果已经在登录页面，不需要重定向
+    if (location === "/login") {
+      return;
+    }
+    
     const isPublicRoute = publicRoutes.some(route => location.startsWith(route));
     
     if (!isLoading && !user && !isPublicRoute) {
