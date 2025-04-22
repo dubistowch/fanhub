@@ -1,0 +1,77 @@
+{
+  "common": {
+    "login": "登入",
+    "register": "註冊",
+    "logout": "登出",
+    "profile": "個人資料",
+    "dashboard": "控制面板",
+    "home": "首頁",
+    "discover": "探索",
+    "following": "追蹤中",
+    "search": "搜尋"
+  },
+  "auth": {
+    "email": "電子郵件",
+    "password": "密碼",
+    "username": "用戶名稱",
+    "signInWith": "使用以下方式登入",
+    "continueTo": "繼續前往",
+    "dontHaveAccount": "還沒有帳號？",
+    "alreadyHaveAccount": "已經有帳號了？",
+    "forgotPassword": "忘記密碼？",
+    "resetPassword": "重設密碼",
+    "signUpNow": "立即註冊"
+  },
+  "creator": {
+    "become": "成為創作者",
+    "followers": "粉絲",
+    "follow": "追蹤",
+    "following": "已追蹤",
+    "checkin": "簽到",
+    "checkedInToday": "今日已簽到",
+    "streak": "連續簽到",
+    "bio": "簡介",
+    "edit": "編輯資料"
+  },
+  "checkin": {
+    "stats": "簽到統計",
+    "viewData": "查看粉絲簽到數據和歷史記錄",
+    "calendar": "簽到日曆",
+    "trend": "簽到趨勢",
+    "details": "詳細記錄",
+    "today": "今天",
+    "yesterday": "昨天",
+    "dayBeforeYesterday": "前天",
+    "daysAgo": "{{count}}天前",
+    "loginToCheckin": "請登入後進行簽到",
+    "noStats": "暫無簽到統計數據",
+    "noRecords": "暫無簽到記錄",
+    "recentUsers": "最近簽到用戶",
+    "todayCheckins": "今日簽到",
+    "yesterdayCheckins": "昨日簽到",
+    "highestRecord": "歷史最高"
+  },
+  "profile": {
+    "edit": "編輯個人資料",
+    "save": "儲存變更",
+    "avatar": "頭像",
+    "uploadAvatar": "上傳頭像",
+    "connectedPlatforms": "已連結平台",
+    "linkAccount": "連結帳號",
+    "unlinkAccount": "解除連結"
+  },
+  "settings": {
+    "title": "設定",
+    "language": "語言",
+    "theme": "主題",
+    "notifications": "通知",
+    "privacy": "隱私",
+    "account": "帳號"
+  },
+  "languages": {
+    "en": "英文",
+    "zh-TW": "繁體中文",
+    "zh-CN": "簡體中文",
+    "ja": "日文"
+  }
+}

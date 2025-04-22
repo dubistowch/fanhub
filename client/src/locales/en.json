@@ -1,0 +1,77 @@
+{
+  "common": {
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "profile": "Profile",
+    "dashboard": "Dashboard",
+    "home": "Home",
+    "discover": "Discover",
+    "following": "Following",
+    "search": "Search"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "username": "Username",
+    "signInWith": "Sign in with",
+    "continueTo": "Continue to",
+    "dontHaveAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "forgotPassword": "Forgot password?",
+    "resetPassword": "Reset Password",
+    "signUpNow": "Sign up now"
+  },
+  "creator": {
+    "become": "Become a Creator",
+    "followers": "Followers",
+    "follow": "Follow",
+    "following": "Following",
+    "checkin": "Check-in",
+    "checkedInToday": "Checked in Today",
+    "streak": "Current Streak",
+    "bio": "Bio",
+    "edit": "Edit Profile"
+  },
+  "checkin": {
+    "stats": "Check-in Statistics",
+    "viewData": "View fan check-in data and history",
+    "calendar": "Check-in Calendar",
+    "trend": "Check-in Trend",
+    "details": "Detailed Records",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "dayBeforeYesterday": "Day before yesterday",
+    "daysAgo": "{{count}} days ago",
+    "loginToCheckin": "Please login to check in",
+    "noStats": "No check-in statistics yet",
+    "noRecords": "No check-in records yet",
+    "recentUsers": "Recent Check-ins",
+    "todayCheckins": "Today's Check-ins",
+    "yesterdayCheckins": "Yesterday's Check-ins",
+    "highestRecord": "Highest Record"
+  },
+  "profile": {
+    "edit": "Edit Profile",
+    "save": "Save Changes",
+    "avatar": "Avatar",
+    "uploadAvatar": "Upload Avatar",
+    "connectedPlatforms": "Connected Platforms",
+    "linkAccount": "Link Account",
+    "unlinkAccount": "Unlink"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "notifications": "Notifications",
+    "privacy": "Privacy",
+    "account": "Account"
+  },
+  "languages": {
+    "en": "English",
+    "zh-TW": "Traditional Chinese",
+    "zh-CN": "Simplified Chinese",
+    "ja": "Japanese"
+  }
+}

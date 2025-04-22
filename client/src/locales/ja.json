@@ -1,0 +1,77 @@
+{
+  "common": {
+    "login": "ログイン",
+    "register": "登録",
+    "logout": "ログアウト",
+    "profile": "プロフィール",
+    "dashboard": "ダッシュボード",
+    "home": "ホーム",
+    "discover": "発見",
+    "following": "フォロー中",
+    "search": "検索"
+  },
+  "auth": {
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "username": "ユーザー名",
+    "signInWith": "以下でログイン",
+    "continueTo": "続行",
+    "dontHaveAccount": "アカウントをお持ちでない方",
+    "alreadyHaveAccount": "すでにアカウントをお持ちの方",
+    "forgotPassword": "パスワードをお忘れですか？",
+    "resetPassword": "パスワードをリセット",
+    "signUpNow": "今すぐ登録"
+  },
+  "creator": {
+    "become": "クリエイターになる",
+    "followers": "フォロワー",
+    "follow": "フォロー",
+    "following": "フォロー中",
+    "checkin": "チェックイン",
+    "checkedInToday": "今日はチェックイン済み",
+    "streak": "連続チェックイン",
+    "bio": "自己紹介",
+    "edit": "プロフィールを編集"
+  },
+  "checkin": {
+    "stats": "チェックイン統計",
+    "viewData": "ファンのチェックインデータと履歴を見る",
+    "calendar": "チェックインカレンダー",
+    "trend": "チェックイントレンド",
+    "details": "詳細記録",
+    "today": "今日",
+    "yesterday": "昨日",
+    "dayBeforeYesterday": "一昨日",
+    "daysAgo": "{{count}}日前",
+    "loginToCheckin": "チェックインするにはログインしてください",
+    "noStats": "チェックイン統計はまだありません",
+    "noRecords": "チェックイン記録はまだありません",
+    "recentUsers": "最近のチェックインユーザー",
+    "todayCheckins": "今日のチェックイン",
+    "yesterdayCheckins": "昨日のチェックイン",
+    "highestRecord": "最高記録"
+  },
+  "profile": {
+    "edit": "プロフィールを編集",
+    "save": "変更を保存",
+    "avatar": "アバター",
+    "uploadAvatar": "アバターをアップロード",
+    "connectedPlatforms": "連携済みプラットフォーム",
+    "linkAccount": "アカウントを連携",
+    "unlinkAccount": "連携解除"
+  },
+  "settings": {
+    "title": "設定",
+    "language": "言語",
+    "theme": "テーマ",
+    "notifications": "通知",
+    "privacy": "プライバシー",
+    "account": "アカウント"
+  },
+  "languages": {
+    "en": "英語",
+    "zh-TW": "繁体中国語",
+    "zh-CN": "簡体中国語",
+    "ja": "日本語"
+  }
+}

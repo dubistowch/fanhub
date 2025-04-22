@@ -1,0 +1,77 @@
+{
+  "common": {
+    "login": "登录",
+    "register": "注册",
+    "logout": "退出",
+    "profile": "个人资料",
+    "dashboard": "控制面板",
+    "home": "首页",
+    "discover": "发现",
+    "following": "关注中",
+    "search": "搜索"
+  },
+  "auth": {
+    "email": "邮箱",
+    "password": "密码",
+    "username": "用户名",
+    "signInWith": "使用以下方式登录",
+    "continueTo": "继续前往",
+    "dontHaveAccount": "还没有账号？",
+    "alreadyHaveAccount": "已经有账号了？",
+    "forgotPassword": "忘记密码？",
+    "resetPassword": "重置密码",
+    "signUpNow": "立即注册"
+  },
+  "creator": {
+    "become": "成为创作者",
+    "followers": "粉丝",
+    "follow": "关注",
+    "following": "已关注",
+    "checkin": "签到",
+    "checkedInToday": "今日已签到",
+    "streak": "连续签到",
+    "bio": "简介",
+    "edit": "编辑资料"
+  },
+  "checkin": {
+    "stats": "签到统计",
+    "viewData": "查看粉丝签到数据和历史记录",
+    "calendar": "签到日历",
+    "trend": "签到趋势",
+    "details": "详细记录",
+    "today": "今天",
+    "yesterday": "昨天",
+    "dayBeforeYesterday": "前天",
+    "daysAgo": "{{count}}天前",
+    "loginToCheckin": "请登录后进行签到",
+    "noStats": "暂无签到统计数据",
+    "noRecords": "暂无签到记录",
+    "recentUsers": "最近签到用户",
+    "todayCheckins": "今日签到",
+    "yesterdayCheckins": "昨日签到",
+    "highestRecord": "历史最高"
+  },
+  "profile": {
+    "edit": "编辑个人资料",
+    "save": "保存更改",
+    "avatar": "头像",
+    "uploadAvatar": "上传头像",
+    "connectedPlatforms": "已连接平台",
+    "linkAccount": "关联账号",
+    "unlinkAccount": "解除关联"
+  },
+  "settings": {
+    "title": "设置",
+    "language": "语言",
+    "theme": "主题",
+    "notifications": "通知",
+    "privacy": "隐私",
+    "account": "账号"
+  },
+  "languages": {
+    "en": "英文",
+    "zh-TW": "繁体中文",
+    "zh-CN": "简体中文",
+    "ja": "日文"
+  }
+}
