@@ -28,18 +28,27 @@ export function CheckinStats({
   const [activeTab, setActiveTab] = useState("calendar");
   
   // 获取最近签到记录
-  const { data: recentCheckins, isLoading: loadingRecentCheckins } = useQuery({
+  const { data: recentCheckins, isLoading: loadingRecentCheckins } = useQuery<CheckinWithUser[]>({
     queryKey: ["/api/creators", creatorId, "recent-checkins"],
     queryFn: getQueryFn({ on401: "returnNull" }),
     enabled: !!creatorId
   });
   
   // 获取历史签到统计
-  const { data: checkinStats, isLoading: loadingCheckinStats } = useQuery({
+  const { data: checkinStats, isLoading: loadingCheckinStats } = useQuery<CheckinDateStats[]>({
     queryKey: ["/api/creators", creatorId, "checkin-stats"],
     queryFn: getQueryFn({ on401: "returnNull" }),
     enabled: !!creatorId
   });
+  
+  // 定义数据安全访问助手
+  const safeCheckinStats = React.useMemo<CheckinDateStats[]>(() => {
+    return Array.isArray(checkinStats) ? checkinStats : [];
+  }, [checkinStats]);
+  
+  const safeRecentCheckins = React.useMemo<CheckinWithUser[]>(() => {
+    return Array.isArray(recentCheckins) ? recentCheckins : [];
+  }, [recentCheckins]);
   
   // 格式化日期显示
   const formatDate = (dateInput: Date | string) => {
@@ -76,10 +85,8 @@ export function CheckinStats({
 
   // 对历史统计数据进行处理以便于图表显示
   const chartData = React.useMemo(() => {
-    if (!checkinStats) return [];
-    
-    // 返回最近30天的数据用于图表
-    return checkinStats.map((stat: CheckinDateStats) => {
+    // 使用安全数组
+    return safeCheckinStats.map((stat: CheckinDateStats) => {
       try {
         const date = new Date(stat.date);
         
@@ -107,15 +114,15 @@ export function CheckinStats({
         };
       }
     });
-  }, [checkinStats]);
+  }, [safeCheckinStats]);
 
   // 对签到详情记录进行排序，最新的排在前面
   const detailedCheckins = React.useMemo(() => {
-    if (!recentCheckins) return [];
-    return [...recentCheckins].sort((a: CheckinWithUser, b: CheckinWithUser) => 
+    // 使用安全数组
+    return [...safeRecentCheckins].sort((a: CheckinWithUser, b: CheckinWithUser) => 
       new Date(b.date).getTime() - new Date(a.date).getTime()
     );
-  }, [recentCheckins]);
+  }, [safeRecentCheckins]);
 
   return (
     <div className="space-y-8">

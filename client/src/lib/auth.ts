@@ -24,30 +24,58 @@ export async function signInWithOAuth(provider: OAuthProvider) {
 export async function signOut() {
   try {
     console.log('Auth: Signing out user...');
-    // 1. 清除本地缓存
+    
+    // 1. 清除所有本地缓存
+    // 用户缓存
     Object.keys(userCache).forEach(key => delete userCache[key]);
     
+    // 会话和Supabase用户缓存
+    sessionCache = null;
+    sessionCacheExpiry = 0;
+    supabaseUserCache = null;
+    supabaseUserCacheExpiry = 0;
+    
     // 2. 调用Supabase登出
-    const { error } = await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut({
+      scope: 'local' // 确保只在本地登出，不影响其他标签页
+    });
+    
     if (error) {
       console.error('Auth: Supabase sign out error:', error);
       throw error;
     }
     
-    // 3. 刷新页面以确保所有状态被清除
-    console.log('Auth: Sign out successful, refreshing page...');
+    // 3. 导航到登录页面，不使用页面刷新
+    console.log('Auth: Sign out successful, redirecting to login...');
+    
+    // 使用setTimeout以允许所有状态更新完成
     setTimeout(() => {
       window.location.href = '/login';
-    }, 500);
+    }, 100);
   } catch (error) {
     console.error('Auth: Sign out error:', error);
     throw error;
   }
 }
 
+// 会话缓存
+let sessionCache: any = null;
+let sessionCacheExpiry = 0;
+let supabaseUserCache: any = null;
+let supabaseUserCacheExpiry = 0;
+const CACHE_TTL = 30000; // 30秒缓存
+
 // Get current session
 export async function getCurrentSession() {
   try {
+    const now = Date.now();
+    
+    // 如果缓存有效，直接返回缓存的会话
+    if (sessionCache && now < sessionCacheExpiry) {
+      console.log("Auth: Using cached session");
+      return sessionCache;
+    }
+    
     console.log("Auth: Getting current session...");
     const { data, error } = await supabase.auth.getSession();
     
@@ -55,6 +83,10 @@ export async function getCurrentSession() {
       console.error('Auth: Session error:', error);
       throw error;
     }
+    
+    // 更新缓存
+    sessionCache = data.session;
+    sessionCacheExpiry = now + CACHE_TTL;
     
     console.log("Auth: Current session:", data.session);
     return data.session;
@@ -67,6 +99,14 @@ export async function getCurrentSession() {
 // Get current user
 export async function getCurrentUser() {
   try {
+    const now = Date.now();
+    
+    // 如果缓存有效，直接返回缓存的用户
+    if (supabaseUserCache && now < supabaseUserCacheExpiry) {
+      console.log("Auth: Using cached Supabase user");
+      return supabaseUserCache;
+    }
+    
     console.log("Auth: Getting current user...");
     const { data, error } = await supabase.auth.getUser();
     
@@ -74,6 +114,10 @@ export async function getCurrentUser() {
       console.error('Auth: User error:', error);
       throw error;
     }
+    
+    // 更新缓存
+    supabaseUserCache = data.user;
+    supabaseUserCacheExpiry = now + CACHE_TTL;
     
     console.log("Auth: Current user:", data.user);
     return data.user;
