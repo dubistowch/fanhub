@@ -14,7 +14,19 @@ if (!supabaseUrl || !supabaseAnonKey) {
   console.error('Supabase configuration missing! Please check your environment variables.');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// 設定 Supabase 客戶端選項以確保會話持久化
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    // 存儲會話到 localStorage 並使用其進行持久化
+    persistSession: true,
+    // 嘗試刷新會話如果接近過期
+    autoRefreshToken: true,
+    // 設置會話傳輸方式 (localStorage, 默認)
+    storage: window.localStorage,
+    // 設置持久化的訪問令牌
+    storageKey: 'fanhub-auth-token',
+  }
+});
 
 // Provider configuration
 export const OAUTH_PROVIDERS = {

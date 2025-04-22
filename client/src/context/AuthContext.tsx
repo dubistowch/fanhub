@@ -50,6 +50,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
+    // 會話恢復函數：當頁面重新加載時嘗試恢復會話
     async function loadUser() {
       try {
         setIsLoading(true);
@@ -76,9 +77,24 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
         
         // Sync with our database
         console.log("AuthContext: Syncing with our database...");
-        const userData = await syncUserAfterOAuth(supabaseUserData);
-        console.log("AuthContext: Synced user data:", userData);
-        setUser(userData);
+        try {
+          const userData = await syncUserAfterOAuth(supabaseUserData);
+          console.log("AuthContext: Synced user data:", userData);
+          setUser(userData);
+        } catch (syncError) {
+          console.error("AuthContext: Error syncing user data:", syncError);
+          // 如果同步數據庫失敗但 Supabase 認證成功，防止用戶被阻止訪問
+          // 設置基本用戶信息
+          setUser({
+            id: -1,
+            email: supabaseUserData.email,
+            username: supabaseUserData.user_metadata?.full_name || supabaseUserData.email.split('@')[0],
+            avatarUrl: supabaseUserData.user_metadata?.avatar_url || null,
+            bio: '',
+            createdAt: new Date(),
+            providers: []
+          });
+        }
       } catch (err: any) {
         setError(err);
         console.error('Auth error:', err);
@@ -87,6 +103,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     }
 
+    // 在每次頁面加載時立即調用，包括頁面刷新
     loadUser();
 
     // Set up auth state change listener

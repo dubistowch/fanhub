@@ -25,35 +25,77 @@ export async function signOut() {
   try {
     console.log('Auth: Signing out user...');
     
-    // 1. 清除所有本地缓存
-    // 用户缓存
+    // 1. 首先向後端 API 發送登出請求，確保服務器端會話被清理
+    try {
+      const logoutResponse = await fetch('/api/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include' // 確保將 cookie 傳送到服務器
+      });
+      
+      if (!logoutResponse.ok) {
+        console.warn('Auth: Backend logout response was not ok:', 
+          { status: logoutResponse.status });
+      } else {
+        console.log('Auth: Backend logout successful');
+      }
+    } catch (apiError) {
+      // 即使後端登出失敗，仍然繼續進行前端登出
+      console.warn('Auth: Backend logout error (will continue with client logout):', apiError);
+    }
+    
+    // 2. 清除所有本地緩存
+    // 用戶緩存
     Object.keys(userCache).forEach(key => delete userCache[key]);
     
-    // 会话和Supabase用户缓存
+    // 會話和 Supabase 用戶緩存
     sessionCache = null;
     sessionCacheExpiry = 0;
     supabaseUserCache = null;
     supabaseUserCacheExpiry = 0;
     
-    // 2. 调用Supabase登出
+    // 3. 調用 Supabase 登出，確保清除所有會話數據
     const { error } = await supabase.auth.signOut({
-      scope: 'local' // 确保只在本地登出，不影响其他标签页
+      scope: 'global' // 確保清除所有設備上的會話
     });
     
     if (error) {
       console.error('Auth: Supabase sign out error:', error);
-      throw error;
+      // 仍然繼續執行，即使 Supabase 登出失敗
+    } else {
+      console.log('Auth: Supabase sign out successful');
     }
     
-    // 3. 导航到登录页面，不使用页面刷新
-    console.log('Auth: Sign out successful, redirecting to login...');
+    // 4. 清除相關的本地存儲數據
+    try {
+      localStorage.removeItem('fanhub-auth-token');
+      localStorage.removeItem('supabase.auth.token');
+      sessionStorage.removeItem('supabase.auth.token');
+    } catch (storageError) {
+      console.warn('Auth: Error clearing storage:', storageError);
+    }
     
-    // 使用setTimeout以允许所有状态更新完成
+    // 5. 導航到登錄頁面
+    console.log('Auth: Sign out completed, redirecting to login...');
+    
+    // 使用 setTimeout 允許所有狀態更新完成
+    // 延遲稍微長一點，確保所有清理操作完成
     setTimeout(() => {
+      // 使用 URL 重定向以確保完全刷新頁面
       window.location.href = '/login';
-    }, 100);
+    }, 300);
+    
+    return true;
   } catch (error) {
     console.error('Auth: Sign out error:', error);
+    
+    // 即使出錯，仍然嘗試強制重定向以確保用戶登出
+    setTimeout(() => {
+      window.location.href = '/login';
+    }, 500);
+    
     throw error;
   }
 }
@@ -87,6 +129,28 @@ export async function getCurrentSession() {
     // 更新缓存
     sessionCache = data.session;
     sessionCacheExpiry = now + CACHE_TTL;
+    
+    // 如果沒有會話但有本地存儲的令牌，嘗試刷新會話
+    if (!data.session) {
+      try {
+        console.log("Auth: No active session, attempting to refresh token...");
+        // 嘗試刷新訪問令牌
+        const { data: refreshData, error: refreshError } = await supabase.auth.refreshSession();
+        
+        if (refreshError) {
+          console.error("Auth: Failed to refresh token:", refreshError);
+        } else if (refreshData.session) {
+          console.log("Auth: Successfully refreshed token");
+          // 更新緩存
+          sessionCache = refreshData.session;
+          sessionCacheExpiry = now + CACHE_TTL;
+          console.log("Auth: Refreshed session:", refreshData.session);
+          return refreshData.session;
+        }
+      } catch (refreshError) {
+        console.error("Auth: Error during token refresh:", refreshError);
+      }
+    }
     
     console.log("Auth: Current session:", data.session);
     return data.session;
