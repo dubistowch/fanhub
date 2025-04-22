@@ -42,16 +42,36 @@ export function CheckinStats({
   });
   
   // 格式化日期显示
-  const formatDate = (date: Date) => {
-    const today = new Date();
-    const diffDays = differenceInDays(today, date);
-    
-    if (diffDays === 0) return "今天";
-    if (diffDays === 1) return "昨天";
-    if (diffDays === 2) return "前天";
-    if (diffDays < 7) return `${diffDays}天前`;
-    
-    return format(date, "MM月dd日");
+  const formatDate = (dateInput: Date | string) => {
+    try {
+      // 確保我們有一個有效的日期物件
+      const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
+      
+      // 驗證日期是否有效
+      if (isNaN(date.getTime())) {
+        console.error("Invalid date:", dateInput);
+        return "無效日期";
+      }
+      
+      const today = new Date();
+      const diffDays = differenceInDays(today, date);
+      
+      if (diffDays === 0) return "今天";
+      if (diffDays === 1) return "昨天";
+      if (diffDays === 2) return "前天";
+      if (diffDays < 7) return `${diffDays}天前`;
+      
+      // 使用 try/catch 包裝 format 調用
+      try {
+        return format(date, "MM月dd日");
+      } catch (err) {
+        console.error("Error formatting date:", err);
+        return date.toLocaleDateString();
+      }
+    } catch (err) {
+      console.error("Error in formatDate:", err);
+      return "日期錯誤";
+    }
   };
 
   // 对历史统计数据进行处理以便于图表显示
@@ -59,10 +79,34 @@ export function CheckinStats({
     if (!checkinStats) return [];
     
     // 返回最近30天的数据用于图表
-    return checkinStats.map((stat: CheckinDateStats) => ({
-      date: format(new Date(stat.date), "MM/dd"),
-      count: stat.count
-    }));
+    return checkinStats.map((stat: CheckinDateStats) => {
+      try {
+        const date = new Date(stat.date);
+        
+        // 檢查日期是否有效
+        if (isNaN(date.getTime())) {
+          console.error("Invalid date in chartData:", stat.date);
+          return {
+            date: "無效日期",
+            count: stat.count
+          };
+        }
+        
+        // 使用更安全的方式格式化日期
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        return {
+          date: `${month}/${day}`,
+          count: stat.count
+        };
+      } catch (err) {
+        console.error("Error processing chart data:", err);
+        return {
+          date: "錯誤",
+          count: 0
+        };
+      }
+    });
   }, [checkinStats]);
 
   // 对签到详情记录进行排序，最新的排在前面
