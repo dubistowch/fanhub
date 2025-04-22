@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -16,6 +16,17 @@ const Dashboard = () => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("overview");
 
+  // Mock data for stats - can be replaced with real data later
+  const mockStats = [
+    { name: "Sun", checkins: 2 },
+    { name: "Mon", checkins: 5 },
+    { name: "Tue", checkins: 7 },
+    { name: "Wed", checkins: 4 },
+    { name: "Thu", checkins: 8 },
+    { name: "Fri", checkins: 12 },
+    { name: "Sat", checkins: 15 },
+  ];
+
   // Fetch creator profile if exists
   const { data: creator, isLoading: isCreatorLoading } = useQuery({
     queryKey: ["/api/creators", user?.id],
@@ -23,44 +34,37 @@ const Dashboard = () => {
       if (!user?.id) return null;
       try {
         console.log("Dashboard: Fetching creator profile for user ID:", user.id);
-        // 使用錯誤處理包裝器確保請求異常不會導致整個應用崩潰
-        try {
-          const res = await fetch(`/api/creators?userId=${user.id}`);
-          
-          if (!res.ok) {
-            console.warn(`API error: ${res.status}`);
-            return null;
-          }
-          
-          const creators = await res.json();
-          console.log("Dashboard: Creators response:", creators);
-          
-          if (!Array.isArray(creators)) {
-            console.warn("API returned non-array response:", creators);
-            return null;
-          }
-          
-          const userCreator = creators.find((c: any) => c.userId === user.id);
-          console.log("Dashboard: Found creator:", userCreator);
-          return userCreator || null;
-        } catch (fetchError) {
-          console.error("Fetch error:", fetchError);
+        const res = await fetch(`/api/creators?userId=${user.id}`);
+        
+        if (!res.ok) {
+          console.warn(`API error: ${res.status}`);
           return null;
         }
+        
+        const creators = await res.json();
+        console.log("Dashboard: Creators response:", creators);
+        
+        if (!Array.isArray(creators)) {
+          console.warn("API returned non-array response:", creators);
+          return null;
+        }
+        
+        const userCreator = creators.find((c: any) => c.userId === user.id);
+        console.log("Dashboard: Found creator:", userCreator);
+        return userCreator || null;
       } catch (error) {
         console.error("Error fetching creator profile:", error);
         return null;
       }
     },
     enabled: !!user?.id,
-    // 添加重試策略和錯誤處理
     retry: 0,
     retryOnMount: false,
     refetchOnWindowFocus: false,
   });
 
   // Fetch followers
-  const { data: followers = [], isLoading: isFollowersLoading } = useQuery<any[]>({
+  const { data: followers = [], isLoading: isFollowersLoading } = useQuery({
     queryKey: ["/api/creators", creator?.id, "followers"],
     queryFn: async () => {
       try {
@@ -78,7 +82,7 @@ const Dashboard = () => {
   });
 
   // Fetch recent check-ins
-  const { data: recentCheckins = [], isLoading: isCheckinsLoading } = useQuery<any[]>({
+  const { data: recentCheckins = [], isLoading: isCheckinsLoading } = useQuery({
     queryKey: ["/api/creators", creator?.id, "checkins", "recent"],
     queryFn: async () => {
       try {
@@ -96,30 +100,44 @@ const Dashboard = () => {
   });
 
   // Show notification if not a creator
-  useEffect(() => {
-    if (!isCreatorLoading && !creator) {
-      toast({
-        title: "您尚未設定創作者帳號",
-        description: "請前往個人資料頁建立您的創作者帳號",
-        variant: "default",
-      });
-    }
-  }, [creator, isCreatorLoading, toast]);
-
-  // Mock data for stats
-  const mockStats = [
-    { name: "Sun", checkins: 2 },
-    { name: "Mon", checkins: 5 },
-    { name: "Tue", checkins: 7 },
-    { name: "Wed", checkins: 4 },
-    { name: "Thu", checkins: 8 },
-    { name: "Fri", checkins: 12 },
-    { name: "Sat", checkins: 15 },
-  ];
-
-  if (!user) return null;
+  if (!user) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <Card>
+          <CardContent className="p-8">
+            <div className="text-center">
+              <h2 className="text-xl font-medium mb-2">請先登入</h2>
+              <p className="text-gray-500">您需要先登入才能訪問創作者中心</p>
+              <Link href="/login" className="inline-block mt-4">
+                <button className="bg-primary text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition">
+                  前往登入
+                </button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
   
-  if (!isCreatorLoading && !creator) {
+  // If loading creator data
+  if (isCreatorLoading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <Card>
+          <CardContent className="p-8">
+            <div className="text-center">
+              <h2 className="text-xl font-medium mb-2">載入中...</h2>
+              <p className="text-gray-500">正在載入創作者資料</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+  
+  // If user is not a creator
+  if (!creator) {
     return (
       <div className="container mx-auto px-4 py-8">
         <Card>
@@ -141,30 +159,49 @@ const Dashboard = () => {
     );
   }
 
-  // 添加安全檢查，確保有必要的數據
-  if (!creator || !user) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <Card>
-          <CardContent className="p-8">
-            <div className="text-center">
-              <h2 className="text-xl font-medium mb-2">載入中...</h2>
-              <p className="text-gray-500">正在載入創作者資料</p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  // 在記錄組件將要渲染的內容，這有助於調試問題
+  // Log data for debugging
   console.log("Dashboard rendering with data:", {
     creator,
     user,
     followersCount: Array.isArray(followers) ? followers.length : 0,
     checkinsCount: Array.isArray(recentCheckins) ? recentCheckins.length : 0
   });
-  
+
+  // Function to safely get today's checkins
+  const getTodayCheckins = () => {
+    if (!Array.isArray(recentCheckins)) return 0;
+    
+    return recentCheckins.filter((c: any) => {
+      try {
+        if (!c || !c.date) return false;
+        const today = new Date();
+        const checkinDate = new Date(c.date);
+        return (
+          checkinDate.getDate() === today.getDate() &&
+          checkinDate.getMonth() === today.getMonth() &&
+          checkinDate.getFullYear() === today.getFullYear()
+        );
+      } catch (err) {
+        console.error("Date parsing error:", err);
+        return false;
+      }
+    }).length;
+  };
+
+  // Function to safely calculate percentage
+  const getPercentage = () => {
+    if (!Array.isArray(followers) || followers.length === 0 || !Array.isArray(recentCheckins)) {
+      return 0;
+    }
+    return Math.round((recentCheckins.length / followers.length) * 100);
+  };
+
+  // Function to safely get platform distribution
+  const getPlatformCount = (percentage: number) => {
+    if (!Array.isArray(followers)) return 0;
+    return Math.round(followers.length * percentage);
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6">
@@ -186,9 +223,11 @@ const Dashboard = () => {
                 <CardTitle className="text-base font-medium">總粉絲數</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">{followers.length}</div>
+                <div className="text-3xl font-bold">
+                  {Array.isArray(followers) ? followers.length : 0}
+                </div>
                 <p className="text-sm text-muted-foreground">
-                  {followers.length > 0 ? "+3 自上週" : "開始經營您的社群"}
+                  {Array.isArray(followers) && followers.length > 0 ? "+3 自上週" : "開始經營您的社群"}
                 </p>
               </CardContent>
             </Card>
@@ -199,31 +238,10 @@ const Dashboard = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold">
-                  {Array.isArray(recentCheckins) ? 
-                    recentCheckins.filter((c: any) => {
-                      try {
-                        if (!c || !c.date) return false;
-                        const today = new Date();
-                        const checkinDate = new Date(c.date);
-                        return (
-                          checkinDate.getDate() === today.getDate() &&
-                          checkinDate.getMonth() === today.getMonth() &&
-                          checkinDate.getFullYear() === today.getFullYear()
-                        );
-                      } catch (err) {
-                        console.error("Date parsing error:", err);
-                        return false;
-                      }
-                    }).length 
-                    : 0
-                  }
+                  {getTodayCheckins()}
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  佔總粉絲數 {
-                    Array.isArray(followers) && followers.length > 0 && Array.isArray(recentCheckins) ? 
-                      Math.round((recentCheckins.length / followers.length) * 100) 
-                      : 0
-                  }%
+                  佔總粉絲數 {getPercentage()}%
                 </p>
               </CardContent>
             </Card>
@@ -282,19 +300,19 @@ const Dashboard = () => {
                       <i className="fas fa-circle-notch text-xl"></i>
                     </div>
                   </div>
-                ) : recentCheckins.length > 0 ? (
+                ) : Array.isArray(recentCheckins) && recentCheckins.length > 0 ? (
                   <div className="space-y-4">
                     {recentCheckins.slice(0, 5).map((checkin: any, index: number) => (
                       <div key={index} className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <Avatar className="h-8 w-8">
-                            <AvatarImage src={checkin.user.avatarUrl || undefined} />
+                            <AvatarImage src={checkin.user?.avatarUrl || undefined} />
                             <AvatarFallback>
-                              {checkin.user.username.charAt(0).toUpperCase()}
+                              {checkin.user?.username.charAt(0).toUpperCase() || 'U'}
                             </AvatarFallback>
                           </Avatar>
                           <div>
-                            <p className="text-sm font-medium">{checkin.user.username}</p>
+                            <p className="text-sm font-medium">{checkin.user?.username || '未知用戶'}</p>
                           </div>
                         </div>
                         <div className="text-xs text-gray-500">
@@ -323,7 +341,7 @@ const Dashboard = () => {
                       <span>YouTube</span>
                     </div>
                     <Badge className="bg-red-600">
-                      {Array.isArray(followers) ? Math.round(followers.length * 0.8) : 0}
+                      {getPlatformCount(0.8)}
                     </Badge>
                   </div>
 
@@ -335,7 +353,7 @@ const Dashboard = () => {
                       <span>Twitch</span>
                     </div>
                     <Badge className="bg-[#6441A4]">
-                      {Array.isArray(followers) ? Math.round(followers.length * 0.6) : 0}
+                      {getPlatformCount(0.6)}
                     </Badge>
                   </div>
 
@@ -347,7 +365,7 @@ const Dashboard = () => {
                       <span>Discord</span>
                     </div>
                     <Badge className="bg-indigo-600">
-                      {Array.isArray(followers) ? Math.round(followers.length * 0.5) : 0}
+                      {getPlatformCount(0.5)}
                     </Badge>
                   </div>
 
@@ -359,7 +377,7 @@ const Dashboard = () => {
                       <span>Twitter</span>
                     </div>
                     <Badge className="bg-blue-400">
-                      {Array.isArray(followers) ? Math.round(followers.length * 0.4) : 0}
+                      {getPlatformCount(0.4)}
                     </Badge>
                   </div>
                 </div>
@@ -380,26 +398,26 @@ const Dashboard = () => {
                     <i className="fas fa-circle-notch text-xl"></i>
                   </div>
                 </div>
-              ) : followers.length > 0 ? (
+              ) : Array.isArray(followers) && followers.length > 0 ? (
                 <div className="space-y-4">
-                  {followers.map((follower: any) => (
-                    <div key={follower.id} className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-md">
+                  {followers.map((follower: any, index: number) => (
+                    <div key={index} className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-md">
                       <div className="flex items-center gap-3">
                         <Avatar>
                           <AvatarImage src={follower.avatarUrl || undefined} />
                           <AvatarFallback>
-                            {follower.username.charAt(0).toUpperCase()}
+                            {follower.username?.charAt(0).toUpperCase() || 'U'}
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <p className="font-medium">{follower.username}</p>
-                          <p className="text-xs text-gray-500">{follower.email}</p>
+                          <p className="font-medium">{follower.username || '未知用戶'}</p>
+                          <p className="text-xs text-gray-500">{follower.email || ''}</p>
                         </div>
                       </div>
                       <div className="flex space-x-2">
-                        {follower.providers?.map((p: any) => (
+                        {Array.isArray(follower.providers) && follower.providers.map((p: any, i: number) => (
                           <div
-                            key={p.id}
+                            key={i}
                             className={`w-6 h-6 rounded-full flex items-center justify-center text-white ${
                               p.provider === "google" ? "bg-red-600" :
                               p.provider === "twitch" ? "bg-[#6441A4]" :
@@ -463,19 +481,19 @@ const Dashboard = () => {
                     <i className="fas fa-circle-notch text-xl"></i>
                   </div>
                 </div>
-              ) : recentCheckins.length > 0 ? (
+              ) : Array.isArray(recentCheckins) && recentCheckins.length > 0 ? (
                 <div className="space-y-4">
                   {recentCheckins.map((checkin: any, index: number) => (
                     <div key={index} className="flex items-center justify-between border-b pb-2 last:border-0">
                       <div className="flex items-center gap-2">
                         <Avatar className="h-8 w-8">
-                          <AvatarImage src={checkin.user.avatarUrl || undefined} />
+                          <AvatarImage src={checkin.user?.avatarUrl || undefined} />
                           <AvatarFallback>
-                            {checkin.user.username.charAt(0).toUpperCase()}
+                            {checkin.user?.username?.charAt(0).toUpperCase() || 'U'}
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <p className="text-sm font-medium">{checkin.user.username}</p>
+                          <p className="text-sm font-medium">{checkin.user?.username || '未知用戶'}</p>
                         </div>
                       </div>
                       <div>
