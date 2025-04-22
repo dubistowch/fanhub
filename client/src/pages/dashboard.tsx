@@ -60,14 +60,38 @@ const Dashboard = () => {
   });
 
   // Fetch followers
-  const { data: followers = [], isLoading: isFollowersLoading } = useQuery({
+  const { data: followers = [], isLoading: isFollowersLoading } = useQuery<any[]>({
     queryKey: ["/api/creators", creator?.id, "followers"],
+    queryFn: async () => {
+      try {
+        if (!creator?.id) return [];
+        const res = await fetch(`/api/creators/${creator.id}/followers`);
+        if (!res.ok) return [];
+        const data = await res.json();
+        return Array.isArray(data) ? data : [];
+      } catch (error) {
+        console.error("Error fetching followers:", error);
+        return [];
+      }
+    },
     enabled: !!creator?.id,
   });
 
   // Fetch recent check-ins
-  const { data: recentCheckins = [], isLoading: isCheckinsLoading } = useQuery({
+  const { data: recentCheckins = [], isLoading: isCheckinsLoading } = useQuery<any[]>({
     queryKey: ["/api/creators", creator?.id, "checkins", "recent"],
+    queryFn: async () => {
+      try {
+        if (!creator?.id) return [];
+        const res = await fetch(`/api/creators/${creator.id}/checkins/recent`);
+        if (!res.ok) return [];
+        const data = await res.json();
+        return Array.isArray(data) ? data : [];
+      } catch (error) {
+        console.error("Error fetching recent checkins:", error);
+        return [];
+      }
+    },
     enabled: !!creator?.id,
   });
 
@@ -117,6 +141,30 @@ const Dashboard = () => {
     );
   }
 
+  // 添加安全檢查，確保有必要的數據
+  if (!creator || !user) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <Card>
+          <CardContent className="p-8">
+            <div className="text-center">
+              <h2 className="text-xl font-medium mb-2">載入中...</h2>
+              <p className="text-gray-500">正在載入創作者資料</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // 在記錄組件將要渲染的內容，這有助於調試問題
+  console.log("Dashboard rendering with data:", {
+    creator,
+    user,
+    followersCount: Array.isArray(followers) ? followers.length : 0,
+    checkinsCount: Array.isArray(recentCheckins) ? recentCheckins.length : 0
+  });
+  
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6">
@@ -150,17 +198,32 @@ const Dashboard = () => {
                 <CardTitle className="text-base font-medium">今日簽到數</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">{recentCheckins.filter((c: any) => {
-                  const today = new Date();
-                  const checkinDate = new Date(c.date);
-                  return (
-                    checkinDate.getDate() === today.getDate() &&
-                    checkinDate.getMonth() === today.getMonth() &&
-                    checkinDate.getFullYear() === today.getFullYear()
-                  );
-                }).length}</div>
+                <div className="text-3xl font-bold">
+                  {Array.isArray(recentCheckins) ? 
+                    recentCheckins.filter((c: any) => {
+                      try {
+                        if (!c || !c.date) return false;
+                        const today = new Date();
+                        const checkinDate = new Date(c.date);
+                        return (
+                          checkinDate.getDate() === today.getDate() &&
+                          checkinDate.getMonth() === today.getMonth() &&
+                          checkinDate.getFullYear() === today.getFullYear()
+                        );
+                      } catch (err) {
+                        console.error("Date parsing error:", err);
+                        return false;
+                      }
+                    }).length 
+                    : 0
+                  }
+                </div>
                 <p className="text-sm text-muted-foreground">
-                  佔總粉絲數 {followers.length > 0 ? Math.round((recentCheckins.length / followers.length) * 100) : 0}%
+                  佔總粉絲數 {
+                    Array.isArray(followers) && followers.length > 0 && Array.isArray(recentCheckins) ? 
+                      Math.round((recentCheckins.length / followers.length) * 100) 
+                      : 0
+                  }%
                 </p>
               </CardContent>
             </Card>
@@ -259,7 +322,9 @@ const Dashboard = () => {
                       </div>
                       <span>YouTube</span>
                     </div>
-                    <Badge className="bg-red-600">{(followers.length * 0.8).toFixed(0)}</Badge>
+                    <Badge className="bg-red-600">
+                      {Array.isArray(followers) ? Math.round(followers.length * 0.8) : 0}
+                    </Badge>
                   </div>
 
                   <div className="flex items-center justify-between">
@@ -269,7 +334,9 @@ const Dashboard = () => {
                       </div>
                       <span>Twitch</span>
                     </div>
-                    <Badge className="bg-[#6441A4]">{(followers.length * 0.6).toFixed(0)}</Badge>
+                    <Badge className="bg-[#6441A4]">
+                      {Array.isArray(followers) ? Math.round(followers.length * 0.6) : 0}
+                    </Badge>
                   </div>
 
                   <div className="flex items-center justify-between">
@@ -279,7 +346,9 @@ const Dashboard = () => {
                       </div>
                       <span>Discord</span>
                     </div>
-                    <Badge className="bg-indigo-600">{(followers.length * 0.5).toFixed(0)}</Badge>
+                    <Badge className="bg-indigo-600">
+                      {Array.isArray(followers) ? Math.round(followers.length * 0.5) : 0}
+                    </Badge>
                   </div>
 
                   <div className="flex items-center justify-between">
@@ -289,7 +358,9 @@ const Dashboard = () => {
                       </div>
                       <span>Twitter</span>
                     </div>
-                    <Badge className="bg-blue-400">{(followers.length * 0.4).toFixed(0)}</Badge>
+                    <Badge className="bg-blue-400">
+                      {Array.isArray(followers) ? Math.round(followers.length * 0.4) : 0}
+                    </Badge>
                   </div>
                 </div>
               </CardContent>
