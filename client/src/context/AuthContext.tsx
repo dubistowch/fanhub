@@ -133,16 +133,20 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
             setUser(userData);
           } catch (syncError) {
             console.error("AuthContext: Error syncing user data:", syncError);
-            // 降級處理
-            setUser({
-              id: -1,
-              email: supabaseUserData.email,
-              username: supabaseUserData.user_metadata?.full_name || supabaseUserData.email.split('@')[0],
-              avatarUrl: supabaseUserData.user_metadata?.avatar_url || null,
-              bio: '',
-              createdAt: new Date(),
-              providers: []
-            });
+            // 降級處理 - 確保有效的 supabaseUserData
+            if (supabaseUserData && supabaseUserData.email) {
+              setUser({
+                id: -1,
+                email: supabaseUserData.email,
+                username: supabaseUserData.user_metadata?.full_name || supabaseUserData.email.split('@')[0],
+                avatarUrl: supabaseUserData.user_metadata?.avatar_url || null,
+                bio: '',
+                createdAt: new Date(),
+                providers: []
+              });
+            } else {
+              console.error("AuthContext: Invalid supabaseUserData for fallback user creation");
+            }
           }
         }
       } catch (err: any) {
@@ -172,20 +176,24 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
             setUser(userData);
           } catch (syncError) {
             console.error("AuthContext: Error during auth state change sync:", syncError);
-            // 降級處理
-            setUser({
-              id: -1,
-              email: supabaseUserData.email,
-              username: supabaseUserData.user_metadata?.full_name || supabaseUserData.email.split('@')[0],
-              avatarUrl: supabaseUserData.user_metadata?.avatar_url || null,
-              bio: '',
-              createdAt: new Date(),
-              providers: []
-            });
+            // 降級處理 - 確保有效的 supabaseUserData
+            if (supabaseUserData && supabaseUserData.email) {
+              setUser({
+                id: -1,
+                email: supabaseUserData.email,
+                username: supabaseUserData.user_metadata?.full_name || supabaseUserData.email.split('@')[0],
+                avatarUrl: supabaseUserData.user_metadata?.avatar_url || null,
+                bio: '',
+                createdAt: new Date(),
+                providers: []
+              });
+            } else {
+              console.error("AuthContext: Invalid supabaseUserData for fallback user creation");
+            }
           }
-        } else if (event === 'SIGNED_OUT' || event === 'USER_DELETED') {
+        } else if (event === 'SIGNED_OUT') {
           // 處理登出事件
-          console.log("AuthContext: User signed out or deleted");
+          console.log("AuthContext: User signed out");
           setSupabaseUser(null);
           setUser(null);
         } else if (event === 'TOKEN_REFRESHED' && session) {
