@@ -28,6 +28,15 @@ i18n
             selectLanguage: "Select language",
             selectLanguagePlaceholder: "Select a language"
           },
+          auth: {
+            loginSuccess: "Login successful",
+            welcomeBack: "Welcome back",
+            completingAuth: "Completing authentication",
+            loading: "Loading...",
+            authError: "Authentication error",
+            loginFailed: "Login failed",
+            pleaseLogin: "Please login"
+          },
           dashboard: {
             checkinStats: {
               title: "Check-in Statistics",
@@ -75,6 +84,15 @@ i18n
             languageDescription: "更改應用程式使用的語言",
             selectLanguage: "選擇語言",
             selectLanguagePlaceholder: "請選擇語言"
+          },
+          auth: {
+            loginSuccess: "登入成功",
+            welcomeBack: "歡迎回來",
+            completingAuth: "正在完成認證",
+            loading: "載入中...",
+            authError: "認證錯誤",
+            loginFailed: "登入失敗",
+            pleaseLogin: "請登入"
           },
           dashboard: {
             checkinStats: {
@@ -124,6 +142,15 @@ i18n
             selectLanguage: "选择语言",
             selectLanguagePlaceholder: "请选择语言"
           },
+          auth: {
+            loginSuccess: "登录成功",
+            welcomeBack: "欢迎回来",
+            completingAuth: "正在完成认证",
+            loading: "加载中...",
+            authError: "认证错误",
+            loginFailed: "登录失败",
+            pleaseLogin: "请登录"
+          },
           dashboard: {
             checkinStats: {
               title: "签到统计",
@@ -171,6 +198,15 @@ i18n
             languageDescription: "アプリケーションで使用する言語を変更する",
             selectLanguage: "言語を選択",
             selectLanguagePlaceholder: "言語を選択してください"
+          },
+          auth: {
+            loginSuccess: "ログイン成功",
+            welcomeBack: "おかえりなさい",
+            completingAuth: "認証を完了しています",
+            loading: "読み込み中...",
+            authError: "認証エラー",
+            loginFailed: "ログイン失敗",
+            pleaseLogin: "ログインしてください"
           },
           dashboard: {
             checkinStats: {

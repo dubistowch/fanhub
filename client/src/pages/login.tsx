@@ -6,11 +6,13 @@ import { signInWithOAuth } from "@/lib/auth";
 import { OAuthProvider, OAUTH_PROVIDERS } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
   const { user, isLoading } = useAuth();
   const [_, setLocation] = useLocation();
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   // Redirect to home if already authenticated
   useEffect(() => {
@@ -28,8 +30,8 @@ const Login = () => {
     } catch (error) {
       console.error("Login: Sign in error:", error);
       toast({
-        title: "登入失敗",
-        description: "無法登入，請稍後再試",
+        title: t("auth.loginFailed"),
+        description: t("auth.pleaseLogin"),
         variant: "destructive",
       });
     }
