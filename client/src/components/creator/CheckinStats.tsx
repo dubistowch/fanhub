@@ -9,6 +9,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { format, parseISO, differenceInDays } from "date-fns";
 import { Calendar, Users, BarChart3 } from "lucide-react";
 import type { CheckinWithUser, CheckinDateStats } from "@shared/schema";
+import { useTranslation } from "react-i18next";
 
 interface CheckinStatsProps {
   creatorId: number;
@@ -26,6 +27,7 @@ export function CheckinStats({
   onCheckInSuccess
 }: CheckinStatsProps) {
   const [activeTab, setActiveTab] = useState("calendar");
+  const { t } = useTranslation();
   
   // 获取最近签到记录
   const { data: recentCheckins, isLoading: loadingRecentCheckins } = useQuery<CheckinWithUser[]>({
@@ -135,8 +137,8 @@ export function CheckinStats({
     <div className="space-y-8">
       <Card>
         <CardHeader>
-          <CardTitle>签到统计</CardTitle>
-          <CardDescription>查看粉丝签到数据和历史记录</CardDescription>
+          <CardTitle>{t('dashboard.checkinStats.title')}</CardTitle>
+          <CardDescription>{t('dashboard.checkinStats.description')}</CardDescription>
         </CardHeader>
         
         <CardContent>
@@ -144,15 +146,15 @@ export function CheckinStats({
             <TabsList className="mb-6">
               <TabsTrigger value="calendar">
                 <Calendar className="mr-2 h-4 w-4" />
-                签到日历
+                {t('dashboard.checkinStats.calendar')}
               </TabsTrigger>
               <TabsTrigger value="stats">
                 <BarChart3 className="mr-2 h-4 w-4" />
-                签到趋势
+                {t('dashboard.checkinStats.trend')}
               </TabsTrigger>
               <TabsTrigger value="details">
                 <Users className="mr-2 h-4 w-4" />
-                详细记录
+                {t('dashboard.checkinStats.details')}
               </TabsTrigger>
             </TabsList>
             
@@ -168,7 +170,7 @@ export function CheckinStats({
               
               {!userId && (
                 <div className="text-center py-8 text-muted-foreground">
-                  请登录后进行签到
+                  {t('dashboard.checkinStats.loginRequired')}
                 </div>
               )}
             </TabsContent>

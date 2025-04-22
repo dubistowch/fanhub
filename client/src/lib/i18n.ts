@@ -25,6 +25,25 @@ i18n
             language: "Language",
             title: "Settings"
           },
+          dashboard: {
+            checkinStats: {
+              title: "Check-in Statistics",
+              description: "View fan check-in data and history",
+              calendar: "Check-in Calendar",
+              trend: "Check-in Trend",
+              details: "Detailed Records",
+              loginRequired: "Please login to check in",
+              loading: "Loading...",
+              noData: "No check-in data available",
+              recentUsers: "Recent Check-in Users",
+              noRecords: "No check-in records"
+            },
+            stats: {
+              today: "Today's Check-ins",
+              yesterday: "Yesterday's Check-ins",
+              highest: "Highest Record"
+            }
+          },
           languages: {
             en: "English",
             "zh-TW": "Traditional Chinese",
@@ -49,6 +68,25 @@ i18n
           settings: {
             language: "語言",
             title: "設定"
+          },
+          dashboard: {
+            checkinStats: {
+              title: "簽到統計",
+              description: "查看粉絲簽到數據和歷史記錄",
+              calendar: "簽到日曆",
+              trend: "簽到趨勢",
+              details: "詳細記錄",
+              loginRequired: "請登入後進行簽到",
+              loading: "載入中...",
+              noData: "暫無簽到統計數據",
+              recentUsers: "最近簽到用戶",
+              noRecords: "暫無簽到記錄"
+            },
+            stats: {
+              today: "今日簽到",
+              yesterday: "昨日簽到",
+              highest: "歷史最高"
+            }
           },
           languages: {
             en: "英文",
@@ -75,6 +113,25 @@ i18n
             language: "语言",
             title: "设置"
           },
+          dashboard: {
+            checkinStats: {
+              title: "签到统计",
+              description: "查看粉丝签到数据和历史记录",
+              calendar: "签到日历",
+              trend: "签到趋势",
+              details: "详细记录",
+              loginRequired: "请登录后进行签到",
+              loading: "加载中...",
+              noData: "暂无签到统计数据",
+              recentUsers: "最近签到用户",
+              noRecords: "暂无签到记录"
+            },
+            stats: {
+              today: "今日签到",
+              yesterday: "昨日签到",
+              highest: "历史最高"
+            }
+          },
           languages: {
             en: "英文",
             "zh-TW": "繁体中文",
@@ -99,6 +156,25 @@ i18n
           settings: {
             language: "言語",
             title: "設定"
+          },
+          dashboard: {
+            checkinStats: {
+              title: "チェックイン統計",
+              description: "ファンのチェックインデータと履歴を表示",
+              calendar: "チェックインカレンダー",
+              trend: "チェックイントレンド",
+              details: "詳細記録",
+              loginRequired: "チェックインするにはログインしてください",
+              loading: "読み込み中...",
+              noData: "チェックインデータがありません",
+              recentUsers: "最近のチェックインユーザー",
+              noRecords: "チェックイン記録がありません"
+            },
+            stats: {
+              today: "今日のチェックイン",
+              yesterday: "昨日のチェックイン",
+              highest: "過去最高"
+            }
           },
           languages: {
             en: "英語",
