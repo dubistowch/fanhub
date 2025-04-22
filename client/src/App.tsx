@@ -16,7 +16,10 @@ import Following from "@/pages/following";
 import AuthCallback from "@/pages/auth/callback";
 import TestAuth from "@/pages/test-auth";
 import { AuthProvider, useAuth } from "./context/AuthContext";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
+// i18n
+import { I18nextProvider } from 'react-i18next';
+import i18n from './lib/i18n';
 
 function ProtectedRoutes() {
   const { user, isLoading } = useAuth();
@@ -75,11 +78,15 @@ function AppContent() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <AppContent />
-      </TooltipProvider>
-    </QueryClientProvider>
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
+      <I18nextProvider i18n={i18n}>
+        <QueryClientProvider client={queryClient}>
+          <TooltipProvider>
+            <AppContent />
+          </TooltipProvider>
+        </QueryClientProvider>
+      </I18nextProvider>
+    </Suspense>
   );
 }
 
