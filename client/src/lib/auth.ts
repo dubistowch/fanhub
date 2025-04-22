@@ -69,27 +69,48 @@ export async function getCurrentUser() {
   }
 }
 
-// Create or update user in our database after OAuth login
+// 維護一個簡單的登錄用戶緩存，防止重複請求
+const userCache: Record<string, { timestamp: number, data: any }> = {};
+
+// 創建或更新數據庫中的用戶（OAuth登錄後）
 export async function syncUserAfterOAuth(supabaseUser: any) {
   try {
+    if (!supabaseUser || !supabaseUser.email) {
+      console.error("Auth: Invalid user data for sync:", supabaseUser);
+      throw new Error("Invalid user data");
+    }
+    
     console.log("Auth: Syncing user after OAuth:", { 
       email: supabaseUser.email,
       id: supabaseUser.id,
       has_metadata: !!supabaseUser.user_metadata
     });
     
-    // First check if user exists
+    // 檢查緩存是否存在且在5秒內（避免重複請求）
+    const cacheKey = `user_${supabaseUser.email}`;
+    const cachedData = userCache[cacheKey];
+    const now = Date.now();
+    
+    if (cachedData && (now - cachedData.timestamp < 5000)) {
+      console.log("Auth: Using cached user data");
+      return cachedData.data;
+    }
+    
+    // 首先檢查用戶是否存在
     console.log(`Auth: Checking if user exists: /api/users/email/${supabaseUser.email}`);
     const response = await fetch(`/api/users/email/${supabaseUser.email}`);
     console.log("Auth: User check response:", { status: response.status, ok: response.ok });
     
     if (response.ok) {
-      // User exists, return the user
+      // 用戶存在，返回用戶數據
       const userData = await response.json();
       console.log("Auth: Existing user found:", userData);
+      
+      // 更新緩存
+      userCache[cacheKey] = { timestamp: now, data: userData };
       return userData;
     } else if (response.status === 404) {
-      // User doesn't exist, create new user
+      // 用戶不存在，創建新用戶
       console.log("Auth: User not found, creating new user");
       const newUser: InsertUser = {
         email: supabaseUser.email,
@@ -99,17 +120,30 @@ export async function syncUserAfterOAuth(supabaseUser: any) {
       };
       
       console.log("Auth: Creating new user with data:", newUser);
-      const createdUser = await apiRequest('POST', '/api/users', newUser);
       
-      if (!createdUser.ok) {
-        const errorText = await createdUser.text();
-        console.error("Auth: Failed to create user:", { status: createdUser.status, error: errorText });
-        throw new Error(`Failed to create user: ${errorText}`);
+      try {
+        const createdUser = await apiRequest('POST', '/api/users', newUser);
+        const userData = await createdUser.json();
+        console.log("Auth: User created successfully:", userData);
+        
+        // 更新緩存
+        userCache[cacheKey] = { timestamp: now, data: userData };
+        return userData;
+      } catch (error: any) {
+        // 如果創建失敗，可能是因為並發請求已經創建了用戶，再次嘗試獲取
+        if (error.message && error.message.includes("already exists")) {
+          console.log("Auth: User was created by another request, fetching user data");
+          const retryResponse = await fetch(`/api/users/email/${supabaseUser.email}`);
+          
+          if (retryResponse.ok) {
+            const userData = await retryResponse.json();
+            // 更新緩存
+            userCache[cacheKey] = { timestamp: now, data: userData };
+            return userData;
+          }
+        }
+        throw error;
       }
-      
-      const userData = await createdUser.json();
-      console.log("Auth: User created successfully:", userData);
-      return userData;
     } else if (response.status === 500) {
       // Database connection error or other server error
       try {

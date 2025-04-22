@@ -28,11 +28,10 @@ async function main() {
     console.log("正在执行数据库迁移...");
     // 使用schema对象中的定义创建表
     await db.insert(schema.users).values({
-      id: 1,
-      name: "Admin User",
       email: "admin@example.com",
-      avatar: null,
-      createdAt: new Date()
+      username: "Admin",
+      bio: "Fanhub系统管理员",
+      avatarUrl: null
     }).onConflictDoNothing();
     
     console.log("✅ 数据库模式迁移完成");
