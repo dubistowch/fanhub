@@ -65,12 +65,12 @@ i18n
           },
           login: {
             welcome: "Welcome to FanHub",
-            description: "Connect with your favorite creators across platforms",
+            description: "Sign in with your favorite platform account to connect your creator and fan identities",
             googleLogin: "Sign in with Google",
             twitchLogin: "Sign in with Twitch",
             termsAgreement: "By signing in, you agree to our Terms of Service and Privacy Policy",
             or: "or",
-            intro: "FanHub is a dedicated space for cross-platform interaction between creators and fans. Start exploring by signing in with Google!"
+            intro: "FanHub is a dedicated space for creators and fans to interact across platforms. Start exploring with Google sign-in!"
           }
         }
       },
