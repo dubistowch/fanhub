@@ -118,10 +118,12 @@ export function CheckinStats({
 
   // 对签到详情记录进行排序，最新的排在前面
   const detailedCheckins = React.useMemo(() => {
-    // 使用安全数组
-    return [...safeRecentCheckins].sort((a: CheckinWithUser, b: CheckinWithUser) => 
-      new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
+    // 使用安全数组并确保日期值有效
+    return [...safeRecentCheckins].sort((a: CheckinWithUser, b: CheckinWithUser) => {
+      const dateA = a.date ? new Date(a.date) : new Date(0);
+      const dateB = b.date ? new Date(b.date) : new Date(0);
+      return dateB.getTime() - dateA.getTime();
+    });
   }, [safeRecentCheckins]);
 
   return (
@@ -207,7 +209,7 @@ export function CheckinStats({
                           </div>
                         </div>
                         <div className="text-sm text-muted-foreground">
-                          {formatDate(new Date(checkin.date))}
+                          {checkin.date ? formatDate(new Date(checkin.date)) : "無日期"}
                         </div>
                       </div>
                     ))}
