@@ -238,7 +238,7 @@ export function CheckinStats({
           {/* 今日签到数 */}
           <Card>
             <CardHeader className="pb-2">
-              <CardDescription>今日签到</CardDescription>
+              <CardDescription>{t('dashboard.stats.today')}</CardDescription>
               <CardTitle className="text-2xl">
                 {checkinStats.length > 0 ? checkinStats[0].count : 0}
               </CardTitle>
@@ -248,7 +248,7 @@ export function CheckinStats({
           {/* 昨日签到数 */}
           <Card>
             <CardHeader className="pb-2">
-              <CardDescription>昨日签到</CardDescription>
+              <CardDescription>{t('dashboard.stats.yesterday')}</CardDescription>
               <CardTitle className="text-2xl">
                 {checkinStats.length > 1 ? checkinStats[1].count : 0}
               </CardTitle>
@@ -258,7 +258,7 @@ export function CheckinStats({
           {/* 最高签到记录 */}
           <Card>
             <CardHeader className="pb-2">
-              <CardDescription>历史最高</CardDescription>
+              <CardDescription>{t('dashboard.stats.highest')}</CardDescription>
               <CardTitle className="text-2xl">
                 {checkinStats.length > 0 
                   ? Math.max(...checkinStats.map((stat: CheckinDateStats) => stat.count))

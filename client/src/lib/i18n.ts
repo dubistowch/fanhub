@@ -23,7 +23,10 @@ i18n
           },
           settings: {
             language: "Language",
-            title: "Settings"
+            title: "Settings",
+            languageDescription: "Change the language used throughout the application",
+            selectLanguage: "Select language",
+            selectLanguagePlaceholder: "Select a language"
           },
           dashboard: {
             checkinStats: {
@@ -68,7 +71,10 @@ i18n
           },
           settings: {
             language: "語言",
-            title: "設定"
+            title: "設定",
+            languageDescription: "更改應用程式使用的語言",
+            selectLanguage: "選擇語言",
+            selectLanguagePlaceholder: "請選擇語言"
           },
           dashboard: {
             checkinStats: {
@@ -113,7 +119,10 @@ i18n
           },
           settings: {
             language: "语言",
-            title: "设置"
+            title: "设置",
+            languageDescription: "更改应用程序使用的语言",
+            selectLanguage: "选择语言",
+            selectLanguagePlaceholder: "请选择语言"
           },
           dashboard: {
             checkinStats: {
@@ -158,7 +167,10 @@ i18n
           },
           settings: {
             language: "言語",
-            title: "設定"
+            title: "設定",
+            languageDescription: "アプリケーションで使用する言語を変更する",
+            selectLanguage: "言語を選択",
+            selectLanguagePlaceholder: "言語を選択してください"
           },
           dashboard: {
             checkinStats: {
