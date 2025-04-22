@@ -51,8 +51,13 @@ export function CheckinStats({
   }, [recentCheckins]);
   
   // 格式化日期显示
-  const formatDate = (dateInput: Date | string) => {
+  const formatDate = (dateInput: Date | string | null | undefined) => {
     try {
+      // 確保有值
+      if (!dateInput) {
+        return "無日期";
+      }
+      
       // 確保我們有一個有效的日期物件
       const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
       
