@@ -21,7 +21,26 @@ i18n
             following: "Following",
             search: "Search",
             pageNotFound: "404 Page Not Found",
-            pageNotFoundMsg: "The page you are looking for does not exist."
+            pageNotFoundMsg: "The page you are looking for does not exist.",
+            allRightsReserved: "All rights reserved."
+          },
+          footer: {
+            description: "Connect fan identities across platforms, establishing exclusive connections between creators and fans.",
+            services: "Services",
+            creatorPages: "Creator Pages",
+            platformBinding: "Multi-platform Binding",
+            checkinSystem: "Check-in System",
+            dataAnalysis: "Data Analysis",
+            creatorResources: "Creator Resources",
+            creatorGuide: "Creator Guide",
+            communityManagement: "Community Management",
+            dataInterpretation: "Data Interpretation",
+            successStories: "Success Stories",
+            aboutUs: "About Us",
+            aboutFanHub: "About FanHub",
+            privacyPolicy: "Privacy Policy",
+            termsOfUse: "Terms of Use",
+            contactUs: "Contact Us"
           },
           settings: {
             language: "Language",
@@ -61,6 +80,14 @@ i18n
               today: "Today's Check-ins",
               yesterday: "Yesterday's Check-ins",
               highest: "Highest Record"
+            },
+            userStreaks: {
+              title: "Check-in Streaks",
+              description: "Your check-in streak records",
+              detailedDescription: "Your continuous check-in records with creators",
+              noStreaks: "No check-in records yet. Start checking in to build your streaks!",
+              creatorLabel: "Creator",
+              days: "days"
             }
           },
           languages: {
@@ -93,7 +120,26 @@ i18n
             following: "追蹤中",
             search: "搜尋",
             pageNotFound: "404 頁面未找到",
-            pageNotFoundMsg: "您所查找的頁面不存在。"
+            pageNotFoundMsg: "您所查找的頁面不存在。",
+            allRightsReserved: "版權所有。"
+          },
+          footer: {
+            description: "打通粉絲在各大平台的身分，建立創作者與粉絲的專屬連結。",
+            services: "服務",
+            creatorPages: "創作者專頁",
+            platformBinding: "多平台綁定",
+            checkinSystem: "簽到系統",
+            dataAnalysis: "數據分析",
+            creatorResources: "創作者資源",
+            creatorGuide: "創作者指南",
+            communityManagement: "社群經營",
+            dataInterpretation: "數據解讀",
+            successStories: "成功案例",
+            aboutUs: "關於我們",
+            aboutFanHub: "關於 FanHub",
+            privacyPolicy: "隱私政策",
+            termsOfUse: "使用條款",
+            contactUs: "聯絡我們"
           },
           settings: {
             language: "語言",
@@ -133,6 +179,14 @@ i18n
               today: "今日簽到",
               yesterday: "昨日簽到",
               highest: "歷史最高"
+            },
+            userStreaks: {
+              title: "簽到連續記錄",
+              description: "您的簽到連續記錄",
+              detailedDescription: "您在各個創作者的簽到連續記錄",
+              noStreaks: "暫無簽到記錄，開始簽到獲取連續記錄吧！",
+              creatorLabel: "創作者",
+              days: "天"
             }
           },
           languages: {
@@ -165,7 +219,26 @@ i18n
             following: "关注中",
             search: "搜索",
             pageNotFound: "404 页面未找到",
-            pageNotFoundMsg: "您所查找的页面不存在。"
+            pageNotFoundMsg: "您所查找的页面不存在。",
+            allRightsReserved: "版权所有。"
+          },
+          footer: {
+            description: "打通粉丝在各大平台的身份，建立创作者与粉丝的专属连接。",
+            services: "服务",
+            creatorPages: "创作者专页",
+            platformBinding: "多平台绑定",
+            checkinSystem: "签到系统",
+            dataAnalysis: "数据分析",
+            creatorResources: "创作者资源",
+            creatorGuide: "创作者指南",
+            communityManagement: "社群运营",
+            dataInterpretation: "数据解读",
+            successStories: "成功案例",
+            aboutUs: "关于我们",
+            aboutFanHub: "关于 FanHub",
+            privacyPolicy: "隐私政策",
+            termsOfUse: "使用条款",
+            contactUs: "联系我们"
           },
           settings: {
             language: "语言",
@@ -205,6 +278,14 @@ i18n
               today: "今日签到",
               yesterday: "昨日签到",
               highest: "历史最高"
+            },
+            userStreaks: {
+              title: "签到连续记录",
+              description: "您的签到连续记录",
+              detailedDescription: "您在各个创作者的签到连续记录",
+              noStreaks: "暂无签到记录，开始签到获取连续记录吧！",
+              creatorLabel: "创作者",
+              days: "天"
             }
           },
           languages: {
@@ -237,7 +318,26 @@ i18n
             following: "フォロー中",
             search: "検索",
             pageNotFound: "404 ページが見つかりません",
-            pageNotFoundMsg: "お探しのページは存在しません。"
+            pageNotFoundMsg: "お探しのページは存在しません。",
+            allRightsReserved: "全著作権所有。"
+          },
+          footer: {
+            description: "ファンの各プラットフォーム上のアイデンティティを連携し、クリエイターとファンの専用の繋がりを構築します。",
+            services: "サービス",
+            creatorPages: "クリエイターページ",
+            platformBinding: "マルチプラットフォーム連携",
+            checkinSystem: "チェックインシステム",
+            dataAnalysis: "データ分析",
+            creatorResources: "クリエイターリソース",
+            creatorGuide: "クリエイターガイド",
+            communityManagement: "コミュニティ運営",
+            dataInterpretation: "データ解釈",
+            successStories: "成功事例",
+            aboutUs: "会社概要",
+            aboutFanHub: "FanHubについて",
+            privacyPolicy: "プライバシーポリシー",
+            termsOfUse: "利用規約",
+            contactUs: "お問い合わせ"
           },
           settings: {
             language: "言語",

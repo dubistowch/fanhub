@@ -1,6 +1,9 @@
 import { Link } from "wouter";
+import { useTranslation } from "react-i18next";
 
 const Footer = () => {
+  const { t } = useTranslation();
+  
   return (
     <footer className="bg-gray-800 text-gray-300 py-10">
       <div className="container mx-auto px-4">
@@ -8,7 +11,7 @@ const Footer = () => {
           <div>
             <h3 className="text-white font-bold text-xl mb-4">FanHub</h3>
             <p className="text-gray-400">
-              打通粉絲在各大平台的身分，建立創作者與粉絲的專屬連結。
+              {t('footer.description')}
             </p>
             <div className="flex space-x-4 mt-4">
               <a href="#" className="text-gray-400 hover:text-white">
@@ -27,78 +30,78 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-4">服務</h4>
+            <h4 className="text-white font-semibold mb-4">{t('footer.services')}</h4>
             <ul className="space-y-2">
               <li>
                 <Link href="/discover" className="text-gray-400 hover:text-white">
-                  創作者專頁
+                  {t('footer.creatorPages')}
                 </Link>
               </li>
               <li>
                 <Link href="/profile" className="text-gray-400 hover:text-white">
-                  多平台綁定
+                  {t('footer.platformBinding')}
                 </Link>
               </li>
               <li>
                 <Link href="/discover" className="text-gray-400 hover:text-white">
-                  簽到系統
+                  {t('footer.checkinSystem')}
                 </Link>
               </li>
               <li>
                 <Link href="/dashboard" className="text-gray-400 hover:text-white">
-                  數據分析
+                  {t('footer.dataAnalysis')}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-4">創作者資源</h4>
+            <h4 className="text-white font-semibold mb-4">{t('footer.creatorResources')}</h4>
             <ul className="space-y-2">
               <li>
                 <a href="#" className="text-gray-400 hover:text-white">
-                  創作者指南
+                  {t('footer.creatorGuide')}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white">
-                  社群經營
+                  {t('footer.communityManagement')}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white">
-                  數據解讀
+                  {t('footer.dataInterpretation')}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white">
-                  成功案例
+                  {t('footer.successStories')}
                 </a>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-4">關於我們</h4>
+            <h4 className="text-white font-semibold mb-4">{t('footer.aboutUs')}</h4>
             <ul className="space-y-2">
               <li>
                 <a href="#" className="text-gray-400 hover:text-white">
-                  關於 FanHub
+                  {t('footer.aboutFanHub')}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white">
-                  隱私政策
+                  {t('footer.privacyPolicy')}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white">
-                  使用條款
+                  {t('footer.termsOfUse')}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white">
-                  聯絡我們
+                  {t('footer.contactUs')}
                 </a>
               </li>
             </ul>
@@ -106,7 +109,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-gray-700 mt-8 pt-8 text-sm text-gray-500 text-center">
-          <p>© {new Date().getFullYear()} FanHub. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} FanHub. {t('common.allRightsReserved')}</p>
         </div>
       </div>
     </footer>
