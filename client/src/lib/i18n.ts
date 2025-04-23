@@ -111,6 +111,17 @@ i18n
               bound: "Bound",
               bindAccount: "Bind Account",
               tip: "Binding more platform accounts makes it easier for creators to recognize your support!"
+            },
+            connected: {
+              title: "Connected Platforms",
+              connecting: "Connecting...",
+              linkSuccess: "Link Successful",
+              linkSuccessDetail: "Successfully linked {{provider}} account",
+              linkFailed: "Link Failed",
+              linkFailedDetail: "Unable to link platform account, please try again later",
+              linkFailedProviderDetail: "Unable to link {{provider}} account, please try again later",
+              platform: "platform",
+              tip: "Binding more platform accounts makes it easier for creators to recognize your support!"
             }
           }
         }
@@ -217,6 +228,17 @@ i18n
               title: "你的綁定狀態",
               bound: "已綁定",
               bindAccount: "綁定帳號",
+              tip: "綁定更多平台帳號可以讓創作者更容易辨認你的支持！"
+            },
+            connected: {
+              title: "連結平台",
+              connecting: "連結中...",
+              linkSuccess: "連結成功",
+              linkSuccessDetail: "已成功連結 {{provider}} 帳號",
+              linkFailed: "連結失敗",
+              linkFailedDetail: "無法連結平台帳號，請稍後再試",
+              linkFailedProviderDetail: "無法連結 {{provider}} 帳號，請稍後再試",
+              platform: "平台",
               tip: "綁定更多平台帳號可以讓創作者更容易辨認你的支持！"
             }
           }
@@ -325,6 +347,17 @@ i18n
               bound: "已绑定",
               bindAccount: "绑定账号",
               tip: "绑定更多平台账号可以让创作者更容易辨认你的支持！"
+            },
+            connected: {
+              title: "连接平台",
+              connecting: "连接中...",
+              linkSuccess: "连接成功",
+              linkSuccessDetail: "已成功连接 {{provider}} 账号",
+              linkFailed: "连接失败",
+              linkFailedDetail: "无法连接平台账号，请稍后再试",
+              linkFailedProviderDetail: "无法连接 {{provider}} 账号，请稍后再试",
+              platform: "平台",
+              tip: "绑定更多平台账号可以让创作者更容易辨认你的支持！"
             }
           }
         }
@@ -431,6 +464,17 @@ i18n
               title: "連携状況",
               bound: "連携済み",
               bindAccount: "アカウント連携",
+              tip: "より多くのプラットフォームアカウントを連携すると、クリエイターがあなたのサポートを認識しやすくなります！"
+            },
+            connected: {
+              title: "連携プラットフォーム",
+              connecting: "連携中...",
+              linkSuccess: "連携成功",
+              linkSuccessDetail: "{{provider}} アカウントの連携に成功しました",
+              linkFailed: "連携失敗",
+              linkFailedDetail: "プラットフォームアカウントを連携できません。後でもう一度お試しください",
+              linkFailedProviderDetail: "{{provider}} アカウントを連携できません。後でもう一度お試しください",
+              platform: "プラットフォーム",
               tip: "より多くのプラットフォームアカウントを連携すると、クリエイターがあなたのサポートを認識しやすくなります！"
             }
           }

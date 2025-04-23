@@ -6,6 +6,7 @@ import { signInWithOAuth } from "@/lib/auth";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { ExternalLink } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface ConnectedPlatformsProps {
   userId: number;
@@ -16,9 +17,10 @@ const ConnectedPlatforms = ({ userId, isOwnProfile = false }: ConnectedPlatforms
   const { toast } = useToast();
   const { refreshUser } = useAuth();
   const [isLinking, setIsLinking] = useState<OAuthProvider | null>(null);
+  const { t } = useTranslation();
 
   // Fetch user providers
-  const { data: providers = [] } = useQuery({
+  const { data: providers = [] } = useQuery<Array<{ provider: string, providerUsername?: string }>>({
     queryKey: ["/api/users", userId, "providers"],
     enabled: !!userId,
   });
@@ -44,8 +46,10 @@ const ConnectedPlatforms = ({ userId, isOwnProfile = false }: ConnectedPlatforms
           }
           
           toast({
-            title: "連結成功",
-            description: `已成功連結 ${provider ? OAUTH_PROVIDERS[provider].name : "平台"} 帳號`,
+            title: t('profile.connected.linkSuccess'),
+            description: t('profile.connected.linkSuccessDetail', { 
+              provider: provider ? OAUTH_PROVIDERS[provider].name : t('profile.connected.platform') 
+            }),
           });
           
           // Refresh user data to get the new provider
@@ -56,8 +60,8 @@ const ConnectedPlatforms = ({ userId, isOwnProfile = false }: ConnectedPlatforms
         } catch (error) {
           console.error("Error handling OAuth callback:", error);
           toast({
-            title: "連結失敗",
-            description: "無法連結平台帳號，請稍後再試",
+            title: t('profile.connected.linkFailed'),
+            description: t('profile.connected.linkFailedDetail'),
             variant: "destructive",
           });
         } finally {
@@ -67,7 +71,7 @@ const ConnectedPlatforms = ({ userId, isOwnProfile = false }: ConnectedPlatforms
     };
 
     handleOAuthCallback();
-  }, [toast, refreshUser]);
+  }, [toast, refreshUser, t]);
 
   const handleConnectPlatform = async (provider: OAuthProvider) => {
     try {
@@ -76,8 +80,10 @@ const ConnectedPlatforms = ({ userId, isOwnProfile = false }: ConnectedPlatforms
     } catch (error) {
       console.error(`Error connecting ${provider}:`, error);
       toast({
-        title: "連結失敗",
-        description: `無法連結 ${OAUTH_PROVIDERS[provider].name} 帳號，請稍後再試`,
+        title: t('profile.connected.linkFailed'),
+        description: t('profile.connected.linkFailedProviderDetail', {
+          provider: OAUTH_PROVIDERS[provider].name
+        }),
         variant: "destructive",
       });
       setIsLinking(null);
@@ -86,7 +92,7 @@ const ConnectedPlatforms = ({ userId, isOwnProfile = false }: ConnectedPlatforms
 
   return (
     <div className="bg-white rounded-lg p-6 border border-gray-200">
-      <h3 className="font-semibold text-lg mb-4">連結平台</h3>
+      <h3 className="font-semibold text-lg mb-4">{t('profile.connected.title')}</h3>
       <div className="space-y-3">
         {Object.keys(OAUTH_PROVIDERS).map((provider) => {
           const providerKey = provider as OAuthProvider;
@@ -103,7 +109,7 @@ const ConnectedPlatforms = ({ userId, isOwnProfile = false }: ConnectedPlatforms
               action={
                 isOwnProfile && !connectedProvider ? (
                   <div className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-2 py-1 rounded text-xs font-medium">
-                    {isLinking === providerKey ? "連結中..." : "綁定帳號"}
+                    {isLinking === providerKey ? t('profile.connected.connecting') : t('profile.platforms.bindAccount')}
                   </div>
                 ) : (
                   <ExternalLink className="h-4 w-4 text-accent" />
@@ -116,7 +122,7 @@ const ConnectedPlatforms = ({ userId, isOwnProfile = false }: ConnectedPlatforms
       
       {isOwnProfile && (
         <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100 text-sm text-blue-800">
-          <p>綁定更多平台帳號可以讓創作者更容易辨認你的支持！</p>
+          <p>{t('profile.connected.tip')}</p>
         </div>
       )}
     </div>
