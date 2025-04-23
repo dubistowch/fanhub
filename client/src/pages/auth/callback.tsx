@@ -72,8 +72,8 @@ export default function AuthCallback() {
           
           // 显示成功消息
           toast({
-            title: "登录成功",
-            description: `欢迎回来，${dbUser.username}！`,
+            title: t("auth.loginSuccess"),
+            description: `${t("auth.welcomeBack")}，${dbUser.username}！`,
           });
           
           // 重定向到主页
@@ -81,18 +81,18 @@ export default function AuthCallback() {
           setLocation("/");
         } catch (syncError) {
           console.error("Auth callback: Error syncing user:", syncError);
-          setError("Failed to sync user data: " + (syncError as Error).message);
+          setError(t("auth.syncError") + ": " + (syncError as Error).message);
           setProcessing(false);
           return;
         }
       } catch (err) {
         console.error("Error in OAuth callback:", err);
-        setError((err as Error).message || "An unknown error occurred");
+        setError((err as Error).message || t("auth.unknownError"));
         setProcessing(false);
         
         toast({
-          title: "登录失败",
-          description: (err as Error).message || "认证过程中发生错误，请重试",
+          title: t("auth.loginFailed"),
+          description: (err as Error).message || t("auth.authError"),
           variant: "destructive",
         });
       }
@@ -105,14 +105,14 @@ export default function AuthCallback() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4">
         <div className="bg-destructive/10 p-4 rounded-lg mb-4">
-          <h1 className="text-xl font-bold text-destructive mb-2">认证错误</h1>
+          <h1 className="text-xl font-bold text-destructive mb-2">{t("auth.authError")}</h1>
           <p className="text-sm text-destructive-foreground">{error}</p>
         </div>
         <button
           className="px-4 py-2 bg-primary text-primary-foreground rounded-md"
           onClick={() => setLocation("/login")}
         >
-          返回登录
+          {t("auth.backToLogin")}
         </button>
       </div>
     );
@@ -121,7 +121,7 @@ export default function AuthCallback() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <Loader2 className="h-10 w-10 text-primary animate-spin mb-4" />
-      <p className="text-lg">正在完成认证...</p>
+      <p className="text-lg">{t("auth.completingAuth")}</p>
     </div>
   );
 }

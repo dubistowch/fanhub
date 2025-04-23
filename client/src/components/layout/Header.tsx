@@ -31,7 +31,7 @@ const Header = () => {
       <header className="bg-white shadow-sm">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
           <span className="text-primary font-bold text-2xl">FanHub</span>
-          <span>加载中...</span>
+          <span>{t("auth.loading")}</span>
         </div>
       </header>
     );
