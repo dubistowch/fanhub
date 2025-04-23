@@ -6,10 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronRight } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
+import { useTranslation } from "react-i18next";
 
 const Home = () => {
   const { user } = useAuth();
   const [_, setLocation] = useLocation();
+  const { t } = useTranslation();
 
   // Redirect to login if not authenticated
   useEffect(() => {

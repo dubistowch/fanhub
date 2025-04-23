@@ -25,8 +25,16 @@
   "creator": {
     "become": "成為創作者",
     "followers": "粉絲",
-    "follow": "追蹤",
-    "following": "已追蹤",
+    "follow": {
+      "follow": "追蹤",
+      "following": "已追蹤",
+      "followSuccess": "追蹤成功",
+      "unfollowSuccess": "已取消追蹤",
+      "followSuccessDesc": "您已成功追蹤 {{name}}",
+      "unfollowSuccessDesc": "您已取消追蹤 {{name}}",
+      "actionFailed": "操作失敗"
+    },
+    "defaultTitle": "創作者",
     "checkin": "簽到",
     "checkedInToday": "今日已簽到",
     "streak": "連續簽到",

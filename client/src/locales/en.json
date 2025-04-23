@@ -25,8 +25,16 @@
   "creator": {
     "become": "Become a Creator",
     "followers": "Followers",
-    "follow": "Follow",
-    "following": "Following",
+    "follow": {
+      "follow": "Follow",
+      "following": "Following",
+      "followSuccess": "Follow Success",
+      "unfollowSuccess": "Unfollow Success",
+      "followSuccessDesc": "You are now following {{name}}",
+      "unfollowSuccessDesc": "You have unfollowed {{name}}",
+      "actionFailed": "Action Failed"
+    },
+    "defaultTitle": "Creator",
     "checkin": "Check-in",
     "checkedInToday": "Checked in Today",
     "streak": "Current Streak",

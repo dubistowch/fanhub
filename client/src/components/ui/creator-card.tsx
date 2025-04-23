@@ -20,7 +20,8 @@ const CreatorCard = ({ creator, onFollowToggle }: CreatorCardProps) => {
   const { toast } = useToast();
   const { t } = useTranslation();
   
-  const providerTypes = creator.user?.providers?.map(p => p.provider as OAuthProvider) || [];
+  // 確保 providers 欄位存在，並正確處理類型
+  const providerTypes = (creator.user as any)?.providers?.map((p: any) => p.provider as OAuthProvider) || [];
   
   // Handle follow/unfollow
   const followMutation = useMutation({
@@ -61,9 +62,7 @@ const CreatorCard = ({ creator, onFollowToggle }: CreatorCardProps) => {
     },
     onError: (error) => {
       toast({
-        title: isFollowing 
-          ? t("creator.follow.followFailed") 
-          : t("creator.follow.unfollowFailed"),
+        title: t("creator.follow.actionFailed"),
         description: (error as Error).message,
         variant: "destructive"
       });
@@ -103,7 +102,7 @@ const CreatorCard = ({ creator, onFollowToggle }: CreatorCardProps) => {
         </div>
         <div className="flex justify-between items-center">
           <div className="flex space-x-1">
-            {providerTypes.map((provider) => (
+            {providerTypes.map((provider: OAuthProvider) => (
               <div 
                 key={provider}
                 className={`w-7 h-7 rounded-full ${OAUTH_PROVIDERS[provider].color} flex items-center justify-center text-white`}
