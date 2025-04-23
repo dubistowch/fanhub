@@ -8,7 +8,9 @@
     "home": "首頁",
     "discover": "探索",
     "following": "追蹤中",
-    "search": "搜尋"
+    "search": "搜尋",
+    "loading": "載入中",
+    "unknownUser": "未知用戶"
   },
   "auth": {
     "email": "電子郵件",
@@ -20,7 +22,9 @@
     "alreadyHaveAccount": "已經有帳號了？",
     "forgotPassword": "忘記密碼？",
     "resetPassword": "重設密碼",
-    "signUpNow": "立即註冊"
+    "signUpNow": "立即註冊",
+    "pleaseLogin": "請先登入",
+    "goToLogin": "前往登入頁面"
   },
   "creator": {
     "become": "成為創作者",
@@ -39,7 +43,33 @@
     "checkedInToday": "今日已簽到",
     "streak": "連續簽到",
     "bio": "簡介",
-    "edit": "編輯資料"
+    "edit": "編輯資料",
+    "center": "創作者中心",
+    "centerSubtitle": "管理您的創作者資料及粉絲互動數據",
+    "overview": "概覽",
+    "followers": "粉絲",
+    "followersList": "粉絲列表",
+    "checkinData": "簽到數據",
+    "totalFollowers": "總粉絲數",
+    "weeklyGrowth": "本週增長 +{{count}}%",
+    "startBuildingCommunity": "開始建立您的社群",
+    "todayCheckins": "今日簽到數",
+    "percentOfFollowers": "占粉絲總數 {{percent}}%",
+    "platformCount": "已連結平台",
+    "connectMorePlatforms": "連結更多平台以擴大觸及範圍",
+    "weeklyCheckinTrend": "每週簽到趨勢",
+    "recentCheckins": "最近簽到",
+    "platformDistribution": "平台分佈",
+    "checkinStatistics": "簽到統計",
+    "checkinHistory": "簽到歷史",
+    "noCheckinRecords": "尚無簽到記錄",
+    "noFollowers": "尚無粉絲",
+    "shareCreatorPage": "分享您的創作者頁面，開始建立您的粉絲社群",
+    "notSetup": "尚未設置創作者資料",
+    "setupDescription": "您需要設置創作者資料以存取創作者中心",
+    "goToSetup": "前往設置創作者資料",
+    "loginToAccess": "請先登入以存取創作者中心",
+    "loadingData": "正在載入創作者數據..."
   },
   "checkin": {
     "stats": "簽到統計",

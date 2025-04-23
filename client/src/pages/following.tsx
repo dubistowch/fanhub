@@ -14,7 +14,7 @@ const Following = () => {
   const [activeTab, setActiveTab] = useState("all");
 
   // Fetch followed creators
-  const { data: followedCreators = [], isLoading } = useQuery({
+  const { data: followedCreators = [], isLoading } = useQuery<any[]>({
     queryKey: ["/api/users", user?.id, "following"],
     enabled: !!user,
   });

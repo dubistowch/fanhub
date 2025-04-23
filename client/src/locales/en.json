@@ -8,7 +8,9 @@
     "home": "Home",
     "discover": "Discover",
     "following": "Following",
-    "search": "Search"
+    "search": "Search",
+    "loading": "Loading",
+    "unknownUser": "Unknown User"
   },
   "auth": {
     "email": "Email",
@@ -20,7 +22,9 @@
     "alreadyHaveAccount": "Already have an account?",
     "forgotPassword": "Forgot password?",
     "resetPassword": "Reset Password",
-    "signUpNow": "Sign up now"
+    "signUpNow": "Sign up now",
+    "pleaseLogin": "Please Login",
+    "goToLogin": "Go to Login"
   },
   "creator": {
     "become": "Become a Creator",
@@ -39,7 +43,33 @@
     "checkedInToday": "Checked in Today",
     "streak": "Current Streak",
     "bio": "Bio",
-    "edit": "Edit Profile"
+    "edit": "Edit Profile",
+    "center": "Creator Center",
+    "centerSubtitle": "Manage your creator profile and monitor fan engagement",
+    "overview": "Overview",
+    "followers": "Followers",
+    "followersList": "Followers List",
+    "checkinData": "Check-in Data",
+    "totalFollowers": "Total Followers",
+    "weeklyGrowth": "+{{count}}% this week",
+    "startBuildingCommunity": "Start building your community",
+    "todayCheckins": "Today's Check-ins",
+    "percentOfFollowers": "{{percent}}% of followers",
+    "platformCount": "Connected Platforms",
+    "connectMorePlatforms": "Connect more platforms to reach more fans",
+    "weeklyCheckinTrend": "Weekly Check-in Trend",
+    "recentCheckins": "Recent Check-ins",
+    "platformDistribution": "Platform Distribution",
+    "checkinStatistics": "Check-in Statistics",
+    "checkinHistory": "Check-in History",
+    "noCheckinRecords": "No check-in records yet",
+    "noFollowers": "No followers yet",
+    "shareCreatorPage": "Share your creator page to start building your fan community",
+    "notSetup": "Creator Profile Not Set Up",
+    "setupDescription": "You need to set up your creator profile to access the creator dashboard",
+    "goToSetup": "Set Up Creator Profile",
+    "loginToAccess": "Please login to access the creator dashboard",
+    "loadingData": "Loading creator data..."
   },
   "checkin": {
     "stats": "Check-in Statistics",
