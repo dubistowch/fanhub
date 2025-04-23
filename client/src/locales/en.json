@@ -10,7 +10,8 @@
     "following": "Following",
     "search": "Search",
     "loading": "Loading",
-    "unknownUser": "Unknown User"
+    "unknownUser": "Unknown User",
+    "all": "All"
   },
   "auth": {
     "email": "Email",
@@ -42,6 +43,7 @@
     "checkin": "Check-in",
     "checkedInToday": "Checked in Today",
     "streak": "Current Streak",
+    "checkinStreakText": "{{days}} day streak",
     "bio": "Bio",
     "edit": "Edit Profile",
     "center": "Creator Center",
@@ -127,6 +129,18 @@
       "title": "Popular Creators"
     },
     "viewAll": "View All"
+  },
+  "following": {
+    "title": "Following",
+    "subtitle": "Keep up with your favorite creators and check in to support them",
+    "searchPlaceholder": "Search for followed creators...",
+    "noMatchingCreators": "No matching creators found",
+    "noFollowedCreators": "You're not following any creators yet",
+    "noCreatorsWithPlatform": "You're not following any creators on {{platform}}",
+    "tryDifferentSearch": "Try a different search term",
+    "goToDiscover": "Discover creators to follow",
+    "recentCheckins": "Recent Check-ins",
+    "noCheckinsToday": "None of your followed creators have check-ins today"
   },
   "discover": {
     "title": "Discover Creators",

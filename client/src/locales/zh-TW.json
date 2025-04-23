@@ -10,7 +10,8 @@
     "following": "追蹤中",
     "search": "搜尋",
     "loading": "載入中",
-    "unknownUser": "未知用戶"
+    "unknownUser": "未知用戶",
+    "all": "全部"
   },
   "auth": {
     "email": "電子郵件",
@@ -42,6 +43,7 @@
     "checkin": "簽到",
     "checkedInToday": "今日已簽到",
     "streak": "連續簽到",
+    "checkinStreakText": "連續簽到{{days}}天",
     "bio": "簡介",
     "edit": "編輯資料",
     "center": "創作者中心",
@@ -127,6 +129,18 @@
       "title": "熱門創作者"
     },
     "viewAll": "查看全部"
+  },
+  "following": {
+    "title": "追蹤中",
+    "subtitle": "關注您喜愛的創作者並簽到支持他們",
+    "searchPlaceholder": "搜尋已追蹤的創作者...",
+    "noMatchingCreators": "找不到符合條件的創作者",
+    "noFollowedCreators": "您尚未追蹤任何創作者",
+    "noCreatorsWithPlatform": "您尚未追蹤 {{platform}} 平台上的任何創作者",
+    "tryDifferentSearch": "嘗試其他搜尋關鍵字",
+    "goToDiscover": "去探索並追蹤創作者",
+    "recentCheckins": "最近簽到",
+    "noCheckinsToday": "您追蹤的創作者今天都沒有簽到記錄"
   },
   "discover": {
     "title": "發現創作者",
