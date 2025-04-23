@@ -81,5 +81,21 @@
     "zh-TW": "繁體中文",
     "zh-CN": "簡體中文",
     "ja": "日文"
+  },
+  "home": {
+    "welcome": "歡迎回來，{{username}}",
+    "welcomeCard": {
+      "title": "跨平台社群聚合",
+      "description": "連結你的社群平台帳號，統一管理你的粉絲互動與創作者訂閱！",
+      "exploreButton": "探索創作者",
+      "linkAccountButton": "連結平台帳號"
+    },
+    "following": {
+      "title": "我的追蹤"
+    },
+    "popular": {
+      "title": "熱門創作者"
+    },
+    "viewAll": "查看全部"
   }
 }

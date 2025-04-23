@@ -4,6 +4,7 @@ import CreatorCard from "@/components/ui/creator-card";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
 import { Search } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Discover = () => {
   const { user } = useAuth();

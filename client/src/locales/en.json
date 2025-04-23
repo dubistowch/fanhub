@@ -81,5 +81,21 @@
     "zh-TW": "Traditional Chinese",
     "zh-CN": "Simplified Chinese",
     "ja": "Japanese"
+  },
+  "home": {
+    "welcome": "Welcome back, {{username}}",
+    "welcomeCard": {
+      "title": "Cross-platform Community Hub",
+      "description": "Connect your social media accounts to manage fan interactions and creator subscriptions!",
+      "exploreButton": "Explore Creators",
+      "linkAccountButton": "Link Accounts"
+    },
+    "following": {
+      "title": "My Following"
+    },
+    "popular": {
+      "title": "Popular Creators"
+    },
+    "viewAll": "View All"
   }
 }
