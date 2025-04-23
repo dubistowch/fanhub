@@ -71,7 +71,7 @@ const Following = () => {
           className="w-full max-w-3xl"
         >
           <TabsList className="grid grid-cols-5 mb-8">
-            <TabsTrigger value="all">全部</TabsTrigger>
+            <TabsTrigger value="all">{t("common.all")}</TabsTrigger>
             <TabsTrigger value="google">YouTube</TabsTrigger>
             <TabsTrigger value="twitch">Twitch</TabsTrigger>
             <TabsTrigger value="discord">Discord</TabsTrigger>
@@ -97,20 +97,20 @@ const Following = () => {
                   <i className="fas fa-heart text-4xl text-gray-400 mb-4"></i>
                   <h3 className="text-xl font-semibold mb-2">
                     {searchTerm 
-                      ? "找不到相符的創作者" 
+                      ? t("following.noMatchingCreators") 
                       : activeTab === "all" 
-                        ? "您尚未追蹤任何創作者" 
-                        : `您尚未追蹤任何連結了 ${
-                            activeTab === "google" ? "YouTube" : 
-                            activeTab === "twitch" ? "Twitch" : 
-                            activeTab === "discord" ? "Discord" : "Twitter"
-                          } 的創作者`
+                        ? t("following.noFollowedCreators") 
+                        : t("following.noCreatorsWithPlatform", {
+                            platform: activeTab === "google" ? "YouTube" : 
+                                      activeTab === "twitch" ? "Twitch" : 
+                                      activeTab === "discord" ? "Discord" : "Twitter"
+                          })
                     }
                   </h3>
                   <p className="text-gray-500">
                     {searchTerm 
-                      ? "請嘗試不同的搜尋條件" 
-                      : "前往發現頁面尋找感興趣的創作者"
+                      ? t("following.tryDifferentSearch") 
+                      : t("following.goToDiscover")
                     }
                   </p>
                 </div>
@@ -123,7 +123,7 @@ const Following = () => {
       {/* Recent check-ins section */}
       {followedCreators.length > 0 && (
         <div className="mt-16">
-          <h2 className="text-2xl font-bold mb-6">最近簽到</h2>
+          <h2 className="text-2xl font-bold mb-6">{t("following.recentCheckins")}</h2>
           <div className="bg-white rounded-xl shadow-sm p-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {followedCreators
@@ -136,13 +136,13 @@ const Following = () => {
                     </div>
                     <div>
                       <p className="font-medium">{creator.name}</p>
-                      <p className="text-sm text-gray-500">已連續簽到 {creator.checkinStreak} 天</p>
+                      <p className="text-sm text-gray-500">{t("creator.checkinStreakText", { days: creator.checkinStreak })}</p>
                     </div>
                   </div>
                 ))}
               {followedCreators.filter((creator: any) => creator.hasCheckedInToday).length === 0 && (
                 <div className="col-span-3 text-center py-6 text-gray-500">
-                  今天您還沒有為任何創作者簽到，去支持一下您喜愛的創作者吧！
+                  {t("following.noCheckinsToday")}
                 </div>
               )}
             </div>
