@@ -9,9 +9,10 @@ import { useTranslation } from "react-i18next";
 const Discover = () => {
   const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
+  const { t } = useTranslation();
 
   // Fetch all creators
-  const { data: creators = [], isLoading } = useQuery({
+  const { data: creators = [], isLoading } = useQuery<any[]>({
     queryKey: ["/api/creators", { userId: user?.id }],
     enabled: !!user,
   });
@@ -30,9 +31,9 @@ const Discover = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col items-center mb-8">
-        <h1 className="text-3xl font-bold mb-2">發現創作者</h1>
+        <h1 className="text-3xl font-bold mb-2">{t("discover.title")}</h1>
         <p className="text-gray-500 mb-6 text-center">
-          探索並追蹤您喜愛的創作者，通過簽到支持他們的創作
+          {t("discover.description")}
         </p>
         
         {/* Search bar */}
@@ -42,7 +43,7 @@ const Discover = () => {
           </div>
           <Input
             type="text"
-            placeholder="搜尋創作者..."
+            placeholder={t("discover.searchPlaceholder")}
             className="pl-10 w-full"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -68,12 +69,12 @@ const Discover = () => {
           <div className="bg-gray-100 p-8 rounded-lg inline-block">
             <i className="fas fa-search text-4xl text-gray-400 mb-4"></i>
             <h3 className="text-xl font-semibold mb-2">
-              {searchTerm ? "找不到相符的創作者" : "目前還沒有創作者"}
+              {searchTerm ? t("discover.noMatchingCreators") : t("discover.noCreatorsYet")}
             </h3>
             <p className="text-gray-500">
               {searchTerm
-                ? "請嘗試不同的搜尋條件"
-                : "建立您的創作者專頁，成為第一個創作者！"}
+                ? t("discover.tryDifferentSearch")
+                : t("discover.becomeFirstCreator")}
             </p>
           </div>
         </div>
@@ -81,9 +82,14 @@ const Discover = () => {
 
       {/* Categories Section (example) */}
       <div className="mt-16">
-        <h2 className="text-2xl font-bold mb-6">創作者分類</h2>
+        <h2 className="text-2xl font-bold mb-6">{t("discover.categories")}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {["遊戲實況", "音樂創作", "科技評論", "美食烹飪"].map((category, index) => (
+          {[
+            t("discover.categoryList.gaming"),
+            t("discover.categoryList.music"),
+            t("discover.categoryList.tech"),
+            t("discover.categoryList.food")
+          ].map((category, index) => (
             <div
               key={index}
               className="bg-gradient-to-r from-primary-dark to-primary-light h-32 rounded-xl flex items-center justify-center cursor-pointer hover:shadow-md transition-shadow"

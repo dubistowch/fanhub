@@ -97,5 +97,21 @@
       "title": "Popular Creators"
     },
     "viewAll": "View All"
+  },
+  "discover": {
+    "title": "Discover Creators",
+    "description": "Explore and follow creators you love, support them by checking in",
+    "searchPlaceholder": "Search creators...",
+    "noMatchingCreators": "No matching creators found",
+    "noCreatorsYet": "No creators yet",
+    "tryDifferentSearch": "Try different search terms",
+    "becomeFirstCreator": "Create your creator profile and be the first one!",
+    "categories": "Creator Categories",
+    "categoryList": {
+      "gaming": "Gaming",
+      "music": "Music",
+      "tech": "Tech Reviews",
+      "food": "Food & Cooking"
+    }
   }
 }

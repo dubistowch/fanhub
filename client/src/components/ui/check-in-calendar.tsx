@@ -94,15 +94,15 @@ export function CheckinCalendar({
         <Card className="flex-1">
           <CardHeader className="pb-4">
             <div className="flex justify-between items-center">
-              <CardTitle>签到日历</CardTitle>
+              <CardTitle>{t("checkin.calendar")}</CardTitle>
               {userHasCheckedIn && (
                 <Badge variant="outline" className="bg-primary/10 text-primary">
                   <CheckCheck className="mr-1 h-3 w-3" />
-                  今日已签到
+                  {t("creator.checkedInToday")}
                 </Badge>
               )}
             </div>
-            <CardDescription>选择日期查看签到状态</CardDescription>
+            <CardDescription>{t("checkin.selectDateToViewStatus")}</CardDescription>
           </CardHeader>
           <CardContent>
             <Calendar
@@ -117,8 +117,8 @@ export function CheckinCalendar({
         
         <Card className="flex-1">
           <CardHeader>
-            <CardTitle>签到信息</CardTitle>
-            <CardDescription>您的签到统计和记录</CardDescription>
+            <CardTitle>{t("checkin.info")}</CardTitle>
+            <CardDescription>{t("checkin.statsAndRecords")}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="flex items-center space-x-4">
@@ -126,8 +126,8 @@ export function CheckinCalendar({
                 <CalendarClock className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <p className="text-sm font-medium">今日日期</p>
-                <p className="text-xl">{format(new Date(), "yyyy年MM月dd日")}</p>
+                <p className="text-sm font-medium">{t("checkin.today")}</p>
+                <p className="text-xl">{format(new Date(), "yyyy/MM/dd")}</p>
               </div>
             </div>
             
@@ -136,8 +136,8 @@ export function CheckinCalendar({
                 <Flame className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <p className="text-sm font-medium">连续签到</p>
-                <p className="text-xl">{streak} 天</p>
+                <p className="text-sm font-medium">{t("creator.streak")}</p>
+                <p className="text-xl">{streak} {t("checkin.days")}</p>
               </div>
             </div>
             
@@ -147,14 +147,14 @@ export function CheckinCalendar({
                 onClick={handleCheckIn}
                 disabled={isCheckingIn || !user?.id}
               >
-                {isCheckingIn ? "签到中..." : "立即签到"}
+                {isCheckingIn ? t("checkin.checkingIn") : t("checkin.checkInNow")}
               </Button>
             )}
             
             {userHasCheckedIn && (
               <Button className="w-full" variant="outline" disabled>
                 <CheckCheck className="mr-2 h-4 w-4" />
-                今日已签到
+                {t("creator.checkedInToday")}
               </Button>
             )}
           </CardContent>

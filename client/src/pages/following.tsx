@@ -5,9 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/context/AuthContext";
 import { Search } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Following = () => {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("all");
 
@@ -43,9 +45,9 @@ const Following = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col items-center mb-8">
-        <h1 className="text-3xl font-bold mb-2">我的追蹤</h1>
+        <h1 className="text-3xl font-bold mb-2">{t("following.title")}</h1>
         <p className="text-gray-500 mb-6 text-center">
-          查看與管理您追蹤的創作者
+          {t("following.subtitle")}
         </p>
         
         {/* Search and filter bar */}
@@ -55,7 +57,7 @@ const Following = () => {
           </div>
           <Input
             type="text"
-            placeholder="搜尋已追蹤的創作者..."
+            placeholder={t("following.searchPlaceholder")}
             className="pl-10 w-full"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}

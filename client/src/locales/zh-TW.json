@@ -97,5 +97,21 @@
       "title": "熱門創作者"
     },
     "viewAll": "查看全部"
+  },
+  "discover": {
+    "title": "發現創作者",
+    "description": "探索並追蹤您喜愛的創作者，通過簽到支持他們的創作",
+    "searchPlaceholder": "搜尋創作者...",
+    "noMatchingCreators": "找不到相符的創作者",
+    "noCreatorsYet": "目前還沒有創作者",
+    "tryDifferentSearch": "請嘗試不同的搜尋條件",
+    "becomeFirstCreator": "建立您的創作者專頁，成為第一個創作者！",
+    "categories": "創作者分類",
+    "categoryList": {
+      "gaming": "遊戲實況",
+      "music": "音樂創作",
+      "tech": "科技評論",
+      "food": "美食烹飪"
+    }
   }
 }
