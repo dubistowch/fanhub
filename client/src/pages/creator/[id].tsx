@@ -44,14 +44,14 @@ export default function CreatorProfile() {
       queryClient.invalidateQueries({ queryKey: ["/api/creators", creatorId] });
       
       toast({
-        title: "已关注",
-        description: `你现在已经关注了 ${creator?.name}`,
+        title: t('creator.follow.followSuccess'),
+        description: t('creator.follow.followSuccessDesc', { name: creator?.name }),
         duration: 3000,
       });
     },
     onError: (error) => {
       toast({
-        title: "关注失败",
+        title: t('creator.follow.followFailed'),
         description: (error as Error).message,
         variant: "destructive",
         duration: 3000,
@@ -72,14 +72,14 @@ export default function CreatorProfile() {
       queryClient.invalidateQueries({ queryKey: ["/api/creators", creatorId] });
       
       toast({
-        title: "已取消关注",
-        description: `你已经取消关注 ${creator?.name}`,
+        title: t('creator.follow.unfollowSuccess'),
+        description: t('creator.follow.unfollowSuccessDesc', { name: creator?.name }),
         duration: 3000,
       });
     },
     onError: (error) => {
       toast({
-        title: "取消关注失败",
+        title: t('creator.follow.unfollowFailed'),
         description: (error as Error).message,
         variant: "destructive",
         duration: 3000,
@@ -91,8 +91,8 @@ export default function CreatorProfile() {
   const handleFollowToggle = () => {
     if (!user) {
       toast({
-        title: "需要登录",
-        description: "请先登录才能关注创作者",
+        title: t('creator.follow.loginRequired'),
+        description: t('creator.follow.loginRequiredDesc'),
         variant: "destructive",
         duration: 3000,
       });
@@ -160,7 +160,7 @@ export default function CreatorProfile() {
             <div className="mt-4 md:mt-0 flex items-center space-x-2">
               <div className="flex items-center space-x-1 text-sm">
                 <Users className="w-4 h-4" />
-                <span>{creator.followerCount || 0} 位粉丝</span>
+                <span>{t('creator.profile.followersCount', { count: creator.followerCount || 0 })}</span>
               </div>
               
               {user && user.id !== creator.userId && (
@@ -170,18 +170,18 @@ export default function CreatorProfile() {
                   disabled={followMutation.isPending || unfollowMutation.isPending}
                 >
                   {followMutation.isPending ? (
-                    "关注中..."
+                    t('creator.follow.followingInProgress')
                   ) : unfollowMutation.isPending ? (
-                    "取消关注中..."
+                    t('creator.follow.unfollowingInProgress')
                   ) : creator.isFollowedByUser ? (
                     <>
                       <UserMinus className="mr-2 h-4 w-4" />
-                      已关注
+                      {t('creator.follow.following')}
                     </>
                   ) : (
                     <>
                       <UserPlus className="mr-2 h-4 w-4" />
-                      关注
+                      {t('creator.follow.follow')}
                     </>
                   )}
                 </Button>
@@ -198,22 +198,22 @@ export default function CreatorProfile() {
         <TabsList className="mb-6">
           <TabsTrigger value="about">
             <Globe className="mr-2 h-4 w-4" />
-            关于
+            {t('creator.tabs.about')}
           </TabsTrigger>
           <TabsTrigger value="stats">
             <Users className="mr-2 h-4 w-4" />
-            签到统计
+            {t('creator.tabs.stats')}
           </TabsTrigger>
         </TabsList>
         
         <TabsContent value="about" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>创作者简介</CardTitle>
-              <CardDescription>了解更多关于创作者的信息</CardDescription>
+              <CardTitle>{t('creator.profile.bio')}</CardTitle>
+              <CardDescription>{t('creator.profile.bioDescription')}</CardDescription>
             </CardHeader>
             <CardContent>
-              <p>{creator.bio || "这个创作者很懒，还没有填写简介..."}</p>
+              <p>{creator.bio || t('creator.profile.emptyBio')}</p>
             </CardContent>
           </Card>
           
