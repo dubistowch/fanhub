@@ -10,10 +10,12 @@ import { formatDistanceToNow } from "date-fns";
 import { zhTW } from "date-fns/locale";
 import { Link } from "wouter";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { useTranslation } from "react-i18next";
 
 const Dashboard = () => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("overview");
 
   // Mock data for stats - can be replaced with real data later
@@ -106,11 +108,11 @@ const Dashboard = () => {
         <Card>
           <CardContent className="p-8">
             <div className="text-center">
-              <h2 className="text-xl font-medium mb-2">請先登入</h2>
-              <p className="text-gray-500">您需要先登入才能訪問創作者中心</p>
+              <h2 className="text-xl font-medium mb-2">{t("auth.pleaseLogin")}</h2>
+              <p className="text-gray-500">{t("creator.loginToAccess")}</p>
               <Link href="/login" className="inline-block mt-4">
                 <button className="bg-primary text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition">
-                  前往登入
+                  {t("auth.goToLogin")}
                 </button>
               </Link>
             </div>
@@ -127,8 +129,8 @@ const Dashboard = () => {
         <Card>
           <CardContent className="p-8">
             <div className="text-center">
-              <h2 className="text-xl font-medium mb-2">載入中...</h2>
-              <p className="text-gray-500">正在載入創作者資料</p>
+              <h2 className="text-xl font-medium mb-2">{t("common.loading")}</h2>
+              <p className="text-gray-500">{t("creator.loadingData")}</p>
             </div>
           </CardContent>
         </Card>
@@ -143,13 +145,13 @@ const Dashboard = () => {
         <Card>
           <CardContent className="p-8 flex flex-col items-center justify-center">
             <div className="text-center space-y-4">
-              <h2 className="text-2xl font-bold">您尚未設定創作者帳號</h2>
+              <h2 className="text-2xl font-bold">{t("creator.notSetup")}</h2>
               <p className="text-gray-500">
-                建立您的創作者帳號，開始連接您的粉絲社群。
+                {t("creator.setupDescription")}
               </p>
               <Link href="/profile" className="inline-block mt-4">
                 <button className="bg-primary text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition">
-                  前往設定
+                  {t("creator.goToSetup")}
                 </button>
               </Link>
             </div>
@@ -205,22 +207,22 @@ const Dashboard = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold">創作者中心</h1>
-        <p className="text-gray-500">管理你的社群互動，了解粉絲行為</p>
+        <h1 className="text-3xl font-bold">{t("creator.center")}</h1>
+        <p className="text-gray-500">{t("creator.centerSubtitle")}</p>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="mb-6">
-          <TabsTrigger value="overview">總覽</TabsTrigger>
-          <TabsTrigger value="followers">粉絲</TabsTrigger>
-          <TabsTrigger value="checkins">簽到數據</TabsTrigger>
+          <TabsTrigger value="overview">{t("creator.overview")}</TabsTrigger>
+          <TabsTrigger value="followers">{t("creator.followers")}</TabsTrigger>
+          <TabsTrigger value="checkins">{t("creator.checkinData")}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-base font-medium">總粉絲數</CardTitle>
+                <CardTitle className="text-base font-medium">{t("creator.totalFollowers")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold">
@@ -234,7 +236,7 @@ const Dashboard = () => {
 
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-base font-medium">今日簽到數</CardTitle>
+                <CardTitle className="text-base font-medium">{t("creator.todayCheckins")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold">
@@ -248,7 +250,7 @@ const Dashboard = () => {
 
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-base font-medium">平台連結數</CardTitle>
+                <CardTitle className="text-base font-medium">{t("creator.platformCount")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold">{user.providers?.length || 0}</div>
