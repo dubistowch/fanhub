@@ -24,6 +24,7 @@ import { useTranslation } from "react-i18next";
 const Profile = () => {
   const { user, refreshUser } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const [username, setUsername] = useState(user?.username || "");
   const [bio, setBio] = useState(user?.bio || "");
@@ -72,13 +73,13 @@ const Profile = () => {
       await refreshUser();
       
       toast({
-        title: "個人資料已更新",
-        description: "您的個人資料已成功更新",
+        title: t("profile.update.success"),
+        description: t("profile.update.successDescription"),
       });
     },
     onError: (error) => {
       toast({
-        title: "更新失敗",
+        title: t("profile.update.failed"),
         description: (error as Error).message,
         variant: "destructive",
       });
@@ -102,8 +103,8 @@ const Profile = () => {
       queryClient.invalidateQueries({ queryKey: ["/api/creators", user?.id] });
       
       toast({
-        title: "創作者帳號已建立",
-        description: "您的創作者帳號已成功建立",
+        title: t("profile.creator.created"),
+        description: t("profile.creator.createdDescription"),
       });
       
       // Reset form
@@ -112,7 +113,7 @@ const Profile = () => {
     },
     onError: (error) => {
       toast({
-        title: "建立失敗",
+        title: t("profile.creator.failed"),
         description: (error as Error).message,
         variant: "destructive",
       });
@@ -130,8 +131,8 @@ const Profile = () => {
     if (createCreatorMutation.isPending) return;
     if (!creatorName.trim()) {
       toast({
-        title: "請填寫創作者名稱",
-        description: "創作者名稱不能為空",
+        title: t("profile.creator.nameRequired"),
+        description: t("profile.creator.nameCannotBeEmpty"),
         variant: "destructive",
       });
       return;
@@ -148,8 +149,8 @@ const Profile = () => {
           {/* User Profile Card */}
           <Card>
             <CardHeader>
-              <CardTitle>個人資料</CardTitle>
-              <CardDescription>更新您的個人資訊與平台設定</CardDescription>
+              <CardTitle>{t("profile.title")}</CardTitle>
+              <CardDescription>{t("profile.description")}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex items-center gap-4">
@@ -167,7 +168,7 @@ const Profile = () => {
 
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="username">使用者名稱</Label>
+                  <Label htmlFor="username">{t("profile.username")}</Label>
                   <Input
                     id="username"
                     value={username}
@@ -176,13 +177,13 @@ const Profile = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="bio">個人介紹</Label>
+                  <Label htmlFor="bio">{t("profile.bio")}</Label>
                   <Textarea
                     id="bio"
                     rows={4}
                     value={bio}
                     onChange={(e) => setBio(e.target.value)}
-                    placeholder="簡短介紹一下你自己..."
+                    placeholder={t("profile.bioPlaceholder")}
                   />
                 </div>
 
@@ -190,7 +191,7 @@ const Profile = () => {
                   onClick={handleUpdateProfile}
                   disabled={updateProfileMutation.isPending}
                 >
-                  {updateProfileMutation.isPending ? "更新中..." : "更新個人資料"}
+                  {updateProfileMutation.isPending ? t("profile.updating") : t("profile.updateProfile")}
                 </Button>
               </div>
             </CardContent>
@@ -200,12 +201,12 @@ const Profile = () => {
           {!creator && (
             <Card>
               <CardHeader>
-                <CardTitle>成為創作者</CardTitle>
-                <CardDescription>建立您的創作者專頁，讓粉絲能夠關注您</CardDescription>
+                <CardTitle>{t("profile.creator.become")}</CardTitle>
+                <CardDescription>{t("profile.creator.description")}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="creatorName">創作者名稱</Label>
+                  <Label htmlFor="creatorName">{t("profile.creator.name")}</Label>
                   <Input
                     id="creatorName"
                     value={creatorName}
@@ -215,13 +216,13 @@ const Profile = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="creatorBio">創作者介紹</Label>
+                  <Label htmlFor="creatorBio">{t("profile.creator.bio")}</Label>
                   <Textarea
                     id="creatorBio"
                     rows={4}
                     value={creatorBio}
                     onChange={(e) => setCreatorBio(e.target.value)}
-                    placeholder={bio || "介紹一下您的創作內容..."}
+                    placeholder={bio || t("profile.creator.bioPlaceholder")}
                   />
                 </div>
 
@@ -229,7 +230,9 @@ const Profile = () => {
                   onClick={handleCreateCreator}
                   disabled={createCreatorMutation.isPending}
                 >
-                  {createCreatorMutation.isPending ? "建立中..." : "建立創作者帳號"}
+                  {createCreatorMutation.isPending 
+                    ? t("profile.creator.creating") 
+                    : t("profile.creator.create")}
                 </Button>
               </CardContent>
             </Card>
@@ -244,19 +247,21 @@ const Profile = () => {
           {creator && (
             <Card>
               <CardHeader>
-                <CardTitle>您的創作者專頁</CardTitle>
+                <CardTitle>{t("profile.creatorPage.title")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium">{creator.name}</p>
-                    <p className="text-sm text-gray-500">{creator.followerCount || 0} 位粉絲</p>
+                    <p className="text-sm text-gray-500">
+                      {t("creator.profile.followersCount", { count: creator.followerCount || 0 })}
+                    </p>
                   </div>
                   <Button 
                     variant="outline" 
                     onClick={() => window.location.href = `/creator/${creator.id}`}
                   >
-                    查看專頁
+                    {t("profile.creatorPage.view")}
                   </Button>
                 </div>
               </CardContent>

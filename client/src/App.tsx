@@ -15,7 +15,7 @@ import Discover from "@/pages/discover";
 import Following from "@/pages/following";
 import Settings from "@/pages/settings";
 import AuthCallback from "@/pages/auth/callback";
-import TestAuth from "@/pages/test-auth";
+
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { useEffect, Suspense } from "react";
 // i18n
@@ -31,7 +31,7 @@ function ProtectedRoutes() {
     console.log("ProtectedRoutes:", { user, isLoading, location });
     
     // 排除不需要认证的路由
-    const publicRoutes = ["/login", "/auth/callback", "/test-auth"];
+    const publicRoutes = ["/login", "/auth/callback"];
     
     // 如果已经在登录页面，不需要重定向
     if (location === "/login") {
@@ -57,7 +57,6 @@ function ProtectedRoutes() {
       <Route path="/following" component={Following} />
       <Route path="/settings" component={Settings} />
       <Route path="/auth/callback" component={AuthCallback} />
-      <Route path="/test-auth" component={TestAuth} />
       <Route component={NotFound} />
     </Switch>
   );

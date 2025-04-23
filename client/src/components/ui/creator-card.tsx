@@ -8,6 +8,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { queryClient } from "@/lib/queryClient";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "react-i18next";
 
 interface CreatorCardProps {
   creator: CreatorWithDetails;
@@ -17,6 +18,7 @@ interface CreatorCardProps {
 const CreatorCard = ({ creator, onFollowToggle }: CreatorCardProps) => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
   
   const providerTypes = creator.user?.providers?.map(p => p.provider as OAuthProvider) || [];
   
@@ -48,14 +50,20 @@ const CreatorCard = ({ creator, onFollowToggle }: CreatorCardProps) => {
       onFollowToggle?.(creator.id, isFollowing);
       
       toast({
-        title: isFollowing ? "追蹤成功" : "已取消追蹤",
-        description: isFollowing ? "您已成功追蹤此創作者" : "您已取消追蹤此創作者",
+        title: isFollowing 
+          ? t("creator.follow.followSuccess") 
+          : t("creator.follow.unfollowSuccess"),
+        description: isFollowing 
+          ? t("creator.follow.followSuccessDesc", { name: creator.name }) 
+          : t("creator.follow.unfollowSuccessDesc", { name: creator.name }),
         variant: "default"
       });
     },
     onError: (error) => {
       toast({
-        title: "操作失敗",
+        title: isFollowing 
+          ? t("creator.follow.followFailed") 
+          : t("creator.follow.unfollowFailed"),
         description: (error as Error).message,
         variant: "destructive"
       });
@@ -90,7 +98,7 @@ const CreatorCard = ({ creator, onFollowToggle }: CreatorCardProps) => {
             <Link href={`/creator/${creator.id}`}>
               <h3 className="font-bold hover:text-primary cursor-pointer">{creator.name}</h3>
             </Link>
-            <div className="text-sm text-gray-500">{creator.bio?.substring(0, 24) || "創作者"}</div>
+            <div className="text-sm text-gray-500">{creator.bio?.substring(0, 24) || t("creator.defaultTitle")}</div>
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -112,7 +120,7 @@ const CreatorCard = ({ creator, onFollowToggle }: CreatorCardProps) => {
             disabled={followMutation.isPending}
           >
             <i className={`fas fa-${creator.isFollowedByUser ? "check" : "plus"} mr-1 text-xs`}></i>
-            {creator.isFollowedByUser ? "已追蹤" : "追蹤"}
+            {creator.isFollowedByUser ? t("creator.follow.following") : t("creator.follow.follow")}
           </Button>
         </div>
       </div>
