@@ -314,7 +314,7 @@ const Dashboard = () => {
                             </AvatarFallback>
                           </Avatar>
                           <div>
-                            <p className="text-sm font-medium">{checkin.user?.username || '未知用戶'}</p>
+                            <p className="text-sm font-medium">{checkin.user?.username || t("common.unknownUser")}</p>
                           </div>
                         </div>
                         <div className="text-xs text-gray-500">
@@ -324,7 +324,7 @@ const Dashboard = () => {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-4 text-gray-500">尚無簽到記錄</div>
+                  <div className="text-center py-4 text-gray-500">{t("creator.noCheckinRecords")}</div>
                 )}
               </CardContent>
             </Card>
@@ -412,7 +412,7 @@ const Dashboard = () => {
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <p className="font-medium">{follower.username || '未知用戶'}</p>
+                          <p className="font-medium">{follower.username || t("common.unknownUser")}</p>
                           <p className="text-xs text-gray-500">{follower.email || ''}</p>
                         </div>
                       </div>
@@ -436,8 +436,8 @@ const Dashboard = () => {
                 </div>
               ) : (
                 <div className="text-center py-8 text-gray-500">
-                  <p>尚無粉絲</p>
-                  <p className="text-sm mt-2">分享您的創作者頁面，開始建立您的粉絲社群</p>
+                  <p>{t("creator.noFollowers")}</p>
+                  <p className="text-sm mt-2">{t("creator.shareCreatorPage")}</p>
                 </div>
               )}
             </CardContent>
@@ -447,7 +447,7 @@ const Dashboard = () => {
         <TabsContent value="checkins">
           <Card>
             <CardHeader>
-              <CardTitle>簽到統計</CardTitle>
+              <CardTitle>{t("creator.checkinStatistics")}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="h-96">
@@ -474,7 +474,7 @@ const Dashboard = () => {
           
           <Card className="mt-6">
             <CardHeader>
-              <CardTitle>簽到歷史</CardTitle>
+              <CardTitle>{t("creator.checkinHistory")}</CardTitle>
             </CardHeader>
             <CardContent>
               {isCheckinsLoading ? (
@@ -495,7 +495,7 @@ const Dashboard = () => {
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <p className="text-sm font-medium">{checkin.user?.username || '未知用戶'}</p>
+                          <p className="text-sm font-medium">{checkin.user?.username || t("common.unknownUser")}</p>
                         </div>
                       </div>
                       <div>
@@ -507,7 +507,7 @@ const Dashboard = () => {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-4 text-gray-500">尚無簽到記錄</div>
+                <div className="text-center py-4 text-gray-500">{t("creator.noCheckinRecords")}</div>
               )}
             </CardContent>
           </Card>
