@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { OAuthProvider, OAUTH_PROVIDERS } from "@/lib/supabase";
 import { signInWithOAuth } from "@/lib/auth";
 import { useAuth } from "@/context/AuthContext";
+import { useTranslation } from "react-i18next";
 
 interface UserPlatformStatusProps {
   userId: number;
@@ -10,16 +11,17 @@ interface UserPlatformStatusProps {
 
 const UserPlatformStatus = ({ userId }: UserPlatformStatusProps) => {
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   // Fetch user providers
-  const { data: providers = [] } = useQuery({
+  const { data: providers = [] } = useQuery<Array<{ provider: string }>>({
     queryKey: ["/api/users", userId, "providers"],
     enabled: !!userId,
   });
 
   // Helper to check if the user has connected a specific platform
   const isPlatformConnected = (provider: OAuthProvider) => {
-    return providers.some(p => p.provider === provider);
+    return providers.some((p: { provider: string }) => p.provider === provider);
   };
 
   // Handle connecting a platform
@@ -33,7 +35,7 @@ const UserPlatformStatus = ({ userId }: UserPlatformStatusProps) => {
 
   return (
     <div className="bg-white rounded-lg p-6 border border-gray-200">
-      <h3 className="font-semibold text-lg mb-4">你的綁定狀態</h3>
+      <h3 className="font-semibold text-lg mb-4">{t('profile.platforms.title')}</h3>
       <div className="space-y-4">
         {Object.keys(OAUTH_PROVIDERS).map((provider) => {
           const providerKey = provider as OAuthProvider;
@@ -50,7 +52,7 @@ const UserPlatformStatus = ({ userId }: UserPlatformStatusProps) => {
               
               {isConnected ? (
                 <div className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-medium">
-                  已綁定
+                  {t('profile.platforms.bound')}
                 </div>
               ) : (
                 <Button
@@ -59,7 +61,7 @@ const UserPlatformStatus = ({ userId }: UserPlatformStatusProps) => {
                   className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-2 py-1 rounded text-xs font-medium"
                   onClick={() => handleConnectPlatform(providerKey)}
                 >
-                  綁定帳號
+                  {t('profile.platforms.bindAccount')}
                 </Button>
               )}
             </div>
@@ -68,7 +70,7 @@ const UserPlatformStatus = ({ userId }: UserPlatformStatusProps) => {
       </div>
       
       <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100 text-sm text-blue-800">
-        <p>綁定更多平台帳號可以讓創作者更容易辨認你的支持！</p>
+        <p>{t('profile.platforms.tip')}</p>
       </div>
     </div>
   );

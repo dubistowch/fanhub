@@ -5,14 +5,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Flame } from "lucide-react";
 import { UserCreatorStreak } from "@shared/schema";
+import { useTranslation } from "react-i18next";
 
 interface UserStreaksProps {
   userId: number;
 }
 
 export function UserStreaks({ userId }: UserStreaksProps) {
+  const { t } = useTranslation();
+  
   // 获取用户的所有签到连续记录
-  const { data: userStreaks, isLoading: loadingStreaks } = useQuery({
+  const { data: userStreaks = [], isLoading: loadingStreaks } = useQuery<UserCreatorStreak[]>({
     queryKey: ["/api/users", userId, "streaks"],
     queryFn: getQueryFn({ on401: "returnNull" }),
     enabled: !!userId
@@ -20,7 +23,6 @@ export function UserStreaks({ userId }: UserStreaksProps) {
   
   // 按连续签到天数排序，从高到低
   const sortedStreaks = React.useMemo(() => {
-    if (!userStreaks) return [];
     return [...userStreaks].sort((a: UserCreatorStreak, b: UserCreatorStreak) => b.streak - a.streak);
   }, [userStreaks]);
   
@@ -29,11 +31,11 @@ export function UserStreaks({ userId }: UserStreaksProps) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>签到连续记录</CardTitle>
-          <CardDescription>您的签到连续记录</CardDescription>
+          <CardTitle>{t('dashboard.userStreaks.title')}</CardTitle>
+          <CardDescription>{t('dashboard.userStreaks.description')}</CardDescription>
         </CardHeader>
         <CardContent className="h-[200px] flex items-center justify-center">
-          <p className="text-muted-foreground">加载中...</p>
+          <p className="text-muted-foreground">{t('dashboard.checkinStats.loading')}</p>
         </CardContent>
       </Card>
     );
@@ -43,11 +45,11 @@ export function UserStreaks({ userId }: UserStreaksProps) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>签到连续记录</CardTitle>
-          <CardDescription>您的签到连续记录</CardDescription>
+          <CardTitle>{t('dashboard.userStreaks.title')}</CardTitle>
+          <CardDescription>{t('dashboard.userStreaks.description')}</CardDescription>
         </CardHeader>
         <CardContent className="h-[200px] flex items-center justify-center">
-          <p className="text-muted-foreground">暂无签到记录，开始签到获取连续记录吧！</p>
+          <p className="text-muted-foreground">{t('dashboard.userStreaks.noStreaks')}</p>
         </CardContent>
       </Card>
     );
@@ -56,8 +58,8 @@ export function UserStreaks({ userId }: UserStreaksProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>签到连续记录</CardTitle>
-        <CardDescription>您在各个创作者的签到连续记录</CardDescription>
+        <CardTitle>{t('dashboard.userStreaks.title')}</CardTitle>
+        <CardDescription>{t('dashboard.userStreaks.detailedDescription')}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -73,13 +75,13 @@ export function UserStreaks({ userId }: UserStreaksProps) {
                 </Avatar>
                 <div>
                   <p className="font-medium">{streak.creatorName}</p>
-                  <p className="text-xs text-muted-foreground">创作者</p>
+                  <p className="text-xs text-muted-foreground">{t('dashboard.userStreaks.creatorLabel')}</p>
                 </div>
               </div>
               
               <div className="flex items-center space-x-2 text-amber-500">
                 <Flame className="h-4 w-4" />
-                <span className="font-bold">{streak.streak} 天</span>
+                <span className="font-bold">{streak.streak} {t('dashboard.userStreaks.days')}</span>
               </div>
             </div>
           ))}

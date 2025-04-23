@@ -104,6 +104,14 @@ i18n
             termsAgreement: "By signing in, you agree to our Terms of Service and Privacy Policy",
             or: "or",
             intro: "FanHub is a dedicated space for creators and fans to interact across platforms. Start exploring with Google sign-in!"
+          },
+          profile: {
+            platforms: {
+              title: "Your Binding Status",
+              bound: "Bound",
+              bindAccount: "Bind Account",
+              tip: "Binding more platform accounts makes it easier for creators to recognize your support!"
+            }
           }
         }
       },
@@ -203,6 +211,14 @@ i18n
             termsAgreement: "登入即表示您同意我們的服務條款和隱私政策",
             or: "或者",
             intro: "FanHub 是一個創作者與粉絲跨平台互動的專屬空間，使用 Google 登入開始探索吧！"
+          },
+          profile: {
+            platforms: {
+              title: "你的綁定狀態",
+              bound: "已綁定",
+              bindAccount: "綁定帳號",
+              tip: "綁定更多平台帳號可以讓創作者更容易辨認你的支持！"
+            }
           }
         }
       },
@@ -302,6 +318,14 @@ i18n
             termsAgreement: "登录即表示您同意我们的服务条款和隐私政策",
             or: "或者",
             intro: "FanHub 是一个创作者与粉丝跨平台互动的专属空间，使用 Google 登录开始探索吧！"
+          },
+          profile: {
+            platforms: {
+              title: "你的绑定状态",
+              bound: "已绑定",
+              bindAccount: "绑定账号",
+              tip: "绑定更多平台账号可以让创作者更容易辨认你的支持！"
+            }
           }
         }
       },
@@ -377,6 +401,14 @@ i18n
               today: "今日のチェックイン",
               yesterday: "昨日のチェックイン",
               highest: "過去最高"
+            },
+            userStreaks: {
+              title: "チェックイン連続記録",
+              description: "あなたのチェックイン連続記録",
+              detailedDescription: "クリエイターごとの連続チェックイン記録",
+              noStreaks: "チェックイン記録はまだありません。チェックインを始めて連続記録を作りましょう！",
+              creatorLabel: "クリエイター",
+              days: "日"
             }
           },
           languages: {
@@ -393,6 +425,14 @@ i18n
             termsAgreement: "ログインすることで、利用規約とプライバシーポリシーに同意したことになります",
             or: "または",
             intro: "FanHub はクリエイターとファンがプラットフォームを越えて交流するための専用スペースです。Google でログインして探索を始めましょう！"
+          },
+          profile: {
+            platforms: {
+              title: "連携状況",
+              bound: "連携済み",
+              bindAccount: "アカウント連携",
+              tip: "より多くのプラットフォームアカウントを連携すると、クリエイターがあなたのサポートを認識しやすくなります！"
+            }
           }
         }
       }
