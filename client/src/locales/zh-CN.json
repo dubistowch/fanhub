@@ -1,77 +1,175 @@
 {
-  "common": {
-    "login": "登录",
-    "register": "注册",
-    "logout": "退出",
-    "profile": "个人资料",
-    "dashboard": "控制面板",
-    "home": "首页",
-    "discover": "发现",
-    "following": "关注中",
-    "search": "搜索"
-  },
   "auth": {
-    "email": "邮箱",
-    "password": "密码",
-    "username": "用户名",
-    "signInWith": "使用以下方式登录",
+    "alreadyHaveAccount": "已经有账号了？",
     "continueTo": "继续前往",
     "dontHaveAccount": "还没有账号？",
-    "alreadyHaveAccount": "已经有账号了？",
+    "email": "邮箱",
     "forgotPassword": "忘记密码？",
+    "goToLogin": "前往登录页面",
+    "password": "密码",
+    "pleaseLogin": "请先登录",
     "resetPassword": "重置密码",
-    "signUpNow": "立即注册"
+    "signInWith": "使用以下方式登录",
+    "signUpNow": "立即注册",
+    "username": "用户名"
+  },
+  "checkin": {
+    "calendar": "签到日历",
+    "checkInNow": "立即签到",
+    "dayBeforeYesterday": "前天",
+    "days": "天",
+    "daysAgo": "{{count}}天前",
+    "details": "详细记录",
+    "highestRecord": "历史最高",
+    "info": "签到信息",
+    "loginToCheckin": "请登录后进行签到",
+    "noRecords": "暂无签到记录",
+    "noStats": "暂无签到统计数据",
+    "recentUsers": "最近签到用户",
+    "selectDateToViewStatus": "选择日期查看签到状态",
+    "stats": "签到统计",
+    "statsAndRecords": "统计与记录",
+    "today": "今天",
+    "todayCheckins": "今日签到",
+    "trend": "签到趋势",
+    "viewData": "查看粉丝签到数据和历史记录",
+    "yesterday": "昨天",
+    "yesterdayCheckins": "昨日签到"
+  },
+  "common": {
+    "all": "全部",
+    "dashboard": "控制面板",
+    "discover": "发现",
+    "following": "关注中",
+    "home": "首页",
+    "loading": "加载中",
+    "login": "登录",
+    "logout": "退出",
+    "profile": "个人资料",
+    "register": "注册",
+    "search": "搜索",
+    "unknownUser": "未知用户"
   },
   "creator": {
     "become": "成为创作者",
-    "followers": "粉丝",
-    "follow": "关注",
-    "following": "已关注",
-    "checkin": "签到",
-    "checkedInToday": "今日已签到",
-    "streak": "连续签到",
     "bio": "简介",
-    "edit": "编辑资料"
+    "center": "创作者中心",
+    "centerSubtitle": "管理您的创作者资料及粉丝互动数据",
+    "checkedInToday": "今日已签到",
+    "checkin": "签到",
+    "checkinData": "签到数据",
+    "checkinHistory": "签到历史",
+    "checkinStatistics": "签到统计",
+    "checkinStreakText": "连续签到{{days}}天",
+    "connectMorePlatforms": "连接更多平台以扩大触及范围",
+    "defaultTitle": "创作者",
+    "edit": "编辑资料",
+    "followers": "粉丝",
+    "follow": {
+      "actionFailed": "操作失败",
+      "follow": "关注",
+      "following": "已关注",
+      "followSuccess": "关注成功",
+      "followSuccessDesc": "您已成功关注 {{name}}",
+      "unfollowSuccess": "已取消关注",
+      "unfollowSuccessDesc": "您已取消关注 {{name}}"
+    },
+    "followersList": "粉丝列表",
+    "goToSetup": "前往设置创作者资料",
+    "loadingData": "正在加载创作者数据...",
+    "loginToAccess": "请先登录以访问创作者中心",
+    "noCheckinRecords": "暂无签到记录",
+    "noFollowers": "暂无粉丝",
+    "notSetup": "尚未设置创作者资料",
+    "overview": "概览",
+    "percentOfFollowers": "占粉丝总数 {{percent}}%",
+    "platformCount": "已连接平台",
+    "platformDistribution": "平台分布",
+    "recentCheckins": "最近签到",
+    "setupDescription": "您需要设置创作者资料以访问创作者中心",
+    "shareCreatorPage": "分享您的创作者页面，开始建立您的粉丝社群",
+    "startBuildingCommunity": "开始建立您的社群",
+    "streak": "连续签到",
+    "todayCheckins": "今日签到数",
+    "totalFollowers": "总粉丝数",
+    "weeklyCheckinTrend": "每周签到趋势",
+    "weeklyGrowth": "本周增长 +{{count}}%"
   },
-  "checkin": {
-    "stats": "签到统计",
-    "viewData": "查看粉丝签到数据和历史记录",
-    "calendar": "签到日历",
-    "trend": "签到趋势",
-    "details": "详细记录",
-    "today": "今天",
-    "yesterday": "昨天",
-    "dayBeforeYesterday": "前天",
-    "daysAgo": "{{count}}天前",
-    "loginToCheckin": "请登录后进行签到",
-    "noStats": "暂无签到统计数据",
-    "noRecords": "暂无签到记录",
-    "recentUsers": "最近签到用户",
-    "todayCheckins": "今日签到",
-    "yesterdayCheckins": "昨日签到",
-    "highestRecord": "历史最高"
+  "discover": {
+    "becomeFirstCreator": "建立您的创作者专页，成为第一个创作者！",
+    "categories": "创作者分类",
+    "categoryList": {
+      "food": "美食烹饪",
+      "gaming": "游戏实况",
+      "music": "音乐创作",
+      "tech": "科技评论"
+    },
+    "description": "探索并关注您喜爱的创作者，通过签到支持他们的创作",
+    "noCreatorsYet": "目前还没有创作者",
+    "noMatchingCreators": "找不到相符的创作者",
+    "searchPlaceholder": "搜索创作者...",
+    "title": "发现创作者",
+    "tryDifferentSearch": "请尝试不同的搜索条件"
   },
-  "profile": {
-    "edit": "编辑个人资料",
-    "save": "保存更改",
-    "avatar": "头像",
-    "uploadAvatar": "上传头像",
-    "connectedPlatforms": "已连接平台",
-    "linkAccount": "关联账号",
-    "unlinkAccount": "解除关联"
+  "following": {
+    "goToDiscover": "去探索并关注创作者",
+    "noCheckinsToday": "您关注的创作者今天都没有签到记录",
+    "noCreatorsWithPlatform": "您尚未关注 {{platform}} 平台上的任何创作者",
+    "noFollowedCreators": "您尚未关注任何创作者",
+    "noMatchingCreators": "找不到符合条件的创作者",
+    "recentCheckins": "最近签到",
+    "searchPlaceholder": "搜索已关注的创作者...",
+    "subtitle": "关注您喜爱的创作者并签到支持他们",
+    "title": "关注中",
+    "tryDifferentSearch": "尝试其他搜索关键词"
   },
-  "settings": {
-    "title": "设置",
-    "language": "语言",
-    "theme": "主题",
-    "notifications": "通知",
-    "privacy": "隐私",
-    "account": "账号"
+  "home": {
+    "following": {
+      "title": "我的关注"
+    },
+    "popular": {
+      "title": "热门创作者"
+    },
+    "viewAll": "查看全部",
+    "welcome": "欢迎回来，{{username}}",
+    "welcomeCard": {
+      "description": "连接你的社群平台账号，统一管理你的粉丝互动与创作者订阅！",
+      "exploreButton": "探索创作者",
+      "linkAccountButton": "连接平台账号",
+      "title": "跨平台社群聚合"
+    }
   },
   "languages": {
     "en": "英文",
-    "zh-TW": "繁体中文",
+    "ja": "日文",
     "zh-CN": "简体中文",
-    "ja": "日文"
+    "zh-TW": "繁体中文"
+  },
+  "profile": {
+    "avatar": "头像",
+    "bio": "个人简介",
+    "bioPlaceholder": "分享一些关于您自己的事情...",
+    "connectedPlatforms": "已连接平台",
+    "creatorPage": {
+      "title": "创作者页面",
+      "view": "查看创作者页面"
+    },
+    "description": "管理您的个人信息和偏好设置",
+    "edit": "编辑个人资料",
+    "linkAccount": "关联账号",
+    "save": "保存更改",
+    "title": "个人资料设置",
+    "unlinkAccount": "解除关联",
+    "updateProfile": "更新个人资料",
+    "uploadAvatar": "上传头像",
+    "username": "用户名"
+  },
+  "settings": {
+    "account": "账号",
+    "language": "语言",
+    "notifications": "通知",
+    "privacy": "隐私",
+    "theme": "主题",
+    "title": "设置"
   }
 }

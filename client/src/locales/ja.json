@@ -1,77 +1,175 @@
 {
-  "common": {
-    "login": "ログイン",
-    "register": "登録",
-    "logout": "ログアウト",
-    "profile": "プロフィール",
-    "dashboard": "ダッシュボード",
-    "home": "ホーム",
-    "discover": "発見",
-    "following": "フォロー中",
-    "search": "検索"
-  },
   "auth": {
-    "email": "メールアドレス",
-    "password": "パスワード",
-    "username": "ユーザー名",
-    "signInWith": "以下でログイン",
+    "alreadyHaveAccount": "すでにアカウントをお持ちの方",
     "continueTo": "続行",
     "dontHaveAccount": "アカウントをお持ちでない方",
-    "alreadyHaveAccount": "すでにアカウントをお持ちの方",
+    "email": "メールアドレス",
     "forgotPassword": "パスワードをお忘れですか？",
+    "goToLogin": "ログインページへ",
+    "password": "パスワード",
+    "pleaseLogin": "ログインしてください",
     "resetPassword": "パスワードをリセット",
-    "signUpNow": "今すぐ登録"
+    "signInWith": "以下でログイン",
+    "signUpNow": "今すぐ登録",
+    "username": "ユーザー名"
+  },
+  "checkin": {
+    "calendar": "チェックインカレンダー",
+    "checkInNow": "今すぐチェックイン",
+    "dayBeforeYesterday": "一昨日",
+    "days": "日間",
+    "daysAgo": "{{count}}日前",
+    "details": "詳細記録",
+    "highestRecord": "最高記録",
+    "info": "チェックイン情報",
+    "loginToCheckin": "チェックインするにはログインしてください",
+    "noRecords": "チェックイン記録はまだありません",
+    "noStats": "チェックイン統計はまだありません",
+    "recentUsers": "最近のチェックインユーザー",
+    "selectDateToViewStatus": "日付を選択してチェックイン状況を確認",
+    "stats": "チェックイン統計",
+    "statsAndRecords": "統計と記録",
+    "today": "今日",
+    "todayCheckins": "今日のチェックイン",
+    "trend": "チェックイントレンド",
+    "viewData": "ファンのチェックインデータと履歴を見る",
+    "yesterday": "昨日",
+    "yesterdayCheckins": "昨日のチェックイン"
+  },
+  "common": {
+    "all": "すべて",
+    "dashboard": "ダッシュボード",
+    "discover": "発見",
+    "following": "フォロー中",
+    "home": "ホーム",
+    "loading": "読み込み中",
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "profile": "プロフィール",
+    "register": "登録",
+    "search": "検索",
+    "unknownUser": "不明なユーザー"
   },
   "creator": {
     "become": "クリエイターになる",
-    "followers": "フォロワー",
-    "follow": "フォロー",
-    "following": "フォロー中",
-    "checkin": "チェックイン",
-    "checkedInToday": "今日はチェックイン済み",
-    "streak": "連続チェックイン",
     "bio": "自己紹介",
-    "edit": "プロフィールを編集"
-  },
-  "checkin": {
-    "stats": "チェックイン統計",
-    "viewData": "ファンのチェックインデータと履歴を見る",
-    "calendar": "チェックインカレンダー",
-    "trend": "チェックイントレンド",
-    "details": "詳細記録",
-    "today": "今日",
-    "yesterday": "昨日",
-    "dayBeforeYesterday": "一昨日",
-    "daysAgo": "{{count}}日前",
-    "loginToCheckin": "チェックインするにはログインしてください",
-    "noStats": "チェックイン統計はまだありません",
-    "noRecords": "チェックイン記録はまだありません",
-    "recentUsers": "最近のチェックインユーザー",
-    "todayCheckins": "今日のチェックイン",
-    "yesterdayCheckins": "昨日のチェックイン",
-    "highestRecord": "最高記録"
-  },
-  "profile": {
+    "center": "クリエイターセンター",
+    "centerSubtitle": "クリエイタープロフィールとファンのエンゲージメントを管理",
+    "checkedInToday": "今日はチェックイン済み",
+    "checkin": "チェックイン",
+    "checkinData": "チェックインデータ",
+    "checkinHistory": "チェックイン履歴",
+    "checkinStatistics": "チェックイン統計",
+    "checkinStreakText": "{{days}}日連続チェックイン",
+    "connectMorePlatforms": "より多くのファンにリーチするためにプラットフォームを追加",
+    "defaultTitle": "クリエイター",
     "edit": "プロフィールを編集",
-    "save": "変更を保存",
-    "avatar": "アバター",
-    "uploadAvatar": "アバターをアップロード",
-    "connectedPlatforms": "連携済みプラットフォーム",
-    "linkAccount": "アカウントを連携",
-    "unlinkAccount": "連携解除"
+    "followers": "フォロワー",
+    "follow": {
+      "actionFailed": "操作に失敗しました",
+      "follow": "フォロー",
+      "following": "フォロー中",
+      "followSuccess": "フォロー成功",
+      "followSuccessDesc": "{{name}}をフォローしました",
+      "unfollowSuccess": "フォロー解除成功",
+      "unfollowSuccessDesc": "{{name}}のフォローを解除しました"
+    },
+    "followersList": "フォロワーリスト",
+    "goToSetup": "クリエイタープロフィールを設定する",
+    "loadingData": "クリエイターデータを読み込み中...",
+    "loginToAccess": "クリエイターダッシュボードにアクセスするにはログインしてください",
+    "noCheckinRecords": "チェックイン記録はまだありません",
+    "noFollowers": "フォロワーはまだいません",
+    "notSetup": "クリエイタープロフィールが設定されていません",
+    "overview": "概要",
+    "percentOfFollowers": "フォロワーの {{percent}}%",
+    "platformCount": "連携済みプラットフォーム",
+    "platformDistribution": "プラットフォーム分布",
+    "recentCheckins": "最近のチェックイン",
+    "setupDescription": "クリエイターダッシュボードにアクセスするには、クリエイタープロフィールを設定する必要があります",
+    "shareCreatorPage": "クリエイターページをシェアして、ファンコミュニティの構築を始めましょう",
+    "startBuildingCommunity": "コミュニティの構築を始める",
+    "streak": "連続チェックイン",
+    "todayCheckins": "今日のチェックイン数",
+    "totalFollowers": "総フォロワー数",
+    "weeklyCheckinTrend": "週間チェックイントレンド",
+    "weeklyGrowth": "今週の成長 +{{count}}%"
   },
-  "settings": {
-    "title": "設定",
-    "language": "言語",
-    "theme": "テーマ",
-    "notifications": "通知",
-    "privacy": "プライバシー",
-    "account": "アカウント"
+  "discover": {
+    "becomeFirstCreator": "クリエイタープロフィールを作成して、最初のクリエイターになりましょう！",
+    "categories": "クリエイターカテゴリー",
+    "categoryList": {
+      "food": "料理・グルメ",
+      "gaming": "ゲーム配信",
+      "music": "音楽制作",
+      "tech": "テックレビュー"
+    },
+    "description": "お気に入りのクリエイターを探索してフォローし、チェックインでサポートしましょう",
+    "noCreatorsYet": "まだクリエイターはいません",
+    "noMatchingCreators": "条件に一致するクリエイターが見つかりません",
+    "searchPlaceholder": "クリエイターを検索...",
+    "title": "クリエイターを発見",
+    "tryDifferentSearch": "別の検索条件を試してください"
+  },
+  "following": {
+    "goToDiscover": "クリエイターを探索してフォローしましょう",
+    "noCheckinsToday": "フォローしているクリエイターの今日のチェックインはありません",
+    "noCreatorsWithPlatform": "{{platform}} プラットフォームでフォローしているクリエイターはいません",
+    "noFollowedCreators": "まだフォローしているクリエイターはいません",
+    "noMatchingCreators": "条件に一致するクリエイターが見つかりません",
+    "recentCheckins": "最近のチェックイン",
+    "searchPlaceholder": "フォロー中のクリエイターを検索...",
+    "subtitle": "お気に入りのクリエイターをフォローしてチェックインでサポートしましょう",
+    "title": "フォロー中",
+    "tryDifferentSearch": "別の検索キーワードを試してください"
+  },
+  "home": {
+    "following": {
+      "title": "フォロー中"
+    },
+    "popular": {
+      "title": "人気のクリエイター"
+    },
+    "viewAll": "すべて表示",
+    "welcome": "おかえりなさい、{{username}}",
+    "welcomeCard": {
+      "description": "ソーシャルメディアアカウントを連携して、ファンとのやり取りとクリエイターのサブスクリプションを管理しましょう！",
+      "exploreButton": "クリエイターを探索",
+      "linkAccountButton": "アカウントを連携",
+      "title": "クロスプラットフォームコミュニティハブ"
+    }
   },
   "languages": {
     "en": "英語",
-    "zh-TW": "繁体中国語",
+    "ja": "日本語",
     "zh-CN": "簡体中国語",
-    "ja": "日本語"
+    "zh-TW": "繁体中国語"
+  },
+  "profile": {
+    "avatar": "アバター",
+    "bio": "自己紹介",
+    "bioPlaceholder": "あなた自身について少し教えてください...",
+    "connectedPlatforms": "連携済みプラットフォーム",
+    "creatorPage": {
+      "title": "クリエイターページ",
+      "view": "クリエイターページを見る"
+    },
+    "description": "個人情報と設定を管理",
+    "edit": "プロフィールを編集",
+    "linkAccount": "アカウントを連携",
+    "save": "変更を保存",
+    "title": "プロフィール設定",
+    "unlinkAccount": "連携解除",
+    "updateProfile": "プロフィールを更新",
+    "uploadAvatar": "アバターをアップロード",
+    "username": "ユーザー名"
+  },
+  "settings": {
+    "account": "アカウント",
+    "language": "言語",
+    "notifications": "通知",
+    "privacy": "プライバシー",
+    "theme": "テーマ",
+    "title": "設定"
   }
 }
