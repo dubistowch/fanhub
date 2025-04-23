@@ -229,7 +229,7 @@ const Dashboard = () => {
                   {Array.isArray(followers) ? followers.length : 0}
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  {Array.isArray(followers) && followers.length > 0 ? "+3 自上週" : "開始經營您的社群"}
+                  {Array.isArray(followers) && followers.length > 0 ? t("creator.weeklyGrowth", { count: 3 }) : t("creator.startBuildingCommunity")}
                 </p>
               </CardContent>
             </Card>
@@ -243,7 +243,7 @@ const Dashboard = () => {
                   {getTodayCheckins()}
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  佔總粉絲數 {getPercentage()}%
+                  {t("creator.percentOfFollowers", { percent: getPercentage() })}
                 </p>
               </CardContent>
             </Card>
@@ -255,7 +255,7 @@ const Dashboard = () => {
               <CardContent>
                 <div className="text-3xl font-bold">{user.providers?.length || 0}</div>
                 <p className="text-sm text-muted-foreground">
-                  綁定更多平台可提高曝光度
+                  {t("creator.connectMorePlatforms")}
                 </p>
               </CardContent>
             </Card>
@@ -264,7 +264,7 @@ const Dashboard = () => {
           <div className="grid gap-6 mt-6 md:grid-cols-2">
             <Card className="col-span-2">
               <CardHeader>
-                <CardTitle>本週簽到趨勢</CardTitle>
+                <CardTitle>{t("creator.weeklyCheckinTrend")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="h-80">
@@ -293,7 +293,7 @@ const Dashboard = () => {
           <div className="grid gap-6 mt-6 md:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle>最近簽到的粉絲</CardTitle>
+                <CardTitle>{t("creator.recentCheckins")}</CardTitle>
               </CardHeader>
               <CardContent>
                 {isCheckinsLoading ? (
@@ -331,7 +331,7 @@ const Dashboard = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle>平台分佈</CardTitle>
+                <CardTitle>{t("creator.platformDistribution")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -391,7 +391,7 @@ const Dashboard = () => {
         <TabsContent value="followers">
           <Card>
             <CardHeader>
-              <CardTitle>粉絲列表</CardTitle>
+              <CardTitle>{t("creator.followersList")}</CardTitle>
             </CardHeader>
             <CardContent>
               {isFollowersLoading ? (
