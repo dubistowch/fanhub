@@ -8,6 +8,7 @@ import { CalendarClock, CheckCheck, Flame } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { format, isToday } from "date-fns";
 import { useAuth } from "@/context/AuthContext";
+import { useTranslation } from "react-i18next";
 
 interface CheckinCalendarProps {
   creatorId: number;
@@ -24,6 +25,7 @@ export function CheckinCalendar({
 }: CheckinCalendarProps) {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [isCheckingIn, setIsCheckingIn] = useState(false);
   const [userHasCheckedIn, setUserHasCheckedIn] = useState(hasCheckedInToday);
@@ -33,8 +35,8 @@ export function CheckinCalendar({
   const handleCheckIn = async () => {
     if (!user || !user.id) {
       toast({
-        title: "请先登录",
-        description: "您需要登录才能进行签到",
+        title: t("auth.pleaseLogin"),
+        description: t("checkin.loginToCheckin"),
         variant: "destructive",
       });
       return;
@@ -42,8 +44,8 @@ export function CheckinCalendar({
     
     if (userHasCheckedIn) {
       toast({
-        title: "今日已签到",
-        description: "您今天已经签到过了，明天再来吧！",
+        title: t("creator.checkedInToday"),
+        description: t("checkin.alreadyCheckedIn"),
       });
       return;
     }
@@ -56,7 +58,7 @@ export function CheckinCalendar({
       });
       
       if (!response.ok) {
-        throw new Error("签到失败");
+        throw new Error(t("checkin.error"));
       }
       
       const data = await response.json();
@@ -71,14 +73,14 @@ export function CheckinCalendar({
       }
       
       toast({
-        title: "签到成功!",
-        description: `恭喜您完成今日签到，当前连续签到 ${newStreak} 天`,
+        title: t("creator.checkin.success"),
+        description: t("creator.checkin.successDesc", { streak: newStreak }),
       });
     } catch (error) {
       console.error("Check-in error:", error);
       toast({
-        title: "签到失败",
-        description: "签到过程中发生错误，请稍后重试",
+        title: t("checkin.error"),
+        description: t("checkin.errorDetails"),
         variant: "destructive",
       });
     } finally {

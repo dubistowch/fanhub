@@ -19,6 +19,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { InsertUser, InsertCreator } from "@shared/schema";
+import { useTranslation } from "react-i18next";
 
 const Profile = () => {
   const { user, refreshUser } = useAuth();
