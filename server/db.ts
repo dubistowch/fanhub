@@ -16,8 +16,7 @@ let connectionString = process.env.SUPABASE_DB_URL || process.env.DATABASE_URL |
 
 // 检查URL是否为空（额外安全检查）
 if (!connectionString) {
-  console.error("警告: 空的数据库连接URL，将使用默认URL");
-  connectionString = "postgresql://postgres.gdnmmwhgpxoiitcxegmh:egkpcDBZyUvo32Qz@aws-0-ap-northeast-1.pooler.supabase.com:5432/postgres";
+  throw new Error("错误：数据库连接URL不能为空。请设置SUPABASE_DB_URL或DATABASE_URL环境变量。");
 }
 
 // 检查并修复URL格式 - 处理密码中可能存在的@符号

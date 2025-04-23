@@ -1,12 +1,11 @@
 #!/bin/bash
-# 启动脚本：设置环境变量并启动应用
+# 启动脚本：启动应用
 
-# 设置正确的Supabase数据库URL
-export SUPABASE_DB_URL="postgresql://postgres.gdnmmwhgpxoiitcxegmh:egkpcDBZyUvo32Qz@aws-0-ap-northeast-1.pooler.supabase.com:5432/postgres"
-export DATABASE_URL="$SUPABASE_DB_URL"
+# 首先检查环境变量是否已设置
+if [ -z "$SUPABASE_DB_URL" ]; then
+  echo "警告: SUPABASE_DB_URL 环境变量未设置"
+  echo "请在启动前设置 SUPABASE_DB_URL 环境变量，或使用 .env 文件"
+fi
 
-# 打印环境变量（掩码密码）
-echo "使用数据库URL: $(echo $SUPABASE_DB_URL | sed 's/\(postgresql:\/\/[^:]\+:\)[^@]\+\(@.\+\)/\1*****\2/')"
-
-# 启动应用
+# 检查配置并启动应用
 npm run dev
