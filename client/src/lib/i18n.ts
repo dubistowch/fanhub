@@ -19,7 +19,9 @@ i18n
             home: "Home",
             discover: "Discover",
             following: "Following",
-            search: "Search"
+            search: "Search",
+            pageNotFound: "404 Page Not Found",
+            pageNotFoundMsg: "The page you are looking for does not exist."
           },
           settings: {
             language: "Language",
@@ -89,7 +91,9 @@ i18n
             home: "首頁",
             discover: "探索",
             following: "追蹤中",
-            search: "搜尋"
+            search: "搜尋",
+            pageNotFound: "404 頁面未找到",
+            pageNotFoundMsg: "您所查找的頁面不存在。"
           },
           settings: {
             language: "語言",
@@ -159,7 +163,9 @@ i18n
             home: "首页",
             discover: "发现",
             following: "关注中",
-            search: "搜索"
+            search: "搜索",
+            pageNotFound: "404 页面未找到",
+            pageNotFoundMsg: "您所查找的页面不存在。"
           },
           settings: {
             language: "语言",
@@ -229,7 +235,9 @@ i18n
             home: "ホーム",
             discover: "発見",
             following: "フォロー中",
-            search: "検索"
+            search: "検索",
+            pageNotFound: "404 ページが見つかりません",
+            pageNotFoundMsg: "お探しのページは存在しません。"
           },
           settings: {
             language: "言語",
