@@ -74,7 +74,17 @@ i18n
               noData: "No check-in data available",
               recentUsers: "Recent Check-in Users",
               noRecords: "No check-in records",
-              checkins: "Check-ins"
+              checkins: "Check-ins",
+              dateFormat: {
+                today: "Today",
+                yesterday: "Yesterday",
+                dayBeforeYesterday: "Day before yesterday",
+                daysAgo: "{{days}} days ago",
+                monthDay: "MM/dd",
+                invalidDate: "Invalid date",
+                noDate: "No date",
+                dateError: "Date error"
+              }
             },
             stats: {
               today: "Today's Check-ins",
@@ -122,6 +132,41 @@ i18n
               linkFailedProviderDetail: "Unable to link {{provider}} account, please try again later",
               platform: "platform",
               tip: "Binding more platform accounts makes it easier for creators to recognize your support!"
+            }
+          },
+          creator: {
+            profile: {
+              title: "Creator Profile",
+              bio: "Creator Bio",
+              bioDescription: "Learn more about the creator",
+              notFound: "Creator Not Found",
+              notFoundDesc: "The creator may not exist or has been deleted",
+              loading: "Loading...",
+              followers: "followers",
+              followersCount: "{{count}} followers",
+              emptyBio: "This creator is lazy and hasn't written a bio yet..."
+            },
+            follow: {
+              follow: "Follow",
+              following: "Following",
+              followingInProgress: "Following...",
+              unfollowingInProgress: "Unfollowing...",
+              loginRequired: "Login Required",
+              loginRequiredDesc: "Please login to follow creators",
+              followSuccess: "Followed",
+              followSuccessDesc: "You are now following {{name}}",
+              unfollowSuccess: "Unfollowed",
+              unfollowSuccessDesc: "You have unfollowed {{name}}",
+              followFailed: "Failed to Follow",
+              unfollowFailed: "Failed to Unfollow"
+            },
+            tabs: {
+              about: "About",
+              stats: "Check-in Stats"
+            },
+            checkin: {
+              success: "Check-in Success",
+              successDesc: "You have checked in for {{streak}} consecutive days"
             }
           }
         }
@@ -192,7 +237,17 @@ i18n
               noData: "暫無簽到統計數據",
               recentUsers: "最近簽到用戶",
               noRecords: "暫無簽到記錄",
-              checkins: "簽到次數"
+              checkins: "簽到次數",
+              dateFormat: {
+                today: "今天",
+                yesterday: "昨天",
+                dayBeforeYesterday: "前天",
+                daysAgo: "{{days}}天前",
+                monthDay: "MM月dd日",
+                invalidDate: "無效日期",
+                noDate: "無日期",
+                dateError: "日期錯誤"
+              }
             },
             stats: {
               today: "今日簽到",
@@ -240,6 +295,41 @@ i18n
               linkFailedProviderDetail: "無法連結 {{provider}} 帳號，請稍後再試",
               platform: "平台",
               tip: "綁定更多平台帳號可以讓創作者更容易辨認你的支持！"
+            }
+          },
+          creator: {
+            profile: {
+              title: "創作者檔案",
+              bio: "創作者簡介",
+              bioDescription: "了解更多關於創作者的信息",
+              notFound: "找不到創作者",
+              notFoundDesc: "創作者可能不存在或已被刪除",
+              loading: "載入中...",
+              followers: "位粉絲",
+              followersCount: "{{count}} 位粉絲",
+              emptyBio: "這個創作者很懶，還沒有填寫簡介..."
+            },
+            follow: {
+              follow: "關注",
+              following: "已關注",
+              followingInProgress: "關注中...",
+              unfollowingInProgress: "取消關注中...",
+              loginRequired: "需要登入",
+              loginRequiredDesc: "請先登入才能關注創作者",
+              followSuccess: "已關注",
+              followSuccessDesc: "你現在已經關注了 {{name}}",
+              unfollowSuccess: "已取消關注",
+              unfollowSuccessDesc: "你已經取消關注 {{name}}",
+              followFailed: "關注失敗",
+              unfollowFailed: "取消關注失敗"
+            },
+            tabs: {
+              about: "關於",
+              stats: "簽到統計"
+            },
+            checkin: {
+              success: "簽到成功",
+              successDesc: "你已連續簽到 {{streak}} 天"
             }
           }
         }
@@ -310,7 +400,17 @@ i18n
               noData: "暂无签到统计数据",
               recentUsers: "最近签到用户",
               noRecords: "暂无签到记录",
-              checkins: "签到次数"
+              checkins: "签到次数",
+              dateFormat: {
+                today: "今天",
+                yesterday: "昨天",
+                dayBeforeYesterday: "前天",
+                daysAgo: "{{days}}天前",
+                monthDay: "MM月dd日",
+                invalidDate: "无效日期",
+                noDate: "无日期",
+                dateError: "日期错误"
+              }
             },
             stats: {
               today: "今日签到",
@@ -358,6 +458,41 @@ i18n
               linkFailedProviderDetail: "无法连接 {{provider}} 账号，请稍后再试",
               platform: "平台",
               tip: "绑定更多平台账号可以让创作者更容易辨认你的支持！"
+            }
+          },
+          creator: {
+            profile: {
+              title: "创作者档案",
+              bio: "创作者简介",
+              bioDescription: "了解更多关于创作者的信息",
+              notFound: "找不到创作者",
+              notFoundDesc: "创作者可能不存在或已被删除",
+              loading: "加载中...",
+              followers: "位粉丝",
+              followersCount: "{{count}} 位粉丝",
+              emptyBio: "这个创作者很懒，还没有填写简介..."
+            },
+            follow: {
+              follow: "关注",
+              following: "已关注",
+              followingInProgress: "关注中...",
+              unfollowingInProgress: "取消关注中...",
+              loginRequired: "需要登录",
+              loginRequiredDesc: "请先登录才能关注创作者",
+              followSuccess: "已关注",
+              followSuccessDesc: "你现在已经关注了 {{name}}",
+              unfollowSuccess: "已取消关注",
+              unfollowSuccessDesc: "你已经取消关注 {{name}}",
+              followFailed: "关注失败",
+              unfollowFailed: "取消关注失败"
+            },
+            tabs: {
+              about: "关于",
+              stats: "签到统计"
+            },
+            checkin: {
+              success: "签到成功",
+              successDesc: "你已连续签到 {{streak}} 天"
             }
           }
         }
@@ -428,7 +563,17 @@ i18n
               noData: "チェックインデータがありません",
               recentUsers: "最近のチェックインユーザー",
               noRecords: "チェックイン記録がありません",
-              checkins: "チェックイン数"
+              checkins: "チェックイン数",
+              dateFormat: {
+                today: "今日",
+                yesterday: "昨日",
+                dayBeforeYesterday: "一昨日",
+                daysAgo: "{{days}}日前",
+                monthDay: "MM月dd日",
+                invalidDate: "無効な日付",
+                noDate: "日付なし",
+                dateError: "日付エラー"
+              }
             },
             stats: {
               today: "今日のチェックイン",
@@ -476,6 +621,41 @@ i18n
               linkFailedProviderDetail: "{{provider}} アカウントを連携できません。後でもう一度お試しください",
               platform: "プラットフォーム",
               tip: "より多くのプラットフォームアカウントを連携すると、クリエイターがあなたのサポートを認識しやすくなります！"
+            }
+          },
+          creator: {
+            profile: {
+              title: "クリエイタープロフィール",
+              bio: "クリエイター紹介",
+              bioDescription: "クリエイターについてもっと知る",
+              notFound: "クリエイターが見つかりません",
+              notFoundDesc: "クリエイターが存在しないか、削除された可能性があります",
+              loading: "読み込み中...",
+              followers: "フォロワー",
+              followersCount: "{{count}} フォロワー",
+              emptyBio: "このクリエイターはまだ自己紹介を書いていません..."
+            },
+            follow: {
+              follow: "フォロー",
+              following: "フォロー中",
+              followingInProgress: "フォロー処理中...",
+              unfollowingInProgress: "フォロー解除中...",
+              loginRequired: "ログインが必要です",
+              loginRequiredDesc: "クリエイターをフォローするにはログインしてください",
+              followSuccess: "フォローしました",
+              followSuccessDesc: "{{name}} をフォローしました",
+              unfollowSuccess: "フォロー解除しました",
+              unfollowSuccessDesc: "{{name}} のフォローを解除しました",
+              followFailed: "フォロー失敗",
+              unfollowFailed: "フォロー解除失敗"
+            },
+            tabs: {
+              about: "概要",
+              stats: "チェックイン統計"
+            },
+            checkin: {
+              success: "チェックイン成功",
+              successDesc: "{{streak}} 日連続でチェックインしました"
             }
           }
         }

@@ -57,7 +57,7 @@ export function CheckinStats({
     try {
       // 確保有值
       if (!dateInput) {
-        return "無日期";
+        return t('dashboard.checkinStats.dateFormat.noDate');
       }
       
       // 確保我們有一個有效的日期物件
@@ -66,27 +66,27 @@ export function CheckinStats({
       // 驗證日期是否有效
       if (isNaN(date.getTime())) {
         console.error("Invalid date:", dateInput);
-        return "無效日期";
+        return t('dashboard.checkinStats.dateFormat.invalidDate');
       }
       
       const today = new Date();
       const diffDays = differenceInDays(today, date);
       
-      if (diffDays === 0) return "今天";
-      if (diffDays === 1) return "昨天";
-      if (diffDays === 2) return "前天";
-      if (diffDays < 7) return `${diffDays}天前`;
+      if (diffDays === 0) return t('dashboard.checkinStats.dateFormat.today');
+      if (diffDays === 1) return t('dashboard.checkinStats.dateFormat.yesterday');
+      if (diffDays === 2) return t('dashboard.checkinStats.dateFormat.dayBeforeYesterday');
+      if (diffDays < 7) return t('dashboard.checkinStats.dateFormat.daysAgo', { days: diffDays });
       
       // 使用 try/catch 包裝 format 調用
       try {
-        return format(date, "MM月dd日");
+        return format(date, t('dashboard.checkinStats.dateFormat.monthDay'));
       } catch (err) {
         console.error("Error formatting date:", err);
         return date.toLocaleDateString();
       }
     } catch (err) {
       console.error("Error in formatDate:", err);
-      return "日期錯誤";
+      return t('dashboard.checkinStats.dateFormat.dateError');
     }
   };
 
@@ -101,7 +101,7 @@ export function CheckinStats({
         if (isNaN(date.getTime())) {
           console.error("Invalid date in chartData:", stat.date);
           return {
-            date: "無效日期",
+            date: t('dashboard.checkinStats.dateFormat.invalidDate'),
             count: stat.count
           };
         }
@@ -116,12 +116,12 @@ export function CheckinStats({
       } catch (err) {
         console.error("Error processing chart data:", err);
         return {
-          date: "錯誤",
+          date: t('dashboard.checkinStats.dateFormat.dateError'),
           count: 0
         };
       }
     });
-  }, [safeCheckinStats]);
+  }, [safeCheckinStats, t]);
 
   // 对签到详情记录进行排序，最新的排在前面
   const detailedCheckins = React.useMemo(() => {
@@ -216,7 +216,7 @@ export function CheckinStats({
                           </div>
                         </div>
                         <div className="text-sm text-muted-foreground">
-                          {checkin.date ? formatDate(new Date(checkin.date)) : "無日期"}
+                          {checkin.date ? formatDate(new Date(checkin.date)) : t('dashboard.checkinStats.dateFormat.noDate')}
                         </div>
                       </div>
                     ))}

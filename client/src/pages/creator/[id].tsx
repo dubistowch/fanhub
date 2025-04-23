@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CheckinStats } from "@/components/creator/CheckinStats";
 import { Users, UserPlus, UserMinus, Globe, SocialIcon } from "lucide-react";
 import ConnectedPlatforms from "@/components/profile/ConnectedPlatforms";
+import { useTranslation } from "react-i18next";
 
 export default function CreatorProfile() {
   const [_, params] = useRoute("/creator/:id");
@@ -18,6 +19,7 @@ export default function CreatorProfile() {
   const { user } = useAuth();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("about");
+  const { t } = useTranslation();
 
   // 获取创作者信息
   const { data: creator, isLoading: creatorLoading } = useQuery({
@@ -107,8 +109,8 @@ export default function CreatorProfile() {
   // 签到成功后的回调
   const handleCheckInSuccess = (newStreak: number) => {
     toast({
-      title: "签到成功",
-      description: `你已连续签到 ${newStreak} 天`,
+      title: t('creator.checkin.success'),
+      description: t('creator.checkin.successDesc', { streak: newStreak }),
       duration: 3000,
     });
     
@@ -119,7 +121,7 @@ export default function CreatorProfile() {
   if (creatorLoading) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <div className="text-center">加载中...</div>
+        <div className="text-center">{t('creator.profile.loading')}</div>
       </div>
     );
   }
@@ -128,8 +130,8 @@ export default function CreatorProfile() {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">找不到创作者</h1>
-          <p className="text-muted-foreground">创作者可能不存在或已被删除</p>
+          <h1 className="text-2xl font-bold mb-4">{t('creator.profile.notFound')}</h1>
+          <p className="text-muted-foreground">{t('creator.profile.notFoundDesc')}</p>
         </div>
       </div>
     );
