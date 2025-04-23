@@ -35,7 +35,11 @@ i18n
             loading: "Loading...",
             authError: "Authentication error",
             loginFailed: "Login failed",
-            pleaseLogin: "Please login"
+            pleaseLogin: "Please login",
+            providerError: "Failed to get provider information",
+            syncError: "Failed to sync user data",
+            backToLogin: "Back to login",
+            unknownError: "An unknown error occurred"
           },
           dashboard: {
             checkinStats: {
@@ -101,7 +105,11 @@ i18n
             loading: "載入中...",
             authError: "認證錯誤",
             loginFailed: "登入失敗",
-            pleaseLogin: "請登入"
+            pleaseLogin: "請登入",
+            providerError: "無法獲取提供商信息",
+            syncError: "無法同步用戶數據",
+            backToLogin: "返回登入",
+            unknownError: "發生未知錯誤"
           },
           dashboard: {
             checkinStats: {
@@ -167,7 +175,11 @@ i18n
             loading: "加载中...",
             authError: "认证错误",
             loginFailed: "登录失败",
-            pleaseLogin: "请登录"
+            pleaseLogin: "请登录",
+            providerError: "无法获取提供商信息",
+            syncError: "无法同步用户数据",
+            backToLogin: "返回登录",
+            unknownError: "发生未知错误"
           },
           dashboard: {
             checkinStats: {
@@ -233,7 +245,11 @@ i18n
             loading: "読み込み中...",
             authError: "認証エラー",
             loginFailed: "ログイン失敗",
-            pleaseLogin: "ログインしてください"
+            pleaseLogin: "ログインしてください",
+            providerError: "プロバイダー情報の取得に失敗しました",
+            syncError: "ユーザーデータの同期に失敗しました",
+            backToLogin: "ログインに戻る",
+            unknownError: "不明なエラーが発生しました"
           },
           dashboard: {
             checkinStats: {

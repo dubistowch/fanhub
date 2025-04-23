@@ -4,6 +4,7 @@ import { getCurrentUser, syncUserAfterOAuth, linkProvider } from "@/lib/auth";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "react-i18next";
 
 export default function AuthCallback() {
   const [error, setError] = useState<string | null>(null);
@@ -11,6 +12,7 @@ export default function AuthCallback() {
   const { refreshUser } = useAuth();
   const { toast } = useToast();
   const [_, setLocation] = useLocation();
+  const { t } = useTranslation();
   
   useEffect(() => {
     async function processOAuthRedirect() {
@@ -23,7 +25,7 @@ export default function AuthCallback() {
         
         if (!supabaseUser) {
           console.log("Auth callback: No Supabase user found");
-          setError("Authentication failed. Please try again.");
+          setError(t("auth.authError"));
           setProcessing(false);
           return;
         }
@@ -33,7 +35,7 @@ export default function AuthCallback() {
         const provider = supabaseUser.app_metadata?.provider;
         if (!provider) {
           console.error("Auth callback: Failed to get provider information. Metadata:", supabaseUser.app_metadata);
-          setError("Failed to get provider information");
+          setError(t("auth.providerError"));
           setProcessing(false);
           return;
         }

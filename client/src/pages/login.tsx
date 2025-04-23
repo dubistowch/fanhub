@@ -1,7 +1,13 @@
 import { useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { signInWithOAuth } from "@/lib/auth";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -49,10 +55,10 @@ const Login = () => {
     <div className="flex justify-center items-center min-h-[calc(100vh-200px)] bg-gray-50">
       <Card className="w-full max-w-md mx-4">
         <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-3xl font-bold">{t("login.welcome")}</CardTitle>
-          <CardDescription>
-            {t("login.description")}
-          </CardDescription>
+          <CardTitle className="text-3xl font-bold">
+            {t("login.welcome")}
+          </CardTitle>
+          <CardDescription>{t("login.description")}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
@@ -67,14 +73,6 @@ const Login = () => {
             <p className="text-center text-sm text-gray-500 mt-4">
               {t("login.termsAgreement")}
             </p>
-          </div>
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-200"></div>
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white px-2 text-gray-500">{t("login.or")}</span>
-            </div>
           </div>
           <p className="text-center text-sm text-gray-500">
             {t("login.intro")}
