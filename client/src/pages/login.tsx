@@ -3,7 +3,6 @@ import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { signInWithOAuth } from "@/lib/auth";
-import { OAuthProvider, OAUTH_PROVIDERS } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
@@ -14,18 +13,16 @@ const Login = () => {
   const { toast } = useToast();
   const { t } = useTranslation();
 
-  // Redirect to home if already authenticated
   useEffect(() => {
     if (user && !isLoading) {
       setLocation("/");
     }
   }, [user, isLoading, setLocation]);
 
-  const handleSignIn = async (provider: OAuthProvider) => {
-    console.log(`Login: Starting sign in with ${provider}`);
+  const handleSignIn = async () => {
     try {
-      console.log("Login: Calling signInWithOAuth");
-      const result = await signInWithOAuth(provider);
+      console.log("Login: Starting sign in with Google");
+      const result = await signInWithOAuth("google");
       console.log("Login: OAuth sign in result:", result);
     } catch (error) {
       console.error("Login: Sign in error:", error);
@@ -61,25 +58,16 @@ const Login = () => {
           <div className="space-y-2">
             <Button
               className="w-full bg-red-600 hover:bg-red-700 flex items-center justify-center gap-2"
-              onClick={() => handleSignIn("google")}
+              onClick={handleSignIn}
             >
               <i className="fab fa-google"></i>
               {t("login.googleLogin")}
-            </Button>
-            
-            <Button
-              className="w-full bg-[#6441A4] hover:bg-[#7550BA] flex items-center justify-center gap-2"
-              onClick={() => handleSignIn("twitch")}
-            >
-              <i className="fab fa-twitch"></i>
-              {t("login.twitchLogin")}
             </Button>
 
             <p className="text-center text-sm text-gray-500 mt-4">
               {t("login.termsAgreement")}
             </p>
           </div>
-          
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-200"></div>
@@ -88,7 +76,6 @@ const Login = () => {
               <span className="bg-white px-2 text-gray-500">{t("login.or")}</span>
             </div>
           </div>
-          
           <p className="text-center text-sm text-gray-500">
             {t("login.intro")}
           </p>

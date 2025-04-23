@@ -76,11 +76,12 @@ export const OAUTH_PROVIDERS = {
     color: 'bg-red-600',
     icon: 'fab fa-google'
   },
-  discord: {
-    id: 'discord',
-    name: 'Discord',
-    color: 'bg-indigo-600',
-    icon: 'fab fa-discord'
+  twitch: {
+    id: 'twitch',
+    name: 'Twitch',
+    color: 'bg-[#6441A4]',
+    icon: 'fab fa-twitch'
+  }'
   },
   twitch: {
     id: 'twitch',
