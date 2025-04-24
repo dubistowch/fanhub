@@ -23,7 +23,18 @@ const PlatformBadge = ({
   const { t } = useTranslation();
   
   // 輸出調試信息
-  console.log(`PlatformBadge: ${provider}`, { username, displayName, isConnected: !!username });
+  console.log(`PlatformBadge: ${provider}`, { 
+    username, 
+    displayName, 
+    isConnected: !!username,
+    hasClickHandler: !!onClick,
+    isActionElement: !!action
+  });
+  
+  // 檢查是否有可能的數據格式問題
+  if (username === undefined && displayName) {
+    console.warn(`PlatformBadge: ${provider} - Missing username but has displayName, possible data format issue`);
+  }
   
   return (
     <div 

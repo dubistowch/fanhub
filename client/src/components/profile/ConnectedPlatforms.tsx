@@ -19,24 +19,40 @@ const ConnectedPlatforms = ({ userId, isOwnProfile = false }: ConnectedPlatforms
   const [isLinking, setIsLinking] = useState<OAuthProvider | null>(null);
   const { t } = useTranslation();
 
-  // Fetch user data including providers directly from the user object
+  // 兩種獲取平台提供商數據的方式，確保我們能夠捕獲數據
+  
+  // 1. 從用戶詳細信息中獲取 providers
   const { data: userData } = useQuery<{ providers?: Array<{ provider: string, providerUsername?: string }> }>({
     queryKey: ["/api/users", userId],
     enabled: !!userId,
   });
   
-  // Extract providers from user data, falling back to empty array
-  const providers = userData?.providers || [];
+  // 2. 直接獲取用戶的提供商列表（單獨端點）
+  const { data: directProviders = [] } = useQuery<Array<{ provider: string, providerUsername?: string }>>({
+    queryKey: ["/api/users", userId, "providers"],
+    enabled: !!userId,
+  });
   
-  // Debug information 
+  // 合併兩個來源的提供商信息，優先使用直接獲取的提供商
+  const userProviders = userData?.providers || [];
+  const allProviders = [...directProviders];
+  const mergedProviders = allProviders.length > 0 ? allProviders : userProviders;
+  
+  // 最終要顯示的提供商列表
+  const providers = mergedProviders;
+  
+  // 增強型調試信息 
   useEffect(() => {
     console.log("ConnectedPlatforms: User ID:", userId);
     console.log("ConnectedPlatforms: Full User Data:", userData);
-    console.log("ConnectedPlatforms: Providers:", providers);
+    console.log("ConnectedPlatforms: Direct Providers API Data:", directProviders);
+    console.log("ConnectedPlatforms: User Providers:", userProviders);
+    console.log("ConnectedPlatforms: Merged Providers:", providers);
     
     // 檢查是否有用戶，但平台資訊為空
     if (userData && (!providers || providers.length === 0)) {
-      console.warn("ConnectedPlatforms: User exists but no providers found - this might indicate a sync issue");
+      console.warn("ConnectedPlatforms: User exists but no providers found - this might indicate a sync issue between Supabase and database");
+      console.warn("ConnectedPlatforms: Please check if providers are being correctly saved to database");
     }
     
     // 簡化輸出目前的連接狀態
@@ -45,7 +61,7 @@ const ConnectedPlatforms = ({ userId, isOwnProfile = false }: ConnectedPlatforms
       "Twitch 連接狀態": providers.some(p => p.provider === 'twitch') ? "已連接" : "未連接",
       "Twitter 連接狀態": providers.some(p => p.provider === 'twitter') ? "已連接" : "未連接",
     });
-  }, [userId, userData, providers]);
+  }, [userId, userData, providers, directProviders, userProviders]);
 
   // Handle OAuth flow
   useEffect(() => {

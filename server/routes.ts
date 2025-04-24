@@ -23,16 +23,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // User Routes
   app.get("/api/users/:id", async (req, res) => {
     try {
+      console.log(`User API: Getting user with ID ${req.params.id}`);
       const userId = parseInt(req.params.id);
       const user = await storage.getUser(userId);
       
       if (!user) {
+        console.log(`User API: User with ID ${userId} not found`);
         return res.status(404).json({ error: "User not found" });
       }
       
+      // 獲取用戶的平台提供商
+      console.log(`User API: Getting providers for user ${userId}`);
       const providers = await storage.getProvidersByUserId(userId);
+      console.log(`User API: Found ${providers.length} providers for user ${userId}`);
+      
       return res.json({ ...user, providers });
     } catch (err) {
+      console.error(`User API: Error getting user ${req.params.id}:`, err);
+      handleError(err, res);
+    }
+  });
+  
+  // 獲取用戶平台提供商（獨立端點）
+  app.get("/api/users/:id/providers", async (req, res) => {
+    try {
+      console.log(`Providers API: Getting providers for user ${req.params.id}`);
+      const userId = parseInt(req.params.id);
+      const providers = await storage.getProvidersByUserId(userId);
+      console.log(`Providers API: Found ${providers.length} providers`, providers);
+      return res.json(providers);
+    } catch (err) {
+      console.error(`Providers API: Error getting providers for user ${req.params.id}:`, err);
       handleError(err, res);
     }
   });

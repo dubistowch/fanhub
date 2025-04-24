@@ -198,7 +198,8 @@ export async function getCurrentUser() {
   }
 }
 
-// userCache 已由上方聲明，此處不再重複定義
+// userCache 已在上方聲明 - 添加一些調試日誌
+console.log("Auth: userCache initialized");
 
 // 創建或更新數據庫中的用戶（OAuth登錄後）
 export async function syncUserAfterOAuth(supabaseUser: any) {
