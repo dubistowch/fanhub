@@ -113,24 +113,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/providers", async (req, res) => {
     try {
+      console.log("Provider API: Received provider data:", req.body);
       const providerData = insertProviderSchema.parse(req.body);
       
       // Check if provider already exists for this user
+      console.log(`Provider API: Checking if provider exists for user ${providerData.userId} and type ${providerData.provider}`);
       const existingProvider = await storage.getProviderByUserIdAndType(
         providerData.userId,
         providerData.provider
       );
       
       if (existingProvider) {
+        console.log(`Provider API: Found existing provider, updating:`, existingProvider);
         // Update if exists
         const updatedProvider = await storage.updateProvider(existingProvider.id, providerData);
+        console.log(`Provider API: Provider updated:`, updatedProvider);
         return res.json(updatedProvider);
       }
       
       // Create if not exists
+      console.log(`Provider API: No existing provider found, creating new one`);
       const provider = await storage.createProvider(providerData);
+      console.log(`Provider API: New provider created:`, provider);
       return res.status(201).json(provider);
     } catch (err) {
+      console.error("Provider API: Error processing provider:", err);
       handleError(err, res);
     }
   });

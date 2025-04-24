@@ -2,6 +2,13 @@ import { supabase, OAuthProvider } from './supabase';
 import { apiRequest } from './queryClient';
 import { User, InsertUser, InsertProvider } from '@shared/schema';
 
+// 用戶緩存系統
+interface UserCacheItem {
+  timestamp: number;
+  data: any;
+}
+const userCache: Record<string, UserCacheItem | any> = {};
+
 // Sign in with OAuth provider
 export async function signInWithOAuth(provider: OAuthProvider) {
   try {
@@ -191,8 +198,7 @@ export async function getCurrentUser() {
   }
 }
 
-// 維護一個簡單的登錄用戶緩存，防止重複請求
-const userCache: Record<string, { timestamp: number, data: any }> = {};
+// userCache 已由上方聲明，此處不再重複定義
 
 // 創建或更新數據庫中的用戶（OAuth登錄後）
 export async function syncUserAfterOAuth(supabaseUser: any) {
@@ -312,10 +318,17 @@ export async function linkProvider(userId: number, providerData: any) {
   try {
     console.log("Auth: Linking provider for user", userId, "with data:", providerData);
     
+    // 確保提供商標識符是一致且兼容的
+    let providerType = providerData.provider;
+    if (providerType === "twitter_legacy" || providerType === "twitter") {
+      providerType = "twitter"; // 標準化Twitter的提供商名稱
+    }
+    
+    // 構建新的提供商記錄
     const newProvider: InsertProvider = {
       userId,
-      provider: providerData.provider,
-      providerId: providerData.id,
+      provider: providerType,
+      providerId: providerData.id || '',
       providerUsername: providerData.username || '',
       providerAvatar: providerData.avatar || '',
       accessToken: providerData.access_token || '',
@@ -324,9 +337,21 @@ export async function linkProvider(userId: number, providerData: any) {
     
     console.log("Auth: Prepared provider data:", newProvider);
     
+    // 檢查是否已存在該提供商（嘗試使用API調用）
+    console.log(`Auth: Checking if provider already exists for user ${userId} and type ${providerType}`);
+    
+    // 發送請求創建/更新提供商
     const response = await apiRequest('POST', '/api/providers', newProvider);
     const result = await response.json();
     console.log("Auth: Provider linked successfully:", result);
+    
+    // 成功綁定後重新讀取用戶數據（通過緩存清理來強制重新取得）
+    const cacheKey = `user_${userId}`;
+    if (userCache[cacheKey]) {
+      console.log("Auth: Clearing user cache to force refresh after provider linking");
+      delete userCache[cacheKey];
+    }
+    
     return result;
   } catch (error) {
     console.error('Error linking provider:', error);

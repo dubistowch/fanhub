@@ -28,11 +28,23 @@ const ConnectedPlatforms = ({ userId, isOwnProfile = false }: ConnectedPlatforms
   // Extract providers from user data, falling back to empty array
   const providers = userData?.providers || [];
   
-  // Debug information
+  // Debug information 
   useEffect(() => {
     console.log("ConnectedPlatforms: User ID:", userId);
     console.log("ConnectedPlatforms: Full User Data:", userData);
     console.log("ConnectedPlatforms: Providers:", providers);
+    
+    // 檢查是否有用戶，但平台資訊為空
+    if (userData && (!providers || providers.length === 0)) {
+      console.warn("ConnectedPlatforms: User exists but no providers found - this might indicate a sync issue");
+    }
+    
+    // 簡化輸出目前的連接狀態
+    console.table({
+      "Discord 連接狀態": providers.some(p => p.provider === 'discord') ? "已連接" : "未連接",
+      "Twitch 連接狀態": providers.some(p => p.provider === 'twitch') ? "已連接" : "未連接",
+      "Twitter 連接狀態": providers.some(p => p.provider === 'twitter') ? "已連接" : "未連接",
+    });
   }, [userId, userData, providers]);
 
   // Handle OAuth flow
