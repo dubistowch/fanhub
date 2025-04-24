@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { OAuthProvider, OAUTH_PROVIDERS } from "@/lib/supabase";
+import { useTranslation } from "react-i18next";
 
 interface PlatformBadgeProps {
   provider: OAuthProvider;
@@ -19,6 +20,7 @@ const PlatformBadge = ({
   action,
 }: PlatformBadgeProps) => {
   const providerConfig = OAUTH_PROVIDERS[provider];
+  const { t } = useTranslation();
   
   return (
     <div 
@@ -32,13 +34,8 @@ const PlatformBadge = ({
       </div>
       <div className="ml-3 flex-grow">
         <div className="font-medium">{providerConfig.name}</div>
-        <div className="text-sm text-gray-500">{displayName || username || "未連結"}</div>
+        <div className="text-sm text-gray-500">{displayName || username || t('profile.connected.notLinked')}</div>
       </div>
-      {isOnline && (
-        <div className="bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded">
-          線上中
-        </div>
-      )}
       {action && action}
       {!action && !isOnline && (
         <div className="text-accent">

@@ -49,7 +49,7 @@ const Home = () => {
                 <Button variant="secondary" onClick={() => setLocation("/discover")}>
                   {t("home.welcomeCard.exploreButton")}
                 </Button>
-                <Button variant="outline" className="text-white border-white hover:bg-white/20 hover:text-white" onClick={() => setLocation("/profile")}>
+                <Button variant="outline" className="bg-white/10 text-white border-white hover:bg-white/20" onClick={() => setLocation("/profile")}>
                   {t("home.welcomeCard.linkAccountButton")}
                 </Button>
               </div>

@@ -94,7 +94,9 @@ const ConnectedPlatforms = ({ userId, isOwnProfile = false }: ConnectedPlatforms
     <div className="bg-white rounded-lg p-6 border border-gray-200">
       <h3 className="font-semibold text-lg mb-4">{t('profile.connected.title')}</h3>
       <div className="space-y-3">
-        {Object.keys(OAUTH_PROVIDERS).map((provider) => {
+        {Object.keys(OAUTH_PROVIDERS)
+          .filter(provider => provider !== 'google') // Exclude Google from bindable platforms
+          .map((provider) => {
           const providerKey = provider as OAuthProvider;
           const connectedProvider = providers.find(p => p.provider === providerKey);
           

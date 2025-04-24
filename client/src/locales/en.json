@@ -1,24 +1,33 @@
 {
   "auth": {
     "alreadyHaveAccount": "Already have an account?",
+    "authError": "Authentication error",
+    "backToLogin": "Back to login",
+    "completingAuth": "Completing authentication",
     "continueTo": "Continue to",
     "dontHaveAccount": "Don't have an account?",
     "email": "Email",
     "forgotPassword": "Forgot password?",
     "goToLogin": "Go to Login",
+    "loginFailed": "Login failed",
+    "loginSuccess": "Login successful",
     "password": "Password",
-    "pleaseLogin": "Please Login",
+    "pleaseLogin": "Please login",
+    "providerError": "Failed to get provider information",
     "resetPassword": "Reset Password",
     "signInWith": "Sign in with",
     "signUpNow": "Sign up now",
-    "username": "Username"
+    "syncError": "Failed to sync user data",
+    "unknownError": "An unknown error occurred",
+    "username": "Username",
+    "welcomeBack": "Welcome back"
   },
   "checkin": {
     "calendar": "Check-in Calendar",
     "checkInNow": "Check in Now",
     "dayBeforeYesterday": "Day before yesterday",
     "days": "days",
-    "daysAgo": "{{count}} days ago",
+    "daysAgo": "{{days}} days ago",
     "details": "Detailed Records",
     "highestRecord": "Highest Record",
     "info": "Check-in Information",
@@ -38,13 +47,16 @@
   },
   "common": {
     "all": "All",
+    "allRightsReserved": "All rights reserved.",
     "dashboard": "Dashboard",
     "discover": "Discover",
     "following": "Following",
     "home": "Home",
-    "loading": "Loading",
+    "loading": "Loading...",
     "login": "Login",
     "logout": "Logout",
+    "pageNotFound": "404 Page Not Found",
+    "pageNotFoundMsg": "The page you are looking for does not exist.",
     "profile": "Profile",
     "register": "Register",
     "search": "Search",
@@ -69,10 +81,14 @@
       "actionFailed": "Action Failed",
       "follow": "Follow",
       "following": "Following",
+      "followingInProgress": "Following...",
       "followSuccess": "Follow Success",
       "followSuccessDesc": "You are now following {{name}}",
+      "loginRequired": "Login Required",
+      "loginRequiredDesc": "Please login to follow creators",
       "unfollowSuccess": "Unfollow Success",
-      "unfollowSuccessDesc": "You have unfollowed {{name}}"
+      "unfollowSuccessDesc": "You have unfollowed {{name}}",
+      "unfollowingInProgress": "Unfollowing..."
     },
     "followersList": "Followers List",
     "goToSetup": "Set Up Creator Profile",
@@ -85,11 +101,26 @@
     "percentOfFollowers": "{{percent}}% of followers",
     "platformCount": "Connected Platforms",
     "platformDistribution": "Platform Distribution",
+    "profile": {
+      "bio": "Creator Bio",
+      "bioDescription": "Learn more about the creator",
+      "emptyBio": "This creator is lazy and hasn't written a bio yet...",
+      "followers": "followers",
+      "followersCount": "{{count}} followers",
+      "loading": "Loading...",
+      "notFound": "Creator Not Found",
+      "notFoundDesc": "The creator may not exist or has been deleted",
+      "title": "Creator Profile"
+    },
     "recentCheckins": "Recent Check-ins",
     "setupDescription": "You need to set up your creator profile to access the creator dashboard",
     "shareCreatorPage": "Share your creator page to start building your fan community",
     "startBuildingCommunity": "Start building your community",
     "streak": "Current Streak",
+    "tabs": {
+      "about": "About",
+      "stats": "Check-in Stats"
+    },
     "todayCheckins": "Today's Check-ins",
     "totalFollowers": "Total Followers",
     "weeklyCheckinTrend": "Weekly Check-in Trend",
@@ -110,6 +141,24 @@
     "searchPlaceholder": "Search creators...",
     "title": "Discover Creators",
     "tryDifferentSearch": "Try different search terms"
+  },
+  "footer": {
+    "aboutFanHub": "About FanHub",
+    "aboutUs": "About Us",
+    "contactUs": "Contact Us",
+    "creatorGuide": "Creator Guide",
+    "creatorPages": "Creator Pages",
+    "creatorResources": "Creator Resources",
+    "dataAnalysis": "Data Analysis",
+    "dataInterpretation": "Data Interpretation",
+    "description": "Connect fan identities across platforms, establishing exclusive connections between creators and fans.",
+    "platformBinding": "Multi-platform Binding",
+    "checkinSystem": "Check-in System",
+    "communityManagement": "Community Management",
+    "privacyPolicy": "Privacy Policy",
+    "services": "Services",
+    "successStories": "Success Stories",
+    "termsOfUse": "Terms of Use"
   },
   "following": {
     "goToDiscover": "Discover creators to follow",
@@ -145,11 +194,31 @@
     "zh-CN": "Simplified Chinese",
     "zh-TW": "Traditional Chinese"
   },
+  "login": {
+    "description": "Sign in with your favorite platform account to connect your creator and fan identities",
+    "googleLogin": "Sign in with Google",
+    "intro": "FanHub is a dedicated space for creators and fans to interact across platforms. Start exploring with Google sign-in!",
+    "or": "or",
+    "termsAgreement": "By signing in, you agree to our Terms of Service and Privacy Policy",
+    "twitchLogin": "Sign in with Twitch",
+    "welcome": "Welcome to FanHub"
+  },
   "profile": {
     "avatar": "Avatar",
     "bio": "Bio",
     "bioPlaceholder": "Tell us a bit about yourself...",
-    "connectedPlatforms": "Connected Platforms",
+    "connected": {
+      "connecting": "Connecting...",
+      "linkFailed": "Link Failed",
+      "linkFailedDetail": "Unable to link platform account, please try again later",
+      "linkFailedProviderDetail": "Unable to link {{provider}} account, please try again later",
+      "linkSuccess": "Link Successful",
+      "linkSuccessDetail": "Successfully linked {{provider}} account",
+      "notLinked": "Not Linked",
+      "platform": "platform",
+      "tip": "Binding more platform accounts makes it easier for creators to recognize your support!",
+      "title": "Connected Platforms"
+    },
     "creatorPage": {
       "title": "Creator Page",
       "view": "View Creator Page"
@@ -157,6 +226,12 @@
     "description": "Manage your personal information and preferences",
     "edit": "Edit Profile",
     "linkAccount": "Link Account",
+    "platforms": {
+      "bindAccount": "Bind Account",
+      "bound": "Bound",
+      "tip": "Binding more platform accounts makes it easier for creators to recognize your support!",
+      "title": "Your Binding Status"
+    },
     "save": "Save Changes",
     "title": "Profile Settings",
     "unlinkAccount": "Unlink",
@@ -167,9 +242,50 @@
   "settings": {
     "account": "Account",
     "language": "Language",
+    "languageDescription": "Change the language used throughout the application",
     "notifications": "Notifications",
     "privacy": "Privacy",
+    "selectLanguage": "Select language",
+    "selectLanguagePlaceholder": "Select a language",
     "theme": "Theme",
     "title": "Settings"
+  },
+  "dashboard": {
+    "checkinStats": {
+      "title": "Check-in Statistics",
+      "description": "View fan check-in data and history",
+      "calendar": "Check-in Calendar",
+      "trend": "Check-in Trend",
+      "details": "Detailed Records",
+      "loginRequired": "Please login to check in",
+      "loading": "Loading...",
+      "noData": "No check-in data available",
+      "recentUsers": "Recent Check-in Users",
+      "noRecords": "No check-in records",
+      "checkins": "Check-ins",
+      "dateFormat": {
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "dayBeforeYesterday": "Day before yesterday",
+        "daysAgo": "{{days}} days ago",
+        "monthDay": "MM/dd",
+        "invalidDate": "Invalid date",
+        "noDate": "No date",
+        "dateError": "Date error"
+      }
+    },
+    "stats": {
+      "today": "Today's Check-ins",
+      "yesterday": "Yesterday's Check-ins",
+      "highest": "Highest Record"
+    },
+    "userStreaks": {
+      "title": "Check-in Streaks",
+      "description": "Your check-in streak records",
+      "detailedDescription": "Your continuous check-in records with creators",
+      "noStreaks": "No check-in records yet. Start checking in to build your streaks!",
+      "creatorLabel": "Creator",
+      "days": "days"
+    }
   }
 }
