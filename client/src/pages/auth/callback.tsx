@@ -33,6 +33,11 @@ export default function AuthCallback() {
         // 获取提供商信息
         console.log("Auth callback: Getting provider info from user metadata:", supabaseUser.app_metadata);
         const provider = supabaseUser.app_metadata?.provider;
+        
+        // 增加更多日志检查身份数据
+        console.log("Auth callback: User identities:", supabaseUser.identities);
+        console.log("Auth callback: All providers:", supabaseUser.app_metadata?.providers);
+        
         if (!provider) {
           console.error("Auth callback: Failed to get provider information. Metadata:", supabaseUser.app_metadata);
           setError(t("auth.providerError"));
@@ -48,15 +53,46 @@ export default function AuthCallback() {
           
           // 链接提供商账号
           console.log("Auth callback: Linking provider account");
+          
+          // 提取不同平台特定的用户名和头像信息
+          let username = '';
+          let avatar = '';
+          
+          // 根据不同平台提取正确的信息
+          if (provider === 'discord') {
+            username = supabaseUser.user_metadata?.name || 
+                    supabaseUser.user_metadata?.full_name || 
+                    supabaseUser.user_metadata?.preferred_username || 
+                    supabaseUser.user_metadata?.custom_claims?.global_name;
+            avatar = supabaseUser.user_metadata?.avatar_url;
+          } else if (provider === 'twitter') {
+            username = supabaseUser.user_metadata?.preferred_username || 
+                    supabaseUser.user_metadata?.name || 
+                    supabaseUser.user_metadata?.full_name;
+            avatar = supabaseUser.user_metadata?.avatar_url;
+          } else if (provider === 'twitch') {
+            username = supabaseUser.user_metadata?.preferred_username || 
+                    supabaseUser.user_metadata?.name || 
+                    supabaseUser.user_metadata?.full_name;
+            avatar = supabaseUser.user_metadata?.avatar_url;
+          } else {
+            username = supabaseUser.user_metadata?.name || 
+                    supabaseUser.user_metadata?.full_name || 
+                    supabaseUser.user_metadata?.preferred_username;
+            avatar = supabaseUser.user_metadata?.avatar_url;
+          }
+          
           const providerData = {
             provider,
             id: supabaseUser.id,
-            username: supabaseUser.user_metadata?.name || supabaseUser.user_metadata?.preferred_username,
-            avatar: supabaseUser.user_metadata?.avatar_url,
+            username,
+            avatar,
             access_token: supabaseUser.user_metadata?.access_token || "",
             refresh_token: supabaseUser.user_metadata?.refresh_token || "",
           };
+          
           console.log("Auth callback: Provider data:", providerData);
+          console.log("Auth callback: Complete metadata:", supabaseUser.user_metadata);
           
           try {
             const linkedProvider = await linkProvider(dbUser.id, providerData);

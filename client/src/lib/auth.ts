@@ -205,7 +205,9 @@ export async function syncUserAfterOAuth(supabaseUser: any) {
     console.log("Auth: Syncing user after OAuth:", { 
       email: supabaseUser.email,
       id: supabaseUser.id,
-      has_metadata: !!supabaseUser.user_metadata
+      has_metadata: !!supabaseUser.user_metadata,
+      identities: supabaseUser.identities?.length || 0,
+      providers: supabaseUser.app_metadata?.providers || []
     });
     
     // 檢查緩存是否存在且在5秒內（避免重複請求）
@@ -308,6 +310,8 @@ export async function syncUserAfterOAuth(supabaseUser: any) {
 // Link an OAuth provider to an existing user
 export async function linkProvider(userId: number, providerData: any) {
   try {
+    console.log("Auth: Linking provider for user", userId, "with data:", providerData);
+    
     const newProvider: InsertProvider = {
       userId,
       provider: providerData.provider,
@@ -318,8 +322,12 @@ export async function linkProvider(userId: number, providerData: any) {
       refreshToken: providerData.refresh_token || '',
     };
     
+    console.log("Auth: Prepared provider data:", newProvider);
+    
     const response = await apiRequest('POST', '/api/providers', newProvider);
-    return await response.json();
+    const result = await response.json();
+    console.log("Auth: Provider linked successfully:", result);
+    return result;
   } catch (error) {
     console.error('Error linking provider:', error);
     throw error;

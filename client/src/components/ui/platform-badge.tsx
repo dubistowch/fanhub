@@ -22,6 +22,9 @@ const PlatformBadge = ({
   const providerConfig = OAUTH_PROVIDERS[provider];
   const { t } = useTranslation();
   
+  // 輸出調試信息
+  console.log(`PlatformBadge: ${provider}`, { username, displayName, isConnected: !!username });
+  
   return (
     <div 
       className="platform-badge flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"

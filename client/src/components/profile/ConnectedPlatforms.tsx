@@ -19,20 +19,21 @@ const ConnectedPlatforms = ({ userId, isOwnProfile = false }: ConnectedPlatforms
   const [isLinking, setIsLinking] = useState<OAuthProvider | null>(null);
   const { t } = useTranslation();
 
-  // Fetch user providers
-  const { data: providers = [], isLoading: loadingProviders, error: providerError } = useQuery<Array<{ provider: string, providerUsername?: string }>>({
-    queryKey: ["/api/users", userId, "providers"],
+  // Fetch user data including providers directly from the user object
+  const { data: userData } = useQuery<{ providers?: Array<{ provider: string, providerUsername?: string }> }>({
+    queryKey: ["/api/users", userId],
     enabled: !!userId,
   });
   
-  // 添加調試信息
+  // Extract providers from user data, falling back to empty array
+  const providers = userData?.providers || [];
+  
+  // Debug information
   useEffect(() => {
     console.log("ConnectedPlatforms: User ID:", userId);
+    console.log("ConnectedPlatforms: Full User Data:", userData);
     console.log("ConnectedPlatforms: Providers:", providers);
-    if (providerError) {
-      console.error("ConnectedPlatforms: Error fetching providers:", providerError);
-    }
-  }, [userId, providers, providerError]);
+  }, [userId, userData, providers]);
 
   // Handle OAuth flow
   useEffect(() => {
